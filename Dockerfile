@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:7.0-alpine3.16 AS base
 WORKDIR /app
 EXPOSE 80
-#EXPOSE 443
+EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine3.16 AS build
 # RUN apk add --update npm
