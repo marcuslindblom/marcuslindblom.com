@@ -7,7 +7,7 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine3.16 AS build
 # RUN apk add --update npm
 WORKDIR /src
 COPY ["marcuslindblom.com.nosync.csproj", "web/"]
-COPY nuget.config web
+# COPY nuget.config web
 RUN dotnet restore "web/marcuslindblom.com.nosync.csproj"
 COPY . .
 #WORKDIR "src/web"
