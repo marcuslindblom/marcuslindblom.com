@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="strife" Version="0.0.1-ac3878d" />
+  </ItemGroup>
+
 </Project>
