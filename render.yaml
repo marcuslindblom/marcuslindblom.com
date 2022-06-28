@@ -1,3 +1,7 @@
 previewsEnabled: true
 services:
   - type: web
+    name: Blog
+    env: docker
+    region: frankfurt
+    branch: main
