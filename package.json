@@ -1,0 +1,23 @@
+{
+  "name": "marcuslindblom.com.nosync",
+  "version": "1.0.0",
+  "description": "## Install Strife",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcuslindblom/marcuslindblom.com.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/marcuslindblom/marcuslindblom.com/issues"
+  },
+  "homepage": "https://github.com/marcuslindblom/marcuslindblom.com#readme",
+  "dependencies": {
+    "@strifeapp/strife": "^0.0.6-preview.12"
+  }
+}
