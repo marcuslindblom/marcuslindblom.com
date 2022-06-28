@@ -13,8 +13,8 @@ COPY ["marcuslindblom.com.nosync.csproj", "web/"]
 COPY nuget.config web
 RUN dotnet restore "web/marcuslindblom.com.nosync.csproj"
 COPY . .
-#WORKDIR "src/web"
-# RUN npm i
+WORKDIR /src/web
+RUN npm i
 RUN dotnet build "marcuslindblom.com.nosync.csproj" -c Release -o /app/build
 
 FROM build AS publish
