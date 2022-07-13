@@ -4,7 +4,7 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine3.16 AS build
-#RUN apk add --update npm
+RUN apk add --update npm
 
 ARG NUGET_AUTH_TOKEN
 
@@ -14,7 +14,7 @@ COPY nuget.config web
 RUN dotnet restore "web/marcuslindblom.com.nosync.csproj"
 COPY . .
 # WORKDIR /src/web
-#RUN npm i
+RUN npm i
 RUN dotnet build "marcuslindblom.com.nosync.csproj" -c Release -o /app/build
 
 FROM build AS publish

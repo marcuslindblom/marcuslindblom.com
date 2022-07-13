@@ -10,4 +10,9 @@
     <PackageReference Include="strife" Version="0.1.1-bc9bcae" />
   </ItemGroup>
 
+  <Target Name="CustomOnInnerBuild" BeforeTargets="BeforeBuild">
+    <Message Importance="high" Text="I'm running in the inner build (before). TFs: $(TargetFrameworks), TF: $(TargetFramework)" />
+    <Exec Command="npx rollup -c" />
+  </Target>
+
 </Project>
