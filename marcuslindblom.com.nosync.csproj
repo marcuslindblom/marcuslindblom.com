@@ -16,6 +16,14 @@
     <Exec Command="npx rollup -c -w" />
   </Target> -->
 
+    <ItemGroup>
+    <Content Update="wwwroot/main.js" CopyToPublishDirectory="Never"/>
+  </ItemGroup>
+
+  <Target Name="Rollup" BeforeTargets="PrepareForPublish">
+    <Exec Command="(npx rollup -c -i wwwroot/main.js -o wwwroot/bundle.$(DEPLOYMENT_IDENTIFIER).js)" />
+  </Target>
+
   <ItemGroup>
     <!-- extends watching group to include *.js files -->
     <Watch Include="**/bundle.js" Exclude="**/main.js" />

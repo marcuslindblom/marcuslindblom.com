@@ -7,6 +7,8 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine3.16 AS build
 RUN apk add --update npm
 
 ARG NUGET_AUTH_TOKEN
+ARG RENDER_GIT_COMMIT
+ENV DEPLOYMENT_IDENTIFIER=$RENDER_GIT_COMMIT
 
 WORKDIR /src
 COPY ["marcuslindblom.com.nosync.csproj", "web/"]
@@ -19,7 +21,7 @@ RUN dotnet build "marcuslindblom.com.nosync.csproj" -c Release -o /app/build
 
 FROM build AS publish
 #ARG SHA
-RUN dotnet publish "marcuslindblom.com.nosync.csproj" -c Release -o /app/publish
+RUN dotnet publish "marcuslindblom.com.nosync.csproj" --version-suffix "$DEPLOYMENT_IDENTIFIER" /p:DEPLOYMENT_IDENTIFIER="$DEPLOYMENT_IDENTIFIER" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
