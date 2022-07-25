@@ -1,17 +1,63 @@
 :root {
-  --font-family-standard: 'SF Mono', SFMono-Regular, ui-monospace, Consolas,
-    'Liberation Mono', Menlo, Courier, monospace;
+  --font-family-standard: -apple-system, system-ui, 'Segoe UI', roboto,
+    'Helvetica Neue', helvetica, arial, sans-serif;
+  --font-family-mono: 'SFMono-Regular', Consolas, 'Liberation Mono',
+    Menlo, Courier, monospace;
+    --bg: #1c1c1c;
+    --fg: #f2f2f2;
+    --font-serif: "Newsreader","Signifier","Times",serif;
+    --type-em: 400 italic calc(1em + 1px) /normal var(--font-serif);
+    --colors-lowContrast: black;
 }
 
 html {
   font-size: 62.5%;
+  line-height: 28px;
 
   font-family: var(--font-family-standard);
+  color: var(--fg);
 }
 
 body {
-  font-size: 2rem;
+  font-size: 1.6rem;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background-color: var(--bg);
+
+  margin: 0;
+}
+
+header {
+  border-bottom: solid 1px #2e2e2e;
+  height: 48px;
+  display: flex;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  column-gap: 1.5rem;
+  flex-grow: 1;
+ }
+
+
+h1 {
+  font: 400 1.6rem var(--font-family-standard);
+  text-transform: capitalize;
+}
+
+.header, main, footer {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+em {
+  font: var(--type-em);
+}
+
+::selection {
+  background-color: #ff9a9e;
+  color: var(--colors-lowContrast);
 }

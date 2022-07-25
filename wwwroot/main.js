@@ -1,3 +1,5 @@
 import useStrife from '@strifeapp/strife';
 
-useStrife();
+window.self !== window.top ? useStrife() : null;
+
+console.log('Hello World');

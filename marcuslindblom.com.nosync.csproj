@@ -8,11 +8,17 @@
 
   <ItemGroup>
     <PackageReference Include="strife" Version="0.1.1-bc9bcae" />
+    <PackageReference Include="System.Reactive.Core" Version="5.0.0" />
   </ItemGroup>
 
-  <Target Name="CustomOnInnerBuild" BeforeTargets="BeforeBuild">
+  <!-- <Target Name="BeforeBuild" BeforeTargets="BeforeBuild">
     <Message Importance="high" Text="I'm running in the inner build (before). TFs: $(TargetFrameworks), TF: $(TargetFramework)" />
-    <Exec Command="npx rollup -c" />
-  </Target>
+    <Exec Command="npx rollup -c -w" />
+  </Target> -->
+
+  <ItemGroup>
+    <!-- extends watching group to include *.js files -->
+    <Watch Include="**/bundle.js" Exclude="**/main.js" />
+  </ItemGroup>
 
 </Project>

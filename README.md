@@ -37,3 +37,9 @@
 ## Deploy button
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/marcuslindblom/marcuslindblom.com)
+
+builder.Services.AddStrife(options =>
+{
+options.AfterInitializeDocumentStore = documentStore =>
+documentStore.Changes().ForAllDocuments().Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
+});
