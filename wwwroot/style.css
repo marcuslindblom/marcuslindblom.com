@@ -8,6 +8,9 @@
     --font-serif: "Newsreader","Signifier","Times",serif;
     --type-em: 400 italic calc(1em + 1px) /normal var(--font-serif);
     --colors-lowContrast: black;
+    --body-margin-left: max(24px,env(safe-area-inset-left));
+    --body-margin-right: max(24px,env(safe-area-inset-right));
+    --alpha: rgba(28,28,28,.9);
 }
 
 html {
@@ -27,12 +30,19 @@ body {
   background-color: var(--bg);
 
   margin: 0;
+
+  padding-left: var(--body-margin-left);
+  padding-right: var(--body-margin-right);
 }
 
 header {
   border-bottom: solid 1px #2e2e2e;
   height: 48px;
   display: flex;
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(0.5rem);
+  background-color: var(--alpha);
 }
 
 .header {
