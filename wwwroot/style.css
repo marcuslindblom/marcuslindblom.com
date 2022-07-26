@@ -43,6 +43,11 @@ header {
   top: 0;
   backdrop-filter: blur(0.5rem);
   background-color: var(--alpha);
+  width: 100vw;
+  left: 0;
+  right: 0;
+  margin-left: -50vw;
+  margin-right: -50vw;
 }
 
 .header {
@@ -50,6 +55,8 @@ header {
   align-items: center;
   column-gap: 1.5rem;
   flex-grow: 1;
+  padding-left: var(--body-margin-left);
+  padding-right: var(--body-margin-right);
  }
 
 
