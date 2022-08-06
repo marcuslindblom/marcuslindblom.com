@@ -3,7 +3,6 @@ import resolve from '@rollup/plugin-node-resolve';
 export default {
   input: 'wwwroot/main.js',
   output: {
-    file: 'wwwroot/bundle.js',
     format: 'es',
   },
   plugins: [

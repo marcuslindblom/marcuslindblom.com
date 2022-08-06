@@ -1,5 +1,1 @@
-public record Home
-{
-  public string? Id { get; set; }
-  public string? Heading { get; set; }
-}
+public record Home(string? Heading, List<Post>? Posts);
