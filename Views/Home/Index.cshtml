@@ -5,48 +5,12 @@
 <p>In the past I’ve developed...</p>
 
  <div class="features">
+  @foreach(var post in Model.Posts) {
    <div class="feature">
      <a href="#" class="feature-content">
-       <strong>Some feature</strong>
-       <span>Description of the awesome feature</span>
+       <strong>@post.Title</strong>
+       <span>@post.Text</span>
      </a>
    </div>
-   <div class="feature">
-     <a href="#" class="feature-content">
-       <strong>Some feature</strong>
-       <span>Description of the awesome feature</span>
-     </a>
-   </div>
-   <div class="feature">
-     <a href="#" class="feature-content">
-       <strong>Some feature</strong>
-       <span>Description of the awesome feature</span>
-     </a>
-   </div>
-   <div class="feature">
-     <a href="#" class="feature-content">
-       <strong>Some feature</strong>
-       <span>Description of the awesome feature</span>
-     </a>
-   </div>
-   <div class="feature">
-     <a href="#" class="feature-content">
-       <strong>Some feature</strong>
-       <span>Description of the awesome feature</span>
-     </a>
-   </div>
-   <div class="feature">
-     <a href="#" class="feature-content">
-       <strong>Some feature</strong>
-       <span>Description of the awesome feature</span>
-     </a>
-   </div>
+   }
  </div>
-
-<ul>
-@foreach(var post in Model.Posts) {
-  <li>
-    @post.Title
-  </li>
-}
-</ul>

@@ -1,3 +1,1 @@
-public record Post {
-  public string? Title { get; set; }
-}
+public record Post(string? Title, string? Text);
