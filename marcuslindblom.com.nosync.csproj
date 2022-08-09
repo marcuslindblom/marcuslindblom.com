@@ -22,11 +22,7 @@
 
   <Target Name="Rollup" BeforeTargets="PrepareForPublish">
     <Exec Command="(npx rollup -c -i wwwroot/main.js -o wwwroot/bundle.$(DEPLOYMENT_IDENTIFIER).js)" />
+    <Exec Command="(npx postcss wwwroot/style.css -o wwwroot/bundle.$(DEPLOYMENT_IDENTIFIER).css)"/>
   </Target>
-
-  <ItemGroup>
-    <!-- extends watching group to include *.js files -->
-    <Watch Include="**/bundle.js" Exclude="**/main.js" />
-  </ItemGroup>
 
 </Project>

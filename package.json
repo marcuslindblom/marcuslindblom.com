@@ -4,7 +4,7 @@
   "description": "## Install Strife",
   "main": "index.js",
   "scripts": {
-    "build": "dotnet build && rollup -c -o wwwroot/bundle.$DEPLOYMENT_IDENTIFIER.js",
+    "build": "rollup -c -o wwwroot/bundle.$DEPLOYMENT_IDENTIFIER.js",
     "dev": "rollup -c -o wwwroot/bundle.js -w"
   },
   "repository": {
