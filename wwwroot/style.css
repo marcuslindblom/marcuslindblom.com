@@ -86,8 +86,8 @@ em {
 }
 
 .features {
-  width: 75vw;
-  height: 50vh;
+  /* width: 20vmin; */
+  height: 40vmin;
   display: grid;
   grid-column-gap: 0.5rem;
   grid-row-gap: 0.5rem;
