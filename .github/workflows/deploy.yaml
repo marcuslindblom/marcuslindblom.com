@@ -18,6 +18,7 @@ jobs:
           service-id: ${{ secrets.RENDER_SERVICE_ID}}
 
       - name: Bunny CDN Purge Cache
+        if: success()
         run: |
           curl --request POST \
               --url https://api.bunny.net/pullzone/${{ secrets.BUNNY_ZONE }}/purgeCache \
