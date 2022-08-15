@@ -399,3 +399,4 @@ FodyWeavers.xsd
 
 appsettings.Development.json
 wwwroot/bundle.js
+DOCS.md
