@@ -15,7 +15,7 @@ jobs:
           email: ${{ secrets.RENDER_EMAIL }}
           password: ${{ secrets.RENDER_PASSWORD }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          service-id: ${{ secrects.RENDER_SERVICE_ID}}
+          service-id: ${{ secrets.RENDER_SERVICE_ID}}
 
       - name: Bunny CDN Purge Cache
         run: |
