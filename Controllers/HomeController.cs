@@ -1,18 +1,20 @@
 using Microsoft.AspNetCore.Mvc;
+using Raven.Client.Documents;
 using Strife.Binding;
 
 public class HomeController : Controller
 {
-  public IActionResult Index([FromContentRoute] Home currentPage)
+  private readonly IDocumentStore documentStore;
+
+  public HomeController(IDocumentStore documentStore)
+  {
+    this.documentStore = documentStore;
+  }
+  public async Task<IActionResult> Index([FromContentRoute] Home currentPage)
   {
     var viewModel = new HomeViewModel();
-    viewModel.Posts?.AddRange(new List<Post> {
-      new Post("Some feature", "Description of the awesome feature"),
-      new Post("Some feature", "Description of the awesome feature"),
-      new Post("Some feature", "Description of the awesome feature"),
-      new Post("Some feature", "Description of the awesome feature"),
-      new Post("Some feature", "Description of the awesome feature"),
-      new Post("Some feature", "Description of the awesome feature") });
+    using var session = documentStore.OpenAsyncSession();
+    viewModel.Posts = await session.Query<Post>().Take(6).ToListAsync();
     return View(viewModel);
   }
 }
