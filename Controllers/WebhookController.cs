@@ -23,8 +23,8 @@ public class WebhookController : ControllerBase
   [HttpPost("webmention")]
   public async Task<IActionResult> WebMention([FromBody] WebMentionWebhookModel data)
   {
-    logger.LogInformation("User {UserId} mentioned {PostURL}",
-        data.Post.Author.Name, data.Post.RepostOf);
+    // logger.LogInformation("User {UserId} mentioned {PostURL}",
+    //     data.Post.Author.Name, data.Post.RepostOf);
 
     using var session = this.documentStore.OpenAsyncSession();
     await session.StoreAsync(data.Post, string.Empty);
