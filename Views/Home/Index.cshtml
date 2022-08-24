@@ -10,6 +10,14 @@
      <a href="#" class="feature-content">
        <strong>@post.Title</strong>
        <span>@post.Text</span>
+       <ul>
+          @foreach (var mention in post.WebMentions)
+          {
+            <li>
+              @mention.Post.Author.Name
+            </li>
+          }
+       </ul>
      </a>
    </div>
    }

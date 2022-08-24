@@ -1,9 +1,9 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Raven.Client.Documents;
-
-namespace WebMention;
+using Raven.Client.Documents.Queries;
+using Strife.Repository.Indexes;
+using Wieldy.Core.Models;
 
 [ApiController]
 [Route("[controller]")]
@@ -21,54 +21,16 @@ public class WebhookController : ControllerBase
   public IActionResult Index() => Content("Hello, world");
 
   [HttpPost("webmention")]
-  public async Task<IActionResult> WebMention([FromBody] WebMentionWebhookModel data)
+  public async Task<IActionResult> WebMention([FromBody] WebMention.WebMention data)
   {
-    // logger.LogInformation("User {UserId} mentioned {PostURL}",
-    //     data.Post.Author.Name, data.Post.RepostOf);
+    // logger.LogInformation("User {UserId}",
+    //     data.Post.Author.Name);
 
     using var session = this.documentStore.OpenAsyncSession();
-    await session.StoreAsync(data.Post, string.Empty);
+    var post = await session.Query<Models_ByFullPath.Result, Models_ByFullPath>().Where(m => m.Path == data.Target.AbsolutePath).OfType<Post>().FirstOrDefaultAsync();
+    post.WebMentions?.Add(data);
+    await session.StoreAsync(post);
     await session.SaveChangesAsync();
     return Ok();
   }
-}
-
-public class WebMentionWebhookModel
-{
-
-  public string? Secret { get; set; }
-
-  public Uri? Source { get; set; }
-
-  public Uri? Target { get; set; }
-
-  public Post? Post { get; set; }
-}
-
-public class Author
-{
-
-  public string? Name { get; set; }
-
-  public string? Photo { get; set; }
-
-  public Uri? Url { get; set; }
-}
-
-public class Post
-{
-
-  public string? Type { get; set; }
-
-  public Author? Author { get; set; }
-
-  public Uri? Url { get; set; }
-
-  public DateTime Published { get; set; }
-
-  public string? Name { get; set; }
-  [JsonPropertyName("repost-of")]
-  public Uri? RepostOf { get; set; }
-  [JsonPropertyName("wm-property")]
-  public string? WmProperty { get; set; }
 }
