@@ -17,12 +17,12 @@
   </Target> -->
 
     <ItemGroup>
-    <Content Update="wwwroot/main.js" CopyToPublishDirectory="Never"/>
+    <Content Update="wwwroot/main.js" CopyToPublishDirectory="Never" />
   </ItemGroup>
 
   <Target Name="Rollup" BeforeTargets="PrepareForPublish">
     <Exec Command="(npx rollup -c -i wwwroot/main.js -o wwwroot/bundle.$(DEPLOYMENT_IDENTIFIER).js)" />
-    <Exec Command="(npx postcss wwwroot/style.css -o wwwroot/bundle.$(DEPLOYMENT_IDENTIFIER).css)"/>
+    <Exec Command="(npx postcss wwwroot/style.css -o wwwroot/bundle.$(DEPLOYMENT_IDENTIFIER).css)" />
   </Target>
 
 </Project>
