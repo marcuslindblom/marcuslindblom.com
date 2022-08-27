@@ -11,10 +11,10 @@
        <strong>@post.Title</strong>
        <span>@post.Text</span>
        <ul>
-          @foreach (var mention in post.WebMentions)
+          @foreach (var mention in post.Mentions)
           {
             <li>
-              @mention.Post.Author.Name
+              @mention.Author.Name
             </li>
           }
        </ul>

@@ -1,0 +1,1 @@
+public record Page(string Title, string Slug);
