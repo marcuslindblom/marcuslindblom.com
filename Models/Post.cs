@@ -1,1 +1,1 @@
-public record Post(string? Title, string? Text, List<WebMention.Post> Mentions);
+public record Post(string? Title, string? Description, string Slugs, string? Text, List<WebMention.Post>? Mentions) : Page(Title, Description, Slugs);

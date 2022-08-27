@@ -10,13 +10,15 @@
      <a href="#" class="feature-content">
        <strong>@post.Title</strong>
        <span>@post.Text</span>
+       @if(post?.Mentions != null) {
        <ul style="margin:0;list-style:none;padding:0;display: flex;justify-items: center;">
-        @foreach(var mention in post.Mentions) {
+        @foreach(var mention in post?.Mentions) {
           <li class="avatar">
             <img src="@mention.Author.Photo" alt="" style="width:25px;height:25px; border-radius: 50%;" />
           </li>
         }
        </ul>
+       }
      </a>
    </div>
    }

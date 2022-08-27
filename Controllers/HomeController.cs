@@ -28,7 +28,8 @@ public class HomeController : Controller
     //     post.Mentions.Add(item);
     //   }
     // }
-
+    // var page = new Post(null, null, "/test", null, null);
+    // await session.StoreAsync(page);
     // await session.SaveChangesAsync();
 
     var viewModel = new HomeViewModel();
