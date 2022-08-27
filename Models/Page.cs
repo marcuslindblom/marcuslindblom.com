@@ -1,1 +1,1 @@
-public abstract record Page(string? Title, string? Description, string Slugs);
+public abstract record Page(string? Title, string? Description, string Slug);

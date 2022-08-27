@@ -33,6 +33,8 @@ app.MapStrife();
 
 app.MapHealthChecks("/healthz");
 
+app.MapGet("/feed", () => "Hello World!");
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=home}/{action=index}/{id?}");
