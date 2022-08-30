@@ -7,7 +7,7 @@
  <div class="features">
   @foreach(var post in Model?.Posts) {
    <div class="feature">
-     <a href="@post.Slug" class="feature-content">
+     <a href="@post.NavigationItem?.Path" class="feature-content">
        <strong>@post.Title</strong>
        <span>@post.Text</span>
        @if(post.Mentions is not null) {
