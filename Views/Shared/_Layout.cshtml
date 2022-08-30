@@ -10,7 +10,7 @@
     <link rel=stylesheet href=/style.css>
   </environment>
   <environment names="Staging,Production">
-    <link rel=stylesheet href=/bundle.@(Model.Sha).css>
+    <link rel=stylesheet href=/bundle.@(Default.Sha).css>
   </environment>
 
   <link rel="webmention" href="https://webmention.io/marcuslindblom.com/webmention" />
@@ -38,7 +38,7 @@
     <script type=module src=/bundle.js></script>
   </environment>
   <environment names="Staging,Production">
-    <script type=module src=/bundle.@(Model.Sha).js></script>
+    <script type=module src=/bundle.@(Default.Sha).js></script>
     <script src="https://cdn.usefathom.com/script.js" data-site="YUGAMIMD" defer></script>
   </environment>
 </body>

@@ -1,9 +1,6 @@
-using System.ServiceModel.Syndication;
-using System.Xml;
 using Microsoft.AspNetCore.Mvc;
 using Raven.Client.Documents;
 using Strife.Binding;
-using Strife.Repository.Indexes;
 
 public class HomeController : Controller
 {
@@ -32,10 +29,8 @@ public class HomeController : Controller
     // await session.StoreAsync(page);
     // await session.SaveChangesAsync();
 
-    var viewModel = new HomeViewModel();
+    // var viewModel = new HomeViewModel();
     var posts = await session.Query<Post>().ToListAsync();
-
-    viewModel.Posts = posts;
-    return View(viewModel);
+    return View(new HomeViewModel(null, posts));
   }
 }

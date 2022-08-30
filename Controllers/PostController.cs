@@ -3,5 +3,5 @@ using Strife.Binding;
 
 public class PostController : Controller
 {
-  public IActionResult Index([FromContentRoute] Post currentPage) => View(new HomeViewModel());
+  public IActionResult Index([FromContentRoute] Post currentPage) => View(currentPage);
 }

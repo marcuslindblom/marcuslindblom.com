@@ -19,6 +19,8 @@ builder.Services.AddStrife(options =>
 
 builder.Services.AddHealthChecks();
 
+builder.Services.AddScoped<Layout>();
+
 builder.Services.AddHostedService<TimedHostedService>();
 
 builder.Services.AddControllersWithViews();
