@@ -1,1 +1,32 @@
+@model Post
 <h1>Hello world</h1>
+<h2>Comments, likes & shares (@Model.Mentions?.Count)</h2>
+
+<div class="comments-reactions">
+  <p>
+    @foreach (var like in Model.Mentions.Where(m => m.WmProperty == "like-of"))
+    {
+      <a href="@like.Author.Url">@(like.Author.Name)</a>
+    }
+    liked this
+    </p>
+  </div>
+<div class="comments">
+  @foreach (var comment in Model.Mentions.Where(c => c.WmProperty == "in-reply-to"))
+  {
+    <div class="comment">
+      <img alt="" role="presentation" src="@comment.Author.Photo" width="60" height="60">
+      <div>
+        <div class="commenter">
+          <a href="@comment.Author.Url">
+            <strong>@comment.Author.Name</strong>
+          </a>
+          wrote on
+          <a href="@comment.Url"><span class="comment-date">@comment.Published.GetValueOrDefault().ToString("d MMMM yy")</span></a>:
+        </div>
+        @comment.Content.Text
+        <a class="u-mention" href="@comment.Author.Url"></a>
+      </div>
+    </div>
+  }
+</div>

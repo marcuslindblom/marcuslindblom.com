@@ -148,6 +148,3 @@ em {
 .avatar img {
   border: solid 1px var(--bg);
 }
-.avatar + li img {
-  left: -10px;
-}
