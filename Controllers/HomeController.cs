@@ -31,6 +31,6 @@ public class HomeController : Controller
 
     // var viewModel = new HomeViewModel();
     var posts = await session.Query<Post>().ToListAsync();
-    return View(new HomeViewModel(currentPage.Heading, posts));
+    return View(new HomeViewModel(currentPage.Heading, currentPage.Introduction, posts));
   }
 }
