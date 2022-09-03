@@ -6,7 +6,7 @@
   <p>
     @foreach (var like in Model.Mentions.Where(m => m.WmProperty == "like-of"))
     {
-      <a href="@like.Author.Url">@(like.Author.Name)</a>,
+      <a href="@like.Author.Url">@(like.Author.Name)</a>
     }
     liked this
     </p>
