@@ -4,11 +4,40 @@
 
 <div class="comments-reactions">
   <p>
-    @foreach (var like in Model.Mentions.Where(m => m.WmProperty == "like-of"))
-    {
-      <a href="@like.Author.Url">@(like.Author.Name)</a>
+    @{
+      var likes = Model.Mentions.Where(m => m.WmProperty == "like-of")?.ToList();
+      if(likes != null && likes.Count > 0) {
+        for( int i = 0; i < likes?.Count; i++ )
+        {
+            <a href="@likes[i].Author.Url">@(likes[i].Author.Name)</a>
+            if( i < likes.Count - 2)
+            {
+                <text>,</text>
+            } else if ( i < likes.Count - 1) {
+              <text> and </text>
+            }
+        }
+      }
     }
     liked this
+    </p>
+    <p>
+      @{
+        var reposts = Model.Mentions.Where(m => m.WmProperty == "repost-of")?.ToList();
+        if(reposts != null && reposts.Count > 0) {
+          for( int i = 0; i < reposts?.Count; i++ )
+          {
+              <a href="@reposts[i].Author.Url">@(reposts[i].Author.Name)</a>
+              if( i < reposts.Count - 2)
+              {
+                  <text>,</text>
+              } else if(i < reposts.Count - 1) {
+                <text> and </text>
+              }
+          }
+        }
+    }
+    reposted this
     </p>
   </div>
 <div class="comments">
