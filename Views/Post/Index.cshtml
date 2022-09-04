@@ -1,6 +1,7 @@
 @model Post
-<h1>Hello world</h1>
-<h2>Comments, likes & shares (@Model.Mentions?.Count)</h2>
+
+<div is="str-textarea-cpnt" data-property-name="text">@Html.Raw(Model.Text ?? "")</div>
+<h2>Comments, likes &amp; shares (@Model.Mentions?.Count)</h2>
 
 <div class="comments-reactions">
   <p>
@@ -12,7 +13,7 @@
             <a href="@likes[i].Author.Url">@(likes[i].Author.Name)</a>
             if( i < likes.Count - 2)
             {
-                <text>,</text>
+              <text>,</text>
             } else if ( i < likes.Count - 1) {
               <text> and </text>
             }
@@ -30,7 +31,7 @@
               <a href="@reposts[i].Author.Url">@(reposts[i].Author.Name)</a>
               if( i < reposts.Count - 2)
               {
-                  <text>,</text>
+                <text>,</text>
               } else if(i < reposts.Count - 1) {
                 <text> and </text>
               }
