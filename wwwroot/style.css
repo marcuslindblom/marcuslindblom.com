@@ -176,12 +176,13 @@ strong, em, .comment-date { display: contents;}
 }
 
 :where(.entry) h1 {
-  font-weight: 600;
-    font-size: 48px;
-    line-height: 48px;
-    color: rgb(255, 255, 255);
-    max-width: 522px;
-    margin-bottom: 24px;
+  max-width: 80%;
+  font-weight: 700;
+  letter-spacing: -0.022px;
+  /* text-align: center; */
+  color: rgb(247, 248, 248);
+  font-size: 36px;
+  line-height: 1.3;
 }
 
 :where(.entry) em {
