@@ -1,6 +1,6 @@
 @model Post
 
-<div is="str-textarea-cpnt" data-property-name="text">@Html.Raw(Model.Text ?? "")</div>
+<div class="entry" is="str-textarea-cpnt" data-property-name="text">@Html.Raw(Model.Text ?? "")</div>
 
 @if(@Model.Mentions.Any()) {
   <h2>Comments, likes &amp; shares (@Model.Mentions?.Count)</h2>

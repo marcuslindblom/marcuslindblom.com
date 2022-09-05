@@ -174,3 +174,12 @@ strong, .comment-date { display: contents;}
   min-height: 5em;
   overflow: auto;
 }
+
+:where(.entry) h1 {
+  font-weight: 600;
+    font-size: 48px;
+    line-height: 48px;
+    color: rgb(255, 255, 255);
+    max-width: 522px;
+    margin-bottom: 24px;
+}
