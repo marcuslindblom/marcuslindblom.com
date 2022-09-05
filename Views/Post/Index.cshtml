@@ -1,47 +1,49 @@
 @model Post
 
 <div is="str-textarea-cpnt" data-property-name="text">@Html.Raw(Model.Text ?? "")</div>
-<h2>Comments, likes &amp; shares (@Model.Mentions?.Count)</h2>
 
-<div class="comments-reactions">
-  <p>
-    @{
-      var likes = Model.Mentions.Where(m => m.WmProperty == "like-of")?.ToList();
-      if(likes != null && likes.Count > 0) {
-        for( int i = 0; i < likes?.Count; i++ )
-        {
-            <a href="@likes[i].Author.Url">@(likes[i].Author.Name)</a>
-            if( i < likes.Count - 2)
-            {
-              <text>,</text>
-            } else if ( i < likes.Count - 1) {
-              <text> and </text>
-            }
-        }
-      }
-    }
-    liked this
-    </p>
-    <p>
-      @{
-        var reposts = Model.Mentions.Where(m => m.WmProperty == "repost-of")?.ToList();
-        if(reposts != null && reposts.Count > 0) {
-          for( int i = 0; i < reposts?.Count; i++ )
+@if(@Model.Mentions.Any()) {
+  <h2>Comments, likes &amp; shares (@Model.Mentions?.Count)</h2>
+  <div class="comments-reactions">
+  @{
+    var likes = Model.Mentions.Where(m => m.WmProperty == "like-of")?.ToList();
+    if(likes != null && likes.Count > 0) {
+      <p>
+      @for( int i = 0; i < likes?.Count; i++ )
+      {
+          <a href="@likes[i].Author.Url">@(likes[i].Author.Name)</a>
+          if( i < likes.Count - 2)
           {
-              <a href="@reposts[i].Author.Url">@(reposts[i].Author.Name)</a>
-              if( i < reposts.Count - 2)
-              {
-                <text>,</text>
-              } else if(i < reposts.Count - 1) {
-                <text> and </text>
-              }
+            <text>,</text>
+          } else if ( i < likes.Count - 1) {
+            <text> and </text>
           }
-        }
+      }
+      liked this
+      </p>
     }
-    reposted this
-    </p>
+  }
+
+  @{
+    var reposts = Model.Mentions.Where(m => m.WmProperty == "repost-of")?.ToList();
+    if(reposts != null && reposts.Count > 0) {
+      <p>
+      @for( int i = 0; i < reposts?.Count; i++ )
+      {
+          <a href="@reposts[i].Author.Url">@(reposts[i].Author.Name)</a>
+          if( i < reposts.Count - 2)
+          {
+            <text>,</text>
+          } else if(i < reposts.Count - 1) {
+            <text> and </text>
+          }
+      }
+      reposted this</p>
+    }
+  }
   </div>
-<div class="comments">
+
+  <div class="comments">
   @foreach (var comment in Model.Mentions.Where(c => c.WmProperty == "in-reply-to"))
   {
     <div class="comment">
@@ -59,4 +61,6 @@
       </div>
     </div>
   }
-</div>
+  </div>
+
+}
