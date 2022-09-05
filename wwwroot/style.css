@@ -149,7 +149,7 @@ em {
   border: solid 1px var(--bg);
 }
 
-a {
+:where(.entry, .comments, .comments-reactions) a {
   -webkit-text-fill-color: transparent;
   -webkit-background-clip: text;
   background-image: linear-gradient(89.29deg, rgb(179, 174, 245) 2%, rgb(215, 203, 231) 20%, rgb(229, 200, 200) 31%, rgb(234, 168, 121) 70%);
@@ -163,7 +163,7 @@ a {
   /* max-width: 3.25em; */
 }
 
-strong, em, .comment-date { display: contents;}
+:where(.comments) strong, em, .comment-date { display: contents;}
 
 .comments .comment {
   position: relative;
