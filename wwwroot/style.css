@@ -163,7 +163,7 @@ a {
   /* max-width: 3.25em; */
 }
 
-strong, .comment-date { display: contents;}
+strong, em, .comment-date { display: contents;}
 
 .comments .comment {
   position: relative;
@@ -182,4 +182,9 @@ strong, .comment-date { display: contents;}
     color: rgb(255, 255, 255);
     max-width: 522px;
     margin-bottom: 24px;
+}
+
+:where(.entry) em {
+  font-family: var(--font-family-standard);
+  display: contents;
 }
