@@ -189,3 +189,10 @@ em {
   font-family: var(--font-family-standard);
   display: contents;
 }
+
+iframe {
+  height: auto;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
+}
