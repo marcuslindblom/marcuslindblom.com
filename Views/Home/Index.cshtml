@@ -3,22 +3,48 @@
 <h1 is="str-h1-cpnt" data-property-name="heading">@Model.Heading</h1>
 <div is="str-textarea-cpnt" data-property-name="introduction">@Html.Raw(Model.Introduction ?? "")</div>
 
- <div class="features">
-  @foreach(var post in Model?.Posts) {
-   <div class="feature">
-     <a href="@post.NavigationItem?.Path" class="feature-content">
-       <strong>@post.Title</strong>
-       <span>@post.Text</span>
+
+<div class="stack stack--horizontal">
+  <div>
+    <h2>Building</h2>
+    <div>
+      <h3>Strife</h3>
+      <p>Lorem ipsum dolar sit amet</p>
+    </div>
+  </div>
+  <div>
+    <h2>Projects</h2>
+    <div>
+      <h3><a href="https://github.com/marcuslindblom/security-headers">Security headers</a></h3>
+      <p>Analyse your HTTP response headers</p>
+    </div>
+        <div>
+      <h3><a href="https://github.com/marcuslindblom/yellow-lab-tools">Yellow Lab Tools</a></h3>
+      <p>Analyzes a webpage and detects performance or front-end code quality issues</p>
+    </div>
+        <div>
+      <h3><a href="https://github.com/marcuslindblom/w3cvalidator">w3cvalidator</a></h3>
+      <p>Quickly and easily check document-conformance to catch unintended mistakes</p>
+    </div>
+  </div>
+  <div>
+    <h2>Writing</h2>
+     @foreach(var post in Model?.Posts) {
+    <div>
+       <h3>@post.Title</h3>
        @if(post.Mentions is not null) {
         <ul style="margin:0;list-style:none;padding:0;display:flex;">
           @foreach(var mention in post.Mentions) {
           <li class="avatar">
-            <img src="@mention.Author.Photo" alt="" style="width:25px;height:25px; border-radius: 50%;" />
+            <img src="@mention.Author.Photo" alt="" style="width:25px;height:25px; border-radius: 50%;vertical-align: middle;" />
           </li>
           }
         </ul>
        }
-     </a>
    </div>
    }
- </div>
+  </div>
+</div>
+
+
+
