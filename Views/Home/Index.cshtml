@@ -33,11 +33,14 @@
     <div>
        <h3>@post.Title</h3>
        @if(post.Mentions is not null) {
-        <ul style="margin:0;list-style:none;padding:0;display:flex;">
-          @foreach(var mention in post.Mentions) {
+        <ul style="margin:0;list-style:none;padding:0;display:flex;align-items: center;">
+          @foreach(var mention in post.Mentions.Take(3)) {
           <li class="avatar">
             <img src="@mention.Author.Photo" alt="" style="width:25px;height:25px; border-radius: 50%;vertical-align: middle;" />
           </li>
+          }
+          @if(post.Mentions.Count > 3) {
+            <li style="font-size: 11px;width: 25px;height: 25px;border-radius: 50%;display: flex;justify-content: center;align-items: center;">+@(post.Mentions.Count - 3)</li>
           }
         </ul>
        }

@@ -1,1 +1,1 @@
-public record Home(string? Heading, string? Introduction, List<Post>? Posts);
+public record Home(string Id, string? Heading, string? Introduction, List<Post>? Posts);
