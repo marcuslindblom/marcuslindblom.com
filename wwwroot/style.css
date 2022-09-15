@@ -6,7 +6,7 @@
   --bg: rgb(11, 11, 15);
   --fg: hsl(0 0% 62.8%);
   --font-serif: 'Newsreader', 'Signifier', 'Times', serif;
-  --type-em: 400 italic calc(1em + 1px) / normal var(--font-serif);
+  --type-em: 400 italic 1.8rem / normal var(--font-serif);
   --colors-lowContrast: black;
   --body-margin-left: max(24px, env(safe-area-inset-left));
   --body-margin-right: max(24px, env(safe-area-inset-right));
