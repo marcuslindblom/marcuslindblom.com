@@ -117,8 +117,6 @@ a:hover {
   /* max-width: 3.25em; */
 }
 
-:where(.comments) strong, em, .comment-date { display: contents;}
-
 .comments .comment {
   position: relative;
   padding-left: 5em;
@@ -141,7 +139,6 @@ a:hover {
 
 :where(.entry) em {
   font-family: var(--font-family-standard);
-  display: contents;
 }
 
 iframe {
@@ -163,4 +160,15 @@ iframe {
 :where(.stack--horizontal div) {
   justify-content: space-evenly;
   flex: 1;
+}
+
+:where(.stack) h2 {
+  color: var(--fg);
+  font-size: 1.2rem;
+  font-weight: 300;
+  margin: 0;
+}
+
+:where(.stack) h3 {
+  margin: 0;
 }
