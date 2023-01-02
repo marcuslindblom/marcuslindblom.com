@@ -26,7 +26,7 @@ public class HomeController : Controller
     var results = await (from result in session.Query<Content_ByUrl.Result>("Content/ByUrl")
                         where result.Collection == "Posts"
                         let content = RavenQuery.Load<Post>((string)RavenQuery.Metadata(result)["@id"])
-                         select new
+                         select new PostModel
                          {
                            Title = content.Title,
                            Mentions = content.Mentions,
@@ -36,4 +36,6 @@ public class HomeController : Controller
     return View(new HomeViewModel(currentPage.Heading, currentPage.Introduction, results));
   }
 }
+
+public record PostModel(string Title, List<WebMention.Post> Mentions, string Url);
 
