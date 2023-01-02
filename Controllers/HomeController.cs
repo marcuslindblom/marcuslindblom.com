@@ -26,12 +26,8 @@ public class HomeController : Controller
     var results = await (from result in session.Query<Content_ByUrl.Result>("Content/ByUrl")
                         where result.Collection == "Posts"
                         let content = RavenQuery.Load<Post>((string)RavenQuery.Metadata(result)["@id"])
-                         select new PostModel
-                         {
-                           Title = content.Title,
-                           Mentions = content.Mentions,
-                           Url = result.Url
-                         }).ToListAsync();
+                         select new PostModel(content.Title, content.Mentions, result.Url)
+                        ).ToListAsync();
 
     return View(new HomeViewModel(currentPage.Heading, currentPage.Introduction, results));
   }
