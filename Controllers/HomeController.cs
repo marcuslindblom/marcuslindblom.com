@@ -28,9 +28,9 @@ public class HomeController : Controller
                            Title = content.Title,
                            Mentions = content.Mentions,
                            Url = result.Url
-                         })
+                         }).ToListAsync();
 
-    return View(new HomeViewModel(currentPage.Heading, currentPage.Introduction, posts));
+    return View(new HomeViewModel(currentPage.Heading, currentPage.Introduction, results));
   }
 }
 
