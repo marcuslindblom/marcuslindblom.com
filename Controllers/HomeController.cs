@@ -30,7 +30,7 @@ public class HomeController : Controller
                            Title = content.Title,
                            Mentions = content.Mentions,
                            Url = result.Url
-                         }).As<Post>().ToListAsync();
+                         }).ToListAsync();
 
     return View(new HomeViewModel(currentPage.Heading, currentPage.Introduction, results));
   }
