@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Raven.Client.Documents;
+using Raven.Client.Documents.Indexes;
+using Raven.Client.Documents.Queries;
 using Strife.Binding;
 
 public class HomeController : Controller
@@ -20,7 +22,7 @@ public class HomeController : Controller
 
     //await session.SaveChangesAsync();
 
-    var results = (from result in session.Query<Content_ByUrl.Result, Content_ByUrl>()
+    var results = await (from result in session.Query<Content_ByUrl.Result, Content_ByUrl>()
                         where result.Collection == "Posts"
                         let content = RavenQuery.Load<Post>((string)RavenQuery.Metadata(result)["@id"])
                          select new
