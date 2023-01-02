@@ -28,6 +28,7 @@ public class HomeController : Controller
                         let content = RavenQuery.Load<Post>((string)RavenQuery.Metadata(result)["@id"])
                         select new PostModel(content.Title, content.Mentions, result.Url)
                         ).ToListAsync();
+                        
 
     return View(new HomeViewModel(currentPage.Heading, currentPage.Introduction, results));
   }
