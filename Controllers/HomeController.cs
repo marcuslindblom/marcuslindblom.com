@@ -23,7 +23,7 @@ public class HomeController : Controller
 
     //await session.SaveChangesAsync();
 
-    var results = await (from result in session.Query<Content_ByUrl.Result, Content_ByUrl>()
+    var results = await (from result in session.Query<Content_ByUrl.Result>("Content/ByUrl")
                         where result.Collection == "Posts"
                         let content = RavenQuery.Load<Post>((string)RavenQuery.Metadata(result)["@id"])
                          select new
