@@ -3,6 +3,7 @@ using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Queries;
 using Strife.Binding;
+using Strife.Repository.Indexes;
 
 public class HomeController : Controller
 {
