@@ -3,5 +3,5 @@ using Strife.Binding;
 
 public class JournalController : Controller
 {
-  public IActionResult Index([FromContentRoute] Journal currentPage) => View(currentPage);
+  public IActionResult Index([FromContentRoute] Journal content) => View(content);
 }

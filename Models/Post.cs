@@ -1,1 +1,2 @@
-public record Post(string Id, string? Title, string? Description, string? Text, List<WebMention.Post>? Mentions) : Page();
+using Strife;
+public record Post(string Id, string? Text, List<WebMention.Post>? Mentions) : Content;

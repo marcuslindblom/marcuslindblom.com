@@ -5,7 +5,7 @@
     Courier, monospace;
   --bg: rgb(11, 11, 15);
   --fg: hsl(0 0% 62.8%);
-  --font-serif: 'Newsreader', 'Signifier', 'Times', serif;
+  --font-serif: ui-serif, 'Times', serif;
   --type-em: 400 italic 1.8rem / normal var(--font-serif);
   --colors-lowContrast: black;
   --body-margin-left: max(24px, env(safe-area-inset-left));
@@ -78,6 +78,7 @@ footer {
 
 em {
   font: var(--type-em);
+  font-feature-settings: "kern","frac","kern","ss02"
 }
 
 ::selection {
@@ -139,6 +140,8 @@ a:hover {
 
 :where(.entry) em {
   font-family: var(--font-family-standard);
+  letter-spacing: -0.05px;
+  font-feature-settings: ;
 }
 
 iframe {

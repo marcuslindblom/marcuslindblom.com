@@ -1,1 +1,0 @@
-public record Article(string? Content) : Page();

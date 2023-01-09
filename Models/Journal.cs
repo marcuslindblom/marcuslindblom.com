@@ -1,1 +1,3 @@
-public record Journal(string? Title) : Page();
+using Strife;
+
+public record Journal : Content;
