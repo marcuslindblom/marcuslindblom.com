@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Raven.Client.Documents;
+using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Queries;
 using Strife.Binding;
 using Strife.Repository.Indexes;
@@ -15,19 +16,16 @@ public class HomeController : Controller
   public async Task<IActionResult> Index([FromContentRoute] Home content)
   {
     using var session = documentStore.OpenAsyncSession();
-    var results = await (from result in session.Query<Content_ByUrl.Result>("Content/ByUrl")
-                where result.Collection == "Posts"
-                // let post = RavenQuery.Load<Post>(result.Id)
-                let post = RavenQuery.Load<Post>((string)RavenQuery.Metadata(result)["@id"])
-                select new PostViewModel()
-                {
-                  DisplayName = post.DisplayName,
-                  Mentions = post.Mentions,
-                  Url = result.Url,
-                }).ToListAsync();
 
-    Console.WriteLine(results[0].DisplayName);
-    // var results = await session.Query<Content_ByUrl.Result>("Content/ByUrl").Where(x => x.Collection == "Posts").As<PostViewModel>().ToListAsync();
+    var results = await (from result in session.Query<Content_ByUrl.Result, Content_ByUrl>()
+                        //where result.Collection == "Posts"
+                        // let post = RavenQuery.Load<Post>((string)RavenQuery.Metadata(result)["@id"])
+                        select new PostViewModel {
+                          Title = "Title",
+                          Url = "/"
+                        }
+                        ).ToListAsync();
+
 
     return View(new HomeViewModel(content.Heading, content.Introduction, results));
   }
@@ -35,7 +33,7 @@ public class HomeController : Controller
 
 public class PostViewModel
 {
-  public string? DisplayName { get; set; }
+  public string? Title { get; set; }
   public string? Url { get; set; }
 
   public List<WebMention.Post>? Mentions { get; set; } = new List<WebMention.Post>();

@@ -51,7 +51,7 @@
   @RenderBody()
   </main>
   <footer>
-    <p>This site doesn't track 🎉 🚀</p>
+    <p>This site doesn't track 🎉</p>
   </footer>
   <environment names="Development">
     <script type=module src=/bundle.js></script>
@@ -59,6 +59,7 @@
   <environment names="Staging,Production">
     <script type=module src=/bundle.@(Default.Sha).js></script>
     <script src="https://cdn.usefathom.com/script.js" data-site="YUGAMIMD" defer></script>
+    <script async defer src="https://scripts.withcabin.com/hello.js"></script>
   </environment>
 </body>
 
