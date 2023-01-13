@@ -18,11 +18,11 @@ public class HomeController : Controller
     using var session = documentStore.OpenAsyncSession();
 
     var results = await (from result in session.Query<Content_ByUrl.Result, Content_ByUrl>()
-                        //where result.Collection == "Posts"
-                        // let post = RavenQuery.Load<Post>((string)RavenQuery.Metadata(result)["@id"])
+                        where result.Collection == "Posts"
+                        let post = RavenQuery.Load<Post>(result.Id)
                         select new PostViewModel {
-                          Title = "Title",
-                          Url = "/"
+                          Title = post.DisplayName,
+                          Url = result.Url
                         }
                         ).ToListAsync();
 
