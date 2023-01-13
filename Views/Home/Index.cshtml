@@ -30,7 +30,7 @@
     <h2>Writing</h2>
      @foreach(var post in Model?.Posts) {
     <div>
-       <a href="@post.Url"><h3>@post.Title</h3></a>
+       <a href="@post.Url"><h3>@post.Title</h3>...</a>
        @if(post.Mentions is not null) {
         <ul style="margin:0;list-style:none;padding:0;display:flex;align-items: center;">
           @foreach(var mention in post.Mentions.Take(3)) {
@@ -43,11 +43,7 @@
           }
         </ul>
        }
-       <div class="h-entry">
-        <p class="e-content">Two naked tags walk into a bar. The bartender exclaims, "Hey, you can't come in here without microformats, this is a classy joint!"</p>
-        <a class="u-bridgy-fed" href="https://fed.brid.gy/"></a>
-<a href="https://brid.gy/publish/twitter"></a>
-      </div>
+       
    </div>
    }
   </div>
