@@ -34,25 +34,25 @@ public class TimedHostedService : IHostedService, IDisposable
     var client = new HttpClient();
 
     var root = await client.GetFromJsonAsync<WebMention.Root>("https://webmention.io/api/mentions.jf2?domain=marcuslindblom.com&token=ufeSgcy4byQ2weFs8MWs1Q");
+    try {
 
-    using var session = _documentStore.OpenAsyncSession();
+      using var session = _documentStore.OpenAsyncSession();
 
-    foreach (var item in root?.Children)
-    {
-      try {
-        Console.WriteLine(item.WmTarget.AbsolutePath);
-        var post = await session.Query<Content_ByUrl.Result, Content_ByUrl>().Where(m => m.Url == item.WmTarget.AbsolutePath).OfType<Post>().FirstOrDefaultAsync();
-        if(post != null && !post.Mentions.Any(m => m.WmId == item.WmId)) {
-          post.Mentions.Add(item);
-        }
-      } catch {
-        Console.WriteLine("Err...");
+      foreach (var item in root?.Children)
+      {
+          Console.WriteLine(item.WmTarget.AbsolutePath);
+          var post = await session.Query<Content_ByUrl.Result, Content_ByUrl>().Where(m => m.Url == item.WmTarget.AbsolutePath).OfType<Post>().FirstOrDefaultAsync();
+          if(post != null && !post.Mentions.Any(m => m.WmId == item.WmId)) {
+            post.Mentions.Add(item);
+          }
       }
+
+      await session.SaveChangesAsync();
+
+      _logger.LogInformation("Saved {COUNT} mentions", root?.Children.Count);
+    } catch {
+      Console.WriteLine("Err...");
     }
-
-    await session.SaveChangesAsync();
-
-    _logger.LogInformation("Saved {COUNT} mentions", root?.Children.Count);
   }
 
   public Task StopAsync(CancellationToken stoppingToken)
