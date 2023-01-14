@@ -4,7 +4,7 @@
 }
 
 <div class="entry h-entry">
-  <a href="@Default.CanonicalUrl" class="u-url">
+  <a href="@ViewContext.HttpContext.Request.Path" class="u-url">
     <time class="dt-published" datetime="@Model.PublishedDate.?Value.ToString("yyyy-MM-dd")">@Model.PublishedDate.?Value.ToString("MM d, yyyy")</time>
   </a>
   <div class="p-summary e-content" is="str-textarea-cpnt" data-property-name="text">
