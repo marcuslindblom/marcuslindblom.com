@@ -42,17 +42,28 @@ public class TimedHostedService : IHostedService, IDisposable
 
       foreach (var item in root?.Children)
       {
-        Console.WriteLine(item.WmTarget.AbsolutePath);
+        try
+        {
+                  Console.WriteLine(item.WmTarget.AbsolutePath);
         // var post = await session.Query<Content_ByUrl.Result, Content_ByUrl>().Where(m => m.Url == item.WmTarget.AbsolutePath).OfType<Post>().FirstOrDefaultAsync();
         var post = await (from result in session.Query<Content_ByUrl.Result, Content_ByUrl>()
                           where result.Url == item.WmTarget.AbsolutePath
                           select RavenQuery.Load<Post>(result.Id)
                   ).SingleOrDefaultAsync();
 
+        Console.WriteLine(post.Id);
+
         if (post != null && !post.Mentions.Any(m => m.WmId == item.WmId))
         {
           post.Mentions.Add(item);
         }
+        }
+        catch (System.Exception)
+        {
+          continue;
+          // throw;
+        }
+
       }
 
       await session.SaveChangesAsync();
