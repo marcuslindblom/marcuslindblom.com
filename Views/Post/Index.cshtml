@@ -1,7 +1,7 @@
 @model Post
 
 <div class="entry" is="str-textarea-cpnt" data-property-name="text">@Html.Raw(Model.Text ?? "")</div>
-<a href="https://brid.gy/publish/twitter"></a>
+<a href="https://brid.gy/publish/mastodon"></a>
 @if(@Model.Mentions != null && Model.Mentions.Any()) {
   <h2>Comments, likes &amp; shares (@Model.Mentions?.Count)</h2>
   <div class="comments-reactions">
