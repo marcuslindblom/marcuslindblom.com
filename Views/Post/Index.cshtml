@@ -3,7 +3,18 @@
   Default.CanonicalUrl = "https://marcuslindblom.com" + ViewContext.HttpContext.Request.Path;
 }
 
-<div class="entry" is="str-textarea-cpnt" data-property-name="text">@Html.Raw(Model.Text ?? "")<a href="@Default.CanonicalUrl" class="u-url"></a></div>
+<div class="entry" is="str-textarea-cpnt" data-property-name="text">
+  <a href="@Default.CanonicalUrl" class="u-url">
+    <time class="dt-published" datetime="@Model.PublishedDate.Value.ToString("yyyy-MM-dd")">@Model.PublishedDate.Value.ToString("MM d, yyyy")</time>
+  </a>
+  <div>
+    @Html.Raw(Model.Text ?? "")
+  </div>
+  <div class="u-author h-card">
+      <img src="https://webmention.io/avatar/avatars.githubusercontent.com/cf2332a13d1af2a0a3753397cedac726884328b60756206d5c3705f1405147c1.png" class="u-photo" width="60">
+      <a href="https://marcuslindblom.com" class="u-url p-name">Marcus Lindblom</a>
+    </div>
+</div>
 <a href="https://brid.gy/publish/mastodon"></a>
 @if(@Model.Mentions != null && Model.Mentions.Any()) {
   <h2>Comments, likes &amp; shares (@Model.Mentions?.Count)</h2>
