@@ -1,4 +1,5 @@
 using Raven.Client.Documents;
+using Raven.Client.Documents.Queries;
 using Strife.Repository.Indexes;
 
 public class TimedHostedService : IHostedService, IDisposable
@@ -34,23 +35,32 @@ public class TimedHostedService : IHostedService, IDisposable
     var client = new HttpClient();
 
     var root = await client.GetFromJsonAsync<WebMention.Root>("https://webmention.io/api/mentions.jf2?domain=marcuslindblom.com&token=ufeSgcy4byQ2weFs8MWs1Q");
-    try {
+    try
+    {
 
       using var session = _documentStore.OpenAsyncSession();
 
       foreach (var item in root?.Children)
       {
-          Console.WriteLine(item.WmTarget.AbsolutePath);
-          var post = await session.Query<Content_ByUrl.Result, Content_ByUrl>().Where(m => m.Url == item.WmTarget.AbsolutePath).OfType<Post>().FirstOrDefaultAsync();
-          if(post != null && !post.Mentions.Any(m => m.WmId == item.WmId)) {
-            post.Mentions.Add(item);
-          }
+        Console.WriteLine(item.WmTarget.AbsolutePath);
+        // var post = await session.Query<Content_ByUrl.Result, Content_ByUrl>().Where(m => m.Url == item.WmTarget.AbsolutePath).OfType<Post>().FirstOrDefaultAsync();
+        var post = await (from result in session.Query<Content_ByUrl.Result, Content_ByUrl>()
+                          where result.Url == item.WmTarget.AbsolutePath
+                          select RavenQuery.Load<Post>(result.Id)
+                  ).SingleOrDefaultAsync();
+
+        if (post != null && !post.Mentions.Any(m => m.WmId == item.WmId))
+        {
+          post.Mentions.Add(item);
+        }
       }
 
       await session.SaveChangesAsync();
 
       _logger.LogInformation("Saved {COUNT} mentions", root?.Children.Count);
-    } catch {
+    }
+    catch
+    {
       Console.WriteLine("Err...");
     }
   }
