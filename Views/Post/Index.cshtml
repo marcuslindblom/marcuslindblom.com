@@ -3,7 +3,7 @@
   Default.CanonicalUrl = "https://marcuslindblom.com" + ViewContext.HttpContext.Request.Path;
 }
 
-<div class="entry h-entry e-content" is="str-textarea-cpnt" data-property-name="text">@Html.Raw(Model.Text ?? "")</div>
+<div class="entry h-entry e-content" is="str-textarea-cpnt" data-property-name="text">@Html.Raw(Model.Text ?? "")<a href="@Default.CanonicalUrl"></a></div>
 <a href="https://brid.gy/publish/mastodon"></a>
 @if(@Model.Mentions != null && Model.Mentions.Any()) {
   <h2>Comments, likes &amp; shares (@Model.Mentions?.Count)</h2>
