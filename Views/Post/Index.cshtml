@@ -3,7 +3,7 @@
   Default.CanonicalUrl = "https://marcuslindblom.com" + ViewContext.HttpContext.Request.Path;
 }
 
-<div class="entry" is="str-textarea-cpnt" data-property-name="text">
+<div class="entry e-content" is="str-textarea-cpnt" data-property-name="text">
   <a href="@Default.CanonicalUrl" class="u-url">
     <time class="dt-published" datetime="@Model.PublishedDate.Value.ToString("yyyy-MM-dd")">@Model.PublishedDate.Value.ToString("MM d, yyyy")</time>
   </a>
