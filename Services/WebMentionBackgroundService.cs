@@ -39,10 +39,14 @@ public class TimedHostedService : IHostedService, IDisposable
 
     foreach (var item in root?.Children)
     {
-      Console.WriteLine(item.WmTarget.AbsolutePath);
-      var post = await session.Query<Content_ByUrl.Result, Content_ByUrl>().Where(m => m.Url == item.WmTarget.AbsolutePath).OfType<Post>().FirstOrDefaultAsync();
-      if(post != null && !post.Mentions.Any(m => m.WmId == item.WmId)) {
-        post.Mentions.Add(item);
+      try {
+        Console.WriteLine(item.WmTarget.AbsolutePath);
+        var post = await session.Query<Content_ByUrl.Result, Content_ByUrl>().Where(m => m.Url == item.WmTarget.AbsolutePath).OfType<Post>().FirstOrDefaultAsync();
+        if(post != null && !post.Mentions.Any(m => m.WmId == item.WmId)) {
+          post.Mentions.Add(item);
+        }
+      } catch {
+        Console.WriteLine("Err...");
       }
     }
 
