@@ -5,9 +5,9 @@
 
 <div class="entry h-entry">
   <a href="@Default.CanonicalUrl" class="u-url">
-    <time class="dt-published" datetime="@Model.PublishedDate.Value.ToString("yyyy-MM-dd")">@Model.PublishedDate.Value.ToString("MM d, yyyy")</time>
+    <time class="dt-published" datetime="@Model.PublishedDate.?Value.ToString("yyyy-MM-dd")">@Model.PublishedDate.?Value.ToString("MM d, yyyy")</time>
   </a>
-  <div class="e-content" is="str-textarea-cpnt" data-property-name="text">
+  <div class="p-summary e-content" is="str-textarea-cpnt" data-property-name="text">
     @Html.Raw(Model.Text ?? "")
   </div>
   <a href="https://brid.gy/publish/mastodon"></a>
