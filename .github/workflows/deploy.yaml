@@ -4,10 +4,9 @@ jobs:
   deploy:
     # only runs this job on successful deploy
     if: github.event.deployment_status.state == 'success'
+    environment: "Production – marcuslindblom.com"
     runs-on: ubuntu-20.04
     steps:
-      - name: 'log'
-        run: echo "$GITHUB_CONTEXT"
       - name: Bunny CDN Purge Cache
         run: |
           curl --request POST \
