@@ -6,6 +6,8 @@ jobs:
     if: github.event.deployment_status.state == 'success'
     runs-on: ubuntu-20.04
     steps:
+      - name: 'log'
+        run: echo "$GITHUB_CONTEXT"
       - name: Bunny CDN Purge Cache
         run: |
           curl --request POST \
