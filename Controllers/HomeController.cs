@@ -21,7 +21,8 @@ public class HomeController : Controller
                          {
                            Title = post.DisplayName,
                            Summary = post.Summary,
-                           Url = result.Url
+                           Url = result.Url,
+                           Mentions = post.Mentions
                          }
                         ).ToListAsync();
 
