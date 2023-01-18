@@ -7,7 +7,7 @@
   <div>
     <h2>Building</h2>
     <div>
-      <h3>Strife</h3>
+      <h3><a href="https://strife.app">Strife</a></h3>
       <p>Headless CMS without compromise</p>
     </div>
   </div>
@@ -30,7 +30,8 @@
     <h2>Writing</h2>
      @foreach(var post in Model?.Posts) {
     <div>
-       <a href="@post.Url"><h3>@post.Title</h3>...</a>
+       <a href="@post.Url"><h3>@post.Title</h3></a>
+       <p>@post.Summary</p>
        @if(post.Mentions is not null) {
         <ul style="margin:0;list-style:none;padding:0;display:flex;align-items: center;">
           @foreach(var mention in post.Mentions.Take(3)) {
@@ -43,7 +44,7 @@
           }
         </ul>
        }
-       
+
    </div>
    }
   </div>

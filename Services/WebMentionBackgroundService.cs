@@ -35,33 +35,40 @@ public class TimedHostedService : IHostedService, IDisposable
     var client = new HttpClient();
 
     var root = await client.GetFromJsonAsync<WebMention.Root>("https://webmention.io/api/mentions.jf2?domain=marcuslindblom.com&token=ufeSgcy4byQ2weFs8MWs1Q");
+
     try
     {
 
       using var session = _documentStore.OpenAsyncSession();
 
+      // var results = await (from result in session.Query<Content_ByUrl.Result, Content_ByUrl>()
+      //                      where result.Collection == "Posts"
+      //                      select new PostViewModel
+      //                      {
+      //                        Title = post.DisplayName,
+      //                        Url = result.Url
+      //                      }
+      //   ).ToListAsync();
+
       foreach (var item in root?.Children)
       {
-        try
-        {
-                  Console.WriteLine(item.WmTarget.AbsolutePath);
-        // var post = await session.Query<Content_ByUrl.Result, Content_ByUrl>().Where(m => m.Url == item.WmTarget.AbsolutePath).OfType<Post>().FirstOrDefaultAsync();
-        var post = await (from result in session.Query<Content_ByUrl.Result, Content_ByUrl>()
-                          where result.Url == item.WmTarget.AbsolutePath
-                          select RavenQuery.Load<Post>(result.Id)
-                  ).SingleOrDefaultAsync();
 
-        Console.WriteLine(post.Id);
+        if(string.IsNullOrEmpty(item.WmTarget.AbsolutePath) || item.WmTarget.AbsolutePath == "/") {
+          continue;
+        }
+
+        Console.WriteLine(item.WmTarget.AbsolutePath);
+
+        var post = await session.Query<Content_ByUrl.Result, Content_ByUrl>().Where(m => m.Url == item.WmTarget.AbsolutePath).OfType<Post>().FirstOrDefaultAsync();
+
+        if(post == null) {
+          continue;
+        }
 
         if (post != null && !post.Mentions.Any(m => m.WmId == item.WmId))
         {
+          Console.WriteLine("Adding mention", post.Id);
           post.Mentions.Add(item);
-        }
-        }
-        catch (System.Exception)
-        {
-          continue;
-          // throw;
         }
 
       }
@@ -70,9 +77,9 @@ public class TimedHostedService : IHostedService, IDisposable
 
       _logger.LogInformation("Saved {COUNT} mentions", root?.Children.Count);
     }
-    catch
+    catch (Exception ex)
     {
-      Console.WriteLine("Err...");
+      Console.WriteLine(ex.StackTrace);
     }
   }
 
