@@ -16,7 +16,7 @@ public class HomeController : Controller
 
     var results = await (from result in session.Query<Content_ByUrl.Result, Content_ByUrl>()
                          where result.Collection == "Posts"
-                         let post = RavenQuery.Load<Post>(result.Id)
+                         let post = RavenQuery.Load<Post>((string)RavenQuery.Metadata(result)["@id"])
                          select new PostViewModel
                          {
                            Title = post.DisplayName,
