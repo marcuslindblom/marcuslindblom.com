@@ -1,24 +1,12 @@
-name: Render
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+name: ci
+on: [deployment_status]
 jobs:
   deploy:
-    name: Wait for Deploy
-    runs-on: ubuntu-18.04
+    # only runs this job on successful deploy
+    if: github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-20.04
     steps:
-      - name: Wait for Render Deployment
-        uses: bounceapp/render-action@0.3.0
-        with:
-          email: ${{ secrets.RENDER_EMAIL }}
-          password: ${{ secrets.RENDER_PASSWORD }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          service-id: ${{ secrets.RENDER_SERVICE_ID}}
-
       - name: Bunny CDN Purge Cache
-        if: success()
         run: |
           curl --request POST \
               --url https://api.bunny.net/pullzone/${{ secrets.BUNNY_ZONE }}/purgeCache \
