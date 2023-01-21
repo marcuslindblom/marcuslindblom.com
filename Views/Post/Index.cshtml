@@ -18,7 +18,7 @@
   <h2>Comments, likes &amp; shares (@Model.Mentions?.Count)</h2>
   <div class="comments-reactions">
   @{
-    var likes = Model.Mentions.Where(m => m.WmProperty == "like-of")?.ToList();
+    var likes = Model.Mentions.Where(m => m.WmProperty == "like-of")?.OrderBy(m => m.Published).ToList();
     if(likes != null && likes.Count > 0) {
       <p>
       @for( int i = 0; i < likes?.Count; i++ )
@@ -37,7 +37,7 @@
   }
 
   @{
-    var reposts = Model.Mentions.Where(m => m.WmProperty == "repost-of")?.ToList();
+    var reposts = Model.Mentions.Where(m => m.WmProperty == "repost-of")?.OrderBy(m => m.Published).ToList();
     if(reposts != null && reposts.Count > 0) {
       <p>
       @for( int i = 0; i < reposts?.Count; i++ )
@@ -56,7 +56,7 @@
   </div>
 
   <div class="comments">
-  @foreach (var comment in Model.Mentions.Where(c => c.WmProperty == "in-reply-to"))
+  @foreach (var comment in Model.Mentions.Where(c => c.WmProperty == "in-reply-to").OrderBy(m => m.Published))
   {
     <div class="comment">
       <img alt="" role="presentation" src="@comment.Author.Photo" width="60" height="60">
