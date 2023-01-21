@@ -41,23 +41,12 @@ public class TimedHostedService : IHostedService, IDisposable
 
       using var session = _documentStore.OpenAsyncSession();
 
-      // var results = await (from result in session.Query<Content_ByUrl.Result, Content_ByUrl>()
-      //                      where result.Collection == "Posts"
-      //                      select new PostViewModel
-      //                      {
-      //                        Title = post.DisplayName,
-      //                        Url = result.Url
-      //                      }
-      //   ).ToListAsync();
-
       foreach (var item in root?.Children)
       {
 
         if(string.IsNullOrEmpty(item.WmTarget.AbsolutePath) || item.WmTarget.AbsolutePath == "/") {
           continue;
         }
-
-        Console.WriteLine(item.WmTarget.AbsolutePath);
 
         var post = await session.Query<Content_ByUrl.Result, Content_ByUrl>().Where(m => m.Url == item.WmTarget.AbsolutePath).OfType<Post>().FirstOrDefaultAsync();
 
