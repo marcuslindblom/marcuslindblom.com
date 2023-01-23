@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Raven.Client.Documents;
-using Raven.Client.Documents.Queries;
 using Strife.Binding;
 using Strife.Repository.Indexes;
 
@@ -14,28 +13,46 @@ public class HomeController : Controller
   {
     using var session = documentStore.OpenAsyncSession();
 
-    var results = await (from result in session.Query<Content_ByUrl.Result, Content_ByUrl>()
-                         where result.Collection == "Posts"
-                         let post = RavenQuery.Load<Post>((string)RavenQuery.Metadata(result)["@id"])
-                         select new PostViewModel
-                         {
-                           Title = post.DisplayName,
-                           Summary = post.Summary,
-                           Url = result.Url,
-                           Mentions = post.Mentions
-                         }
-                        ).ToListAsync();
+    var results = await session.Query<Post>()
+                        .Where(x => x.PublishedDate.Value < DateTime.UtcNow)
+                        .OrderByDescending(x => x.CreatedAt)
+                        .ToListAsync();
+
+    // var results = await (from result in session.Query<Post>()
+    //                     orderby result.CreatedAt descending
+    //                      select result).ToListAsync();
+
+    // var results = await (from result in session.Query<Content_ByUrl.Result, Content_ByUrl>()
+    //                      where result.Collection == "Posts"
+    //                      let post = RavenQuery.Load<Post>((string)RavenQuery.Metadata(result)["@id"])
+    //                      select new PostViewModel
+    //                      {
+    //                         Id = post.Id,
+    //                        Title = post.DisplayName,
+    //                        Summary = post.Summary,
+    //                        Url = result.Url,
+    //                        Mentions = post.Mentions,
+    //                      }
+    //                     ).ToListAsync();
 
 
     return View(new HomeViewModel(content.Heading, content.Introduction, results));
   }
 }
 
-public class PostViewModel
+public static class UrlHelperExtensions
 {
-  public string? Title { get; set; }
-  public string? Summary { get; set; }
-  public string? Url { get; set; }
+  public static string? ContentURL(this IUrlHelper helper, string id)
+  {
+    var documentStore = helper.ActionContext.HttpContext.RequestServices.GetRequiredService<IDocumentStore>();
 
-  public List<WebMention.Post>? Mentions { get; set; } = new List<WebMention.Post>();
+    using var session = documentStore.OpenSession();
+
+    var results = (from result in session.Query<Content_ByUrl.Result, Content_ByUrl>()
+                   where result.Id == id
+                   select result.Url
+                        ).SingleOrDefault();
+
+    return results;
+  }
 }

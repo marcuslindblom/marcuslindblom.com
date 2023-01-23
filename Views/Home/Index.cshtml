@@ -2,7 +2,6 @@
 
 <div is="str-textarea-cpnt" data-property-name="introduction">@Html.Raw(Model.Introduction ?? "")</div>
 
-
 <div class="stack stack--horizontal">
   <div>
     <h2>Building</h2>
@@ -30,7 +29,7 @@
     <h2>Writing</h2>
      @foreach(var post in Model?.Posts) {
     <div>
-       <a href="@post.Url"><h3>@post.Title</h3></a>
+       <a href="@Url.ContentURL(post.Id)"><h3>@post.DisplayName</h3></a>
        <p>@post.Summary</p>
        @if(post.Mentions is not null) {
         <ul style="margin:0;list-style:none;padding:0;display:flex;align-items: center;">

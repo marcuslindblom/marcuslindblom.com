@@ -1,1 +1,1 @@
-public record HomeViewModel(string? Heading, string? Introduction, List<PostViewModel>? Posts);
+public record HomeViewModel(string? Heading, string? Introduction, List<Post>? Posts);
