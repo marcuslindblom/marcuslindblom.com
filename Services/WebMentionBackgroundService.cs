@@ -1,5 +1,5 @@
+using Microsoft.AspNetCore.Mvc;
 using Raven.Client.Documents;
-using Raven.Client.Documents.Queries;
 using Strife.Repository.Indexes;
 
 public class TimedHostedService : IHostedService, IDisposable
@@ -34,37 +34,41 @@ public class TimedHostedService : IHostedService, IDisposable
 
     var client = new HttpClient();
 
-    var root = await client.GetFromJsonAsync<WebMention.Root>("https://webmention.io/api/mentions.jf2?domain=marcuslindblom.com&token=ufeSgcy4byQ2weFs8MWs1Q");
-
     try
     {
 
       using var session = _documentStore.OpenAsyncSession();
 
-      foreach (var item in root?.Children)
+      var posts = await session.Query<Post>().ToListAsync();
+
+      foreach (var post in posts)
       {
 
-        if(string.IsNullOrEmpty(item.WmTarget.AbsolutePath) || item.WmTarget.AbsolutePath == "/") {
-          continue;
+        var url = await (from result in session.Query<Content_ByUrl.Result, Content_ByUrl>()
+                   where result.Id == post.Id
+                   select result.Url
+                        ).SingleOrDefaultAsync();
+
+        var root = await client.GetFromJsonAsync<WebMention.Root>($"https://webmention.io/api/mentions.jf2?target=https://marcuslindblom.com{url}");
+
+        if(root != null && root.Children.Count > 0) {
+
+          _logger.LogInformation("Fetched {COUNT} mentions for {URL}", root.Children.Count, url);
+
+          foreach (var item in root.Children)
+          {
+            if (!post.Mentions.Any(m => m.WmId == item.WmId))
+            {
+              Console.WriteLine("Adding mention", post.Id);
+              post.Mentions.Add(item);
+            }
+          }
         }
 
-        var post = await session.Query<Content_ByUrl.Result, Content_ByUrl>().Where(m => m.Url == item.WmTarget.AbsolutePath).OfType<Post>().FirstOrDefaultAsync();
-
-        if(post == null) {
-          continue;
-        }
-
-        if (post != null && !post.Mentions.Any(m => m.WmId == item.WmId))
-        {
-          Console.WriteLine("Adding mention", post.Id);
-          post.Mentions.Add(item);
-        }
+        await session.SaveChangesAsync();
 
       }
 
-      await session.SaveChangesAsync();
-
-      _logger.LogInformation("Saved {COUNT} mentions", root?.Children.Count);
     }
     catch (Exception ex)
     {
