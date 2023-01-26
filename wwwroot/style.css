@@ -168,6 +168,7 @@ article :is(header) {
   aspect-ratio: 16/9;
   object-fit:contain;
   object-position: top center;
+  margin-block: 3rem;
 }
 
 .stack {
