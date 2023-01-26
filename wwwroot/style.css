@@ -141,9 +141,7 @@ a:hover {
 
 article :is(header) {
   all: unset;
-  display: flex;
-  justify-items: baseline;
-  align-items: baseline;
+  font-size: small;
 }
 
 :where(.entry) h1 {
