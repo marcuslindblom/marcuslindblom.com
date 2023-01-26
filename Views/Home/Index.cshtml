@@ -30,7 +30,7 @@
      @foreach(var post in Model?.Posts) {
     <div>
        <a href="@Url.ContentURL(post.Id)"><h3>@post.DisplayName</h3></a>
-       <p>@post.Summary</p>
+       <p>@Html.Raw(post.Summary ?? "")</p>
        @if(post.Mentions is not null) {
         <ul style="margin:0;list-style:none;padding:0;display:flex;align-items: center;">
           @foreach(var mention in post.Mentions.Take(3)) {
