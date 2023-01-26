@@ -8,7 +8,7 @@
     <h1 is="str-h1-cpnt" data-property-name="heading" class="p-name">@Model.Heading</h1>
     <time class="dt-published" datetime="@Model.PublishedDate.FormatPublishedDate()">@Model.PublishedDate.AsTimeAgo()</time>
   </header>
-  <div is="str-textarea-cpnt" data-property-name="summary" class="p-summary">@Model.Summary</div>
+  <div is="str-textarea-cpnt" data-property-name="summary" class="p-summary">@Html.Raw(Model.Summary ?? "")</div>
   <div is="str-textarea-cpnt" data-property-name="text" class="e-content" >
     @Html.Raw(Model.Text ?? "")
   </div>
