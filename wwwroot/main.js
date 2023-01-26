@@ -1,6 +1,9 @@
 import useStrife from '@strifeapp/strife';
 
-window.self !== window.top ? useStrife() : null;
+useStrife();
+// window.self !== window.top ? useStrife() : null;
+
+// if(window.self !== window.top) useStrife();
 
 // console.clear();
 

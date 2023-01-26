@@ -3,13 +3,18 @@
   Default.CanonicalUrl = "https://marcuslindblom.com" + ViewContext.HttpContext.Request.Path;
 }
 
-<div class="entry h-entry">
-  <div class="p-summary e-content" is="str-textarea-cpnt" data-property-name="text">
+<article class="entry h-entry">
+  <header>
+    <h1 is="str-h1-cpnt" data-property-name="heading" class="p-name">@Model.Heading</h1>
+    <time class="dt-published" datetime="@Model.PublishedDate.FormatPublishedDate()">@Model.PublishedDate.AsTimeAgo()</time>
+  </header>
+  <div is="str-textarea-cpnt" data-property-name="summary" class="p-summary">@Model.Summary</div>
+  <div is="str-textarea-cpnt" data-property-name="text" class="e-content" >
     @Html.Raw(Model.Text ?? "")
   </div>
   <a href="https://brid.gy/publish/mastodon"></a>
   <a href="https://fed.brid.gy/"></a>
-</div>
+</article>
 
 @if(@Model.Mentions != null && Model.Mentions.Any()) {
   <h2>Comments, likes &amp; shares (@Model.Mentions?.Count)</h2>

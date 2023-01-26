@@ -20,7 +20,7 @@
   "homepage": "https://github.com/marcuslindblom/marcuslindblom.com#readme",
   "dependencies": {
     "@rollup/plugin-node-resolve": "^13.3.0",
-    "@strifeapp/strife": "^0.0.6-preview.12"
+    "@strifeapp/strife": "^0.1.0-preview.1"
   },
   "devDependencies": {
     "postcss": "^8.4.16",
