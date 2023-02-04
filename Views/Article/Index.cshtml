@@ -1,0 +1,82 @@
+@model Article
+@{
+  Default.CanonicalUrl = "https://marcuslindblom.com" + ViewContext.HttpContext.Request.Path;
+}
+
+<article class="entry h-entry">
+  <header>
+    <h1 is="str-h1-cpnt" data-property-name="heading" class="p-name">@Model.Heading</h1>
+    <time class="dt-published" datetime="@Model.PublishedDate.FormatPublishedDate()">@Model.PublishedDate.AsTimeAgo()</time>
+  </header>
+  <div is="str-textarea-cpnt" data-property-name="summary" class="p-summary">@Html.Raw(Model.Summary ?? "")</div>
+  <div is="str-textarea-cpnt" data-property-name="text" class="e-content" >
+    @Html.Raw(Model.Text ?? "")
+  </div>
+  <a href="https://brid.gy/publish/mastodon"></a>
+  <a href="https://fed.brid.gy/"></a>
+</article>
+
+@if(@Model.Mentions != null && Model.Mentions.Any()) {
+  <h2>Comments, likes &amp; shares (@Model.Mentions?.Count)</h2>
+  <div class="comments-reactions">
+  @{
+    var likes = Model.Mentions.Where(m => m.WmProperty == "like-of")?.OrderBy(m => m.Published).ToList();
+    if(likes != null && likes.Count > 0) {
+      <p>
+      @for( int i = 0; i < likes?.Count; i++ )
+      {
+          <a href="@likes[i].Author.Url">@(likes[i].Author.Name)</a>
+          if( i < likes.Count - 2)
+          {
+            <text>,</text>
+          } else if ( i < likes.Count - 1) {
+            <text> and </text>
+          }
+      }
+      liked this
+      </p>
+    }
+  }
+
+  @{
+    var reposts = Model.Mentions.Where(m => m.WmProperty == "repost-of")?.OrderBy(m => m.Published).ToList();
+    if(reposts != null && reposts.Count > 0) {
+      <p>
+      @for( int i = 0; i < reposts?.Count; i++ )
+      {
+          <a href="@reposts[i].Author.Url">@(reposts[i].Author.Name)</a>
+          if( i < reposts.Count - 2)
+          {
+            <text>,</text>
+          } else if(i < reposts.Count - 1) {
+            <text> and </text>
+          }
+      }
+      reposted this</p>
+    }
+  }
+  </div>
+
+  <div class="comments">
+  @foreach (var comment in Model.Mentions.Where(c => c.WmProperty == "in-reply-to").OrderBy(m => m.Published))
+  {
+    <div class="comment">
+      <img alt="" role="presentation" src="@comment.Author.Photo" width="60" height="60">
+      <div>
+        <div class="commenter">
+          <a href="@comment.Author.Url">
+            <strong>@comment.Author.Name</strong>
+          </a>
+          wrote on
+          <a href="@comment.Url"><span class="comment-date">@comment.Published.GetValueOrDefault().ToString("d MMMM yy")</span></a>:
+        </div>
+        @comment.Content.Text
+        <a class="u-mention" href="@comment.Author.Url"></a>
+      </div>
+    </div>
+  }
+  </div>
+
+} else {
+  <p>No webmentions about this post yet!</p>
+}
