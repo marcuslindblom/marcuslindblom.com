@@ -13,6 +13,11 @@ public class HomeController : Controller
   {
     using var session = documentStore.OpenAsyncSession();
 
+
+    // var results = await session.Query<Post>("MyIndex")
+    //   .OrderByDescending(x => x.CreatedAt)
+    //   .ToListAsync();
+
     var results = await session.Query<Post>()
                         .Where(x => x.PublishedDate.HasValue && x.PublishedDate.Value < DateTime.UtcNow)
                         .OrderByDescending(x => x.CreatedAt)
