@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="strife" Version="0.1.1-3ee775e" />
+    <PackageReference Include="strife" Version="0.1.1-13e99d6" />
     <PackageReference Include="System.Reactive.Core" Version="5.0.0" />
   </ItemGroup>
 
