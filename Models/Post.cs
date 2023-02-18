@@ -9,4 +9,5 @@ public record Post : Content {
   public string? Text { get; set; }
 
   public List<WebMention.Post> Mentions { get; set; } = new List<WebMention.Post>();
+  public List<Report> Analytics { get; set; } = new List<Report>();
 }
