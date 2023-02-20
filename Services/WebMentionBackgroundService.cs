@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using Raven.Client.Documents;
 using Strife.Repository.Indexes;
 
@@ -65,10 +64,10 @@ public class TimedHostedService : IHostedService, IDisposable
           }
         }
 
-        if(session.Advanced.HasChanges) {
-          await session.SaveChangesAsync();
-        }
+      }
 
+      if(session.Advanced.HasChanges) {
+        await session.SaveChangesAsync();
       }
 
     }

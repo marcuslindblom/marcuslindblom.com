@@ -60,9 +60,10 @@ public class FathomAnalyticsService : IHostedService, IDisposable
                          select result.Url
                         ).SingleOrDefaultAsync();
 
-        using var res = await client.GetAsync(@$"https://api.usefathom.com/v1/aggregations?entity_id=YUGAMIMD&entity=pageview&aggregates=pageviews,visits&date_from={DateTime.UtcNow.StartOfWeek(DayOfWeek.Monday).ToShortDateString()}&date_grouping=day&field_grouping=pathname&filters=[{{""property"": ""pathname"",""operator"": ""is"",""value"": ""/""}}]", HttpCompletionOption.ResponseHeadersRead);
+        using var res = await client.GetAsync(@$"https://api.usefathom.com/v1/aggregations?entity_id=YUGAMIMD&entity=pageview&aggregates=pageviews,visits&date_from={DateTime.UtcNow.AddDays(-6).ToShortDateString()}&date_grouping=day&field_grouping=pathname&filters=[{{""property"": ""pathname"",""operator"": ""is"",""value"": ""{url}""}}]", HttpCompletionOption.ResponseHeadersRead);
 
         if(res.IsSuccessStatusCode) {
+
           var reports = await res.Content.ReadFromJsonAsync<List<Report>>();
 
           _logger.LogInformation("Fetched {COUNT} reports for {URL}", reports?.Count, url);
@@ -76,10 +77,10 @@ public class FathomAnalyticsService : IHostedService, IDisposable
           Console.WriteLine("An error occurred.", res.StatusCode);
         }
 
-        if(session.Advanced.HasChanges) {
-          await session.SaveChangesAsync();
-        }
+      }
 
+      if(session.Advanced.HasChanges) {
+        await session.SaveChangesAsync();
       }
 
     }
