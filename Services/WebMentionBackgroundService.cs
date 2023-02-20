@@ -65,7 +65,9 @@ public class TimedHostedService : IHostedService, IDisposable
           }
         }
 
-        await session.SaveChangesAsync();
+        if(session.Advanced.HasChanges) {
+          await session.SaveChangesAsync();
+        }
 
       }
 

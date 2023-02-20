@@ -10,12 +10,15 @@ public class FathomAnalyticsService : IHostedService, IDisposable
   private int executionCount = 0;
   private readonly ILogger<FathomAnalyticsService> _logger;
   private readonly IDocumentStore _documentStore;
+  private readonly IConfiguration _configuration;
+  private string token => _configuration.GetValue<string>("FathomAPIToken") ?? "";
   private Timer? _timer = null;
 
-  public FathomAnalyticsService(ILogger<FathomAnalyticsService> logger, IDocumentStore documentStore)
+  public FathomAnalyticsService(ILogger<FathomAnalyticsService> logger, IDocumentStore documentStore, IConfiguration configuration)
   {
     _logger = logger;
     _documentStore = documentStore;
+    _configuration = configuration;
   }
 
   public Task StartAsync(CancellationToken stoppingToken)
@@ -23,7 +26,7 @@ public class FathomAnalyticsService : IHostedService, IDisposable
     _logger.LogInformation("Fathom Analytics Service Service running.");
 
     _timer = new Timer(DoWork, null, TimeSpan.Zero,
-        TimeSpan.FromDays(1));
+        TimeSpan.FromHours(1));
 
     return Task.CompletedTask;
   }
@@ -35,12 +38,13 @@ public class FathomAnalyticsService : IHostedService, IDisposable
     _logger.LogInformation(
         "Fathom Analytics Service is working. Count: {Count}", count);
 
+    // if(string.IsNullOrEmpty(token)) {
+    //   _logger.LogError("Fathom: Token not found");
+    // }
+
     var client = new HttpClient();
-    // client.DefaultRequestHeaders.Clear();
     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "1125899928000023|fjEfoL2KLzj76pzy1KoQU9lSW7jKNKqftDjNhr3r");
-    // client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-    // client.DefaultRequestHeaders.Add("Content-Type", "application/json");
-    // client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
+
     try
     {
 
@@ -56,10 +60,7 @@ public class FathomAnalyticsService : IHostedService, IDisposable
                          select result.Url
                         ).SingleOrDefaultAsync();
 
-        // &date_from={DateTime.UtcNow.StartOfWeek(DayOfWeek.Monday).ToShortDateString()}
-        //var res = await client.GetAsync(@$"https://api.usefathom.com/v1/aggregations?entity_id=YUGAMIMD&entity=pageview&aggregates=pageviews&date_grouping=day&field_grouping=pathname&filters=[{{""property"": ""pathname"",""operator"": ""is"",""value"": ""{url}""}}]");
-
-        using var res = await client.GetAsync(@$"https://api.usefathom.com/v1/aggregations?entity_id=YUGAMIMD&entity=pageview&aggregates=pageviews&date_from={DateTime.UtcNow.StartOfWeek(DayOfWeek.Monday).ToShortDateString()}&date_grouping=day&field_grouping=pathname&filters=[{{""property"": ""pathname"",""operator"": ""is"",""value"": ""/""}}]", HttpCompletionOption.ResponseHeadersRead);
+        using var res = await client.GetAsync(@$"https://api.usefathom.com/v1/aggregations?entity_id=YUGAMIMD&entity=pageview&aggregates=pageviews,visits&date_from={DateTime.UtcNow.StartOfWeek(DayOfWeek.Monday).ToShortDateString()}&date_grouping=day&field_grouping=pathname&filters=[{{""property"": ""pathname"",""operator"": ""is"",""value"": ""/""}}]", HttpCompletionOption.ResponseHeadersRead);
 
         if(res.IsSuccessStatusCode) {
           var reports = await res.Content.ReadFromJsonAsync<List<Report>>();
@@ -75,33 +76,9 @@ public class FathomAnalyticsService : IHostedService, IDisposable
           Console.WriteLine("An error occurred.", res.StatusCode);
         }
 
-        // try
-        // {
-        //   var results = await client.GetFromJsonAsync<List<Report>>(@$"https://api.usefathom.com/v1/aggregations?entity_id=YUGAMIMD&entity=pageview&aggregates=pageviews&date_from={DateTime.UtcNow.StartOfWeek(DayOfWeek.Monday).ToShortDateString()}&date_grouping=day&field_grouping=pathname&filters=[{{""property"": ""pathname"",""operator"": ""is"",""value"": ""{url}""}}]");
-
-        //   _logger.LogInformation("Fetched {COUNT} reports for {URL}", results?.Count, url);
-
-        //   if(results != null && results.Any()) {
-        //     post.Analytics.Clear();
-        //     post.Analytics.AddRange(results);
-        //   }
-        // }
-        // catch (HttpRequestException ex) // Non success
-        // {
-        //     Console.WriteLine("An error occurred.", ex.StatusCode);
-        // }
-        // catch (NotSupportedException) // When content type is not valid
-        // {
-        //     Console.WriteLine("The content type is not supported.");
-        // }
-        // catch (JsonException) // Invalid JSON
-        // {
-        //     Console.WriteLine("Invalid JSON.");
-        // }
-
-        //var results = await client.GetFromJsonAsync<List<Report>>(@$"https://api.usefathom.com/v1/aggregations?entity_id=YUGAMIMD&entity=pageview&aggregates=pageviews&date_from={DateTime.UtcNow.StartOfWeek(DayOfWeek.Monday).ToShortDateString()}&date_grouping=day&field_grouping=pathname&filters=[{{""property"": ""pathname"",""operator"": ""is"",""value"": ""{url}""}}]");
-
-        await session.SaveChangesAsync();
+        if(session.Advanced.HasChanges) {
+          await session.SaveChangesAsync();
+        }
 
       }
 

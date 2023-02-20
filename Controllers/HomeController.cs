@@ -16,6 +16,7 @@ public class HomeController : Controller
 
     // var results = await session.Query<Post>("MyIndex")
     //   .OrderByDescending(x => x.CreatedAt)
+    //      .Take(2)
     //   .ToListAsync();
 
     var results = await session.Query<Post>()
