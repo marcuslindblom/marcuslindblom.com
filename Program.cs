@@ -10,7 +10,7 @@ builder.Services.AddHealthChecks();
 builder.Services.AddScoped<Layout>();
 
 // builder.Services.AddHostedService<TimedHostedService>();
-builder.Services.AddHostedService<FathomAnalyticsService>();
+// builder.Services.AddHostedService<FathomAnalyticsService>();
 
 builder.Services.AddControllersWithViews();
 
