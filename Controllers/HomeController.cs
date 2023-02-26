@@ -9,6 +9,7 @@ public class HomeController : Controller
 
   public HomeController(IDocumentStore documentStore) => this.documentStore = documentStore;
 
+  [ResponseCache(VaryByHeader = "Accept-Encoding", Duration = 3600)]
   public async Task<IActionResult> Index([FromContentRoute] Home content)
   {
     using var session = documentStore.OpenAsyncSession();
