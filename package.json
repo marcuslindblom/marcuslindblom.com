@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/marcuslindblom/marcuslindblom.com#readme",
   "dependencies": {
-    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@rollup/plugin-node-resolve": "^15.0.1",
     "@strifeapp/strife": "^0.1.0-preview.1"
   },
   "devDependencies": {
