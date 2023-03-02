@@ -169,6 +169,8 @@ article :is(header) {
   object-fit:contain;
   object-position: top center;
   margin-block: 3rem;
+
+  border: none;
 }
 
 .stack {
