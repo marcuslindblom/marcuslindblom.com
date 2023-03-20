@@ -1,4 +1,4 @@
-# marcuslindblom.com
+# The blog
 
 ## Install Strife
 
