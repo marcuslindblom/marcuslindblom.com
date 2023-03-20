@@ -2,7 +2,6 @@ using Strife;
 using Wieldy.Core.Models;
 
 public record Article : Content {
-  public string Id { get; set;}
   public string? Heading { get; set; }
   public string? Summary { get; set; }
   public Image? Image { get; set; }
