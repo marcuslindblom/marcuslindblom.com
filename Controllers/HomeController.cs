@@ -14,11 +14,12 @@ public class HomeController : Controller
   {
     using var session = documentStore.OpenAsyncSession();
 
-
-    // var results = await session.Query<Post>("MyIndex")
-    //   .OrderByDescending(x => x.CreatedAt)
-    //      .Take(2)
+    // var r = await session.Query<Content_ByLastModified.Result, Content_ByLastModified>()
+    // .Where(x => x.LastModified > new DateTime(2023, 03, 10))
+    //   .ProjectInto<Post>()
     //   .ToListAsync();
+
+    // Console.WriteLine(r.Count);
 
     var results = await session.Query<Post>()
                         .Where(x => x.PublishedDate.HasValue && x.PublishedDate.Value < DateTime.UtcNow)
