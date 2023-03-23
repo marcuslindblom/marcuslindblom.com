@@ -1,9 +1,9 @@
-FROM mcr.microsoft.com/dotnet/aspnet:7.0-alpine3.16 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-preview-alpine3.17 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine3.16 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0-preview-alpine3.17 AS build
 RUN apk add --update npm
 
 ARG NUGET_AUTH_TOKEN
