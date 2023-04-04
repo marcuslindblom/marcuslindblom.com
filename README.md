@@ -1,4 +1,4 @@
-# The blog
+# The blog.
 
 ## Install Strife
 
