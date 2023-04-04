@@ -5,9 +5,11 @@ using Strife.Routing;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddStrife(options => {
-    options.AfterInitializeDocumentStore = documentStore => IndexCreation.CreateIndexes(Assembly.GetExecutingAssembly(), documentStore);
-});
+builder.Services.AddStrife();
+
+// builder.Services.AddStrife(options => {
+//     options.AfterInitializeDocumentStore = documentStore => IndexCreation.CreateIndexes(Assembly.GetExecutingAssembly(), documentStore);
+// });
 
 builder.Services.AddHealthChecks();
 
