@@ -1,9 +1,13 @@
+using System.Reflection;
+using Raven.Client.Documents.Indexes;
 using Strife;
 using Strife.Routing;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddStrife();
+builder.Services.AddStrife(options => {
+    options.AfterInitializeDocumentStore = documentStore => IndexCreation.CreateIndexes(Assembly.GetExecutingAssembly(), documentStore);
+});
 
 builder.Services.AddHealthChecks();
 
@@ -26,8 +30,8 @@ app.MapHealthChecks("/healthz");
 
 app.MapGet("/feed", () => "Hello World!");
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=home}/{action=index}/{id?}");
+// app.MapControllerRoute(
+//     name: "default",
+//     pattern: "{controller=home}/{action=index}/{id?}");
 
 app.Run();
