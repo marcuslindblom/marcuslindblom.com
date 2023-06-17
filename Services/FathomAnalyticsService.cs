@@ -60,7 +60,7 @@ public class FathomAnalyticsService : IHostedService, IDisposable
                          select result.Url
                         ).SingleOrDefaultAsync();
 
-        using var res = await client.GetAsync(@$"https://api.usefathom.com/v1/aggregations?entity_id=YUGAMIMD&entity=pageview&aggregates=pageviews,visits&date_from={DateTime.UtcNow.AddDays(-6).ToShortDateString()}&date_grouping=day&field_grouping=pathname&filters=[{{""property"": ""pathname"",""operator"": ""is"",""value"": ""{url}""}}]", HttpCompletionOption.ResponseHeadersRead);
+        using var res = await client.GetAsync(@$"https://api.usefathom.com/v1/aggregations?entity_id=YUGAMIMD&entity=pageview&aggregates=uniques,pageviews&date_from={DateTime.UtcNow.AddDays(-6).ToShortDateString()}&date_grouping=day&field_grouping=pathname&filters=[{{""property"": ""pathname"",""operator"": ""is"",""value"": ""{url}""}}, {{ ""property"": ""referrer_hostname"", ""operator"": ""is not like"", ""value"": ""https://wieldy.app""}}]", HttpCompletionOption.ResponseHeadersRead);
 
         if(res.IsSuccessStatusCode) {
 
@@ -105,4 +105,4 @@ public class FathomAnalyticsService : IHostedService, IDisposable
   }
 }
 
-public record Report([property: JsonPropertyName("pageviews")] int PageViews, [property: JsonPropertyName("date")] DateTime Date, [property: JsonPropertyName("pathname")] string PathName);
+public record Report([property: JsonPropertyName("pageviews")] int Views, [property: JsonPropertyName("uniques")] int Visitors, [property: JsonPropertyName("date")] DateTime Date, [property: JsonPropertyName("pathname")] string PathName);
