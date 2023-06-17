@@ -22,7 +22,7 @@ public class HomeController : Controller
     // Console.WriteLine(r.Count);
 
     var results = await session.Query<Post>()
-                        .Where(x => x.PublishedDate.HasValue && x.PublishedDate.Value < DateTime.UtcNow)
+                        .Where(x => x.PublishedDate < DateTime.UtcNow)
                         .OrderByDescending(x => x.CreatedAt)
                         .ToListAsync();
 
