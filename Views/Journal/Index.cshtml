@@ -1,1 +1,46 @@
 <h1>Writing</h1>
+
+<!--
+  Är detta en [] med sektioner?
+-->
+<div is="str-sections">
+  <!-- Renderad från -->
+  <h2>Visst är väl detta ok?</h2>
+</div>
+
+<template id="my-template">
+  <my-hero>
+    <template shadowroot="open">
+      <header>
+        <h2 is="str-h2-cpnt" data-property-name="heading"><slot></slot></h2>
+      </header>
+      <style>
+        h2 {
+          color: hotpink;
+        }
+      </style>
+    </template>
+    The heading
+  </my-hero>
+</template>
+
+<!--template id="my-template">
+  <h2 is="str-h2-cpnt" data-property-name="heading"></h2>
+</template-->
+
+<script type="module">
+  customElements.define('str-sections', class extends HTMLDivElement {
+  constructor() {
+    super();
+
+    let template = document.getElementById("my-template");
+    let templateContent = template.content;
+
+    const shadowRoot = this.attachShadow({ mode: "open" });
+    shadowRoot.innerHTML = '<slot></slot>';
+
+    shadowRoot.appendChild(templateContent.cloneNode(true));
+  }
+}, { extends: 'div' });
+
+</script>
