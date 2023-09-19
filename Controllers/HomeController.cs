@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Raven.Client.Documents;
+// using Strife;
 using Strife.Binding;
 using Strife.Repository.Indexes;
 
@@ -9,17 +10,16 @@ public class HomeController : Controller
 
   public HomeController(IDocumentStore documentStore) => this.documentStore = documentStore;
 
-  [ResponseCache(VaryByHeader = "Accept-Encoding", Duration = 3600)]
+  // [ResponseCache(VaryByHeader = "Accept-Encoding", Duration = 3600)]
   public async Task<IActionResult> Index([FromContentRoute] Home content)
   {
     using var session = documentStore.OpenAsyncSession();
 
-    // var r = await session.Query<Content_ByLastModified.Result, Content_ByLastModified>()
-    // .Where(x => x.LastModified > new DateTime(2023, 03, 10))
-    //   .ProjectInto<Post>()
+    // var r = await session.Query<Content>("Content_ByType")
+    //   .ProjectInto<ListItem>()
     //   .ToListAsync();
 
-    // Console.WriteLine(r.Count);
+    // Console.WriteLine(r[0].Heading);
 
     var results = await session.Query<Post>()
                         .Where(x => x.PublishedDate < DateTime.UtcNow)
@@ -29,6 +29,8 @@ public class HomeController : Controller
     return View(new HomeViewModel(content.Heading, content.Introduction, results));
   }
 }
+
+public record ListItem(string Heading, string Url);
 
 public static class UrlHelperExtensions
 {
