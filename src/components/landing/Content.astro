@@ -1,4 +1,5 @@
 ---
+import { writing } from "../../data/writing.json";
 import { details } from "../../data/details.json";
 import { contact } from "../../data/contact.json";
 ---
@@ -8,11 +9,10 @@ import { contact } from "../../data/contact.json";
     <div class="mx-auto max-w-xl">
       <div class="grid gap-12 md:gap-24">
         <div class="text-sm font-light">
-          <p class="text-black dark:text-white">Work experience</p>
-
+          <p class="text-black dark:text-white">Writing</p>
           <div class="grid gap-6 mt-3">
             {
-              details.map((template) => (
+              writing.map((template) => (
                 <>
                   <div class="text-neutral-500  items-start grid grid-cols-1 md:grid-cols-3">
                     <div>
@@ -26,12 +26,32 @@ import { contact } from "../../data/contact.json";
                           {template.title}
                         </a>
                       </p>
-                      <p class="">{template.location}</p>
+                      <p class="">{template.description}</p>
                     </div>
                   </div>
                 </>
               ))
             }
+          </div>
+        </div>
+        <div class="text-sm font-light">
+          <p class="text-black dark:text-white">Building</p>
+          <div class="grid gap-6 mt-3">
+            <div class="text-neutral-500  items-start grid grid-cols-1 md:grid-cols-3">
+              <div>
+                <p class="text-neutral-400 dark:text-neutral-400">Ongoing</p>
+              </div>
+              <div class="md:col-span-2 w-full">
+                <p class="text-black dark:text-white">
+                  <a
+                    href="https://strife.app"
+                    class="underline hover:no-underline duration-200 after:content-['_↗']">
+                    Strife
+                  </a>
+                </p>
+                <p class="">Headless CMS without compromise</p>
+              </div>
+            </div>
           </div>
         </div>
         <div class="text-sm font-light">

@@ -4,19 +4,19 @@ export interface Template {
   title: string;
 };
 const one: Template = {
-  link: "mailto:email@example.com",
+  link: "mailto:m@marcuslindblom.com",
   type: "Email",
-  title: "michael@andreuzza.com",
+  title: "m@marcuslindblom.com",
 };
 const two: Template = {
-link: "https://twitter.com/Mike_Andreuzza",
-    type: "Twitter",
-  title: "Mike_Andreuzza",
+link: "https://twitter.com/marcus_lindblom",
+    type: "X",
+  title: "marcus_lindblom",
 };
 const three: Template = {
-link: "https://read.cv/join/michael_andreuzza",
+link: "https://read.cv/join/marcuslindblom",
     type: "Read CV",
-  title: "michael_andreuzza",
+  title: "marcuslindblom",
 };
 export const bytype = {
   one,
