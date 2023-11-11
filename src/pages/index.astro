@@ -2,7 +2,22 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/landing/Header.astro";
 import Content from "../components/landing/Content.astro";
+import { DocumentStore } from 'ravendb';
 
+const certificate = import.meta.env.STRIFE_CERTIFICATE;
+
+let authOptions = {
+  certificate: Buffer.from(certificate, 'base64'),
+  type: "pfx",
+  password: import.meta.env.STRIFE_CERTIFICATE_PASSWORD // optional
+};
+
+const store = new DocumentStore(import.meta.env.STRIFE_DATABASE_URLS.split(','), import.meta.env.STRIFE_DATABASE , authOptions);
+store.initialize();
+
+const session = store.openSession();
+let home = await session.load('fcc2e4e2-b7ce-443f-8da6-faac59919f46');
+console.log(home);
 ---
 
 <BaseLayout>
