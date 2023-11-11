@@ -1,45 +1,42 @@
-# The blog
+# Astro & Tailwind CSS Starter Kit
 
-## Install Strife
+## Template Integrations
+- @astrojs/tailwind - https://docs.astro.build/en/guides/integrations-guide/tailwind/
+- @astrojs/sitemap - https://docs.astro.build/en/guides/integrations-guide/sitemap/
+- Astrolib SEO - https://github.com/onwidget/astrolib/tree/main/packages/seo
 
-`dotnet add marcuslindblom.com.nosync.csproj package strife --version 0.0.1-6d3bc7a`
+## Template Structure
 
-`builder.Services.AddStrife();`
+Inside of your Astro project, you'll see the following folders and files:
 
-`app.MapStrife();`
+```
+/
+├── public/
+├── src/
+│   └── pages/
+│       └── index.astro
+└── package.json
+```
 
-`openssl base64 -in marcuslindblom.com.pfx -out data.txt`
+Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
 
-`cat data.txt | tr -d '\n' | pbcopy`
+There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
 
-## Environment variables
+Any static assets, like images, can be placed in the `public/` directory.
 
-### Add base64 single line certificate raw data
+## Commands
 
-`DocumentStoreSettings__Certificate`
+All commands are run from the root of the project, from a terminal:
 
-### The name of the database
+| Command                | Action                                           |
+| :--------------------- | :----------------------------------------------- |
+| `npm install`          | Installs dependencies                            |
+| `npm run dev`          | Starts local dev server at `localhost:3000`      |
+| `npm run build`        | Build your production site to `./dist/`          |
+| `npm run preview`      | Preview your build locally, before deploying     |
+| `npm run astro ...`    | Run CLI commands like `astro add`, `astro check` |
+| `npm run astro --help` | Get help using the Astro CLI                     |
 
-`DocumentStoreSettings__Database`
+## Want to learn more?
 
-### he password for the database
-
-`DocumentStoreSettings__Password`
-
-### The url to the database cluster, can be multiple
-
-`DocumentStoreSettings__Urls__0`
-
-### Auth token for private nuget feed
-
-`NUGET_AUTH_TOKEN`
-
-## Deploy button.
-
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/marcuslindblom/marcuslindblom.com)
-
-builder.Services.AddStrife(options =>
-{
-options.AfterInitializeDocumentStore = documentStore =>
-documentStore.Changes().ForAllDocuments().Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
-});
+Feel free to check Astroäs [documentation](https://docs.astro.build)
