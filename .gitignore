@@ -401,3 +401,4 @@ appsettings.Development.json
 wwwroot/bundle.js
 DOCS.md
 .DS_Store
+.env

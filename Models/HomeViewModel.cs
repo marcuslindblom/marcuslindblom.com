@@ -1,1 +1,0 @@
-public record HomeViewModel(string? Heading, string? Introduction, List<Post>? Posts);
