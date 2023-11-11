@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { DocumentStore } from 'ravendb';
+
+const certificate = import.meta.env.STRIFE_CERTIFICATE;
+
+let authOptions = {
+  certificate: Buffer.from(certificate, 'base64'),
+  type: 'pfx',
+  password: import.meta.env.STRIFE_CERTIFICATE_PASSWORD,
+};
+
+const store = new DocumentStore(
+  import.meta.env.STRIFE_DATABASE_URLS.split(','),
+  import.meta.env.STRIFE_DATABASE,
+  authOptions
+);
+
+store.initialize();
+
+const session = store.openSession();
+
+const results = await session.advanced
+  .rawQuery(
+    `from index 'Content/ByUrl' as post  load post.labels as labels[] select {
+          name: post.displayName,
+          publishedDate: post.publishedDate,
+          labels: labels,
+          url: post.url
+        }`
+  )
+  .all();
+
+const dateOptions: object = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+};
+---
+
+<BaseLayout>
+  <section>
+    <div class="mx-auto max-w-7xl px-8 py-12 lg:pt-24">
+      <div class="mx-auto max-w-xl">
+        <div>
+          <div class="md:flex md:items-center md:justify-between md:space-x-5">
+            <div class="text-sm font-light">
+              <p class="text-black dark:text-white">Writing</p><div
+                class="text-neutral-500 dark:text-neutral-400 space-y-3 mt-3"
+              >
+                {
+                  results.map((post) => (
+                    <>
+                      <div class="text-neutral-500  items-start grid grid-cols-1 md:grid-cols-3">
+                        <div>
+                          <p class="text-neutral-400 dark:text-neutral-400">
+                            {new Date(post.publishedDate).toLocaleDateString(
+                              'en-US',
+                              dateOptions
+                            )}
+                          </p>
+                        </div>
+                        <div class="md:col-span-2 w-full">
+                          <p class="text-black dark:text-white">
+                            <a
+                              href={post.url}
+                              class="underline hover:no-underline duration-200 after:content-['_↗']"
+                            >
+                              {post.name}
+                            </a>
+                          </p>
+                          <p class="">
+                            {Object.values(post.labels).map(function(label){return label.name}).join(", ")}
+                          </p>
+                        </div>
+                      </div>
+                    </>
+                  ))
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
