@@ -9,7 +9,7 @@ const notes = await session
   .query({ indexName: 'Content/ByUrl' })
   .whereStartsWith('url', '/journal/')
   .whereEquals("published", true)
-  .orderBy("publishedDate")
+  .orderByDescending("publishedDate")
   .selectFields(['heading', 'summary', 'publishedDate', 'url'])
   .take(3)
   .all();
@@ -68,7 +68,7 @@ const dateOptions: object = {
                       <p class="text-black dark:text-white">
                         <a
                           href={note.url}
-                          class="underline hover:no-underline duration-200 after:content-['_↗'] u-url"
+                          class="underline hover:no-underline duration-200 after:content-['_↗'] u-url p-name"
                         >
                           {note.heading}
                         </a>
