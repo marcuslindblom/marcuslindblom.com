@@ -8,8 +8,8 @@ const session = store.openSession();
 const notes = await session
   .query({ indexName: 'Content/ByUrl' })
   .whereStartsWith('url', '/journal/')
-  .whereEquals("published", true)
-  .orderByDescending("publishedDate")
+  .whereEquals('published', true)
+  .orderByDescending('publishedDate')
   .selectFields(['heading', 'summary', 'publishedDate', 'url'])
   .take(3)
   .all();
@@ -37,6 +37,7 @@ const formatDateTime = (date: string): string => {
   <div class="mx-auto max-w-7xl px-8 py-12">
     <div class="mx-auto max-w-xl">
       <div class="grid gap-12 md:gap-24">
+
         <div class="text-sm font-light">
           <p class="text-black dark:text-white">Building</p>
           <div class="grid gap-6 mt-3">
@@ -60,6 +61,8 @@ const formatDateTime = (date: string): string => {
             </div>
           </div>
         </div>
+
+
         <div class="text-sm font-light">
           <p class="text-black dark:text-white">Writing</p>
           <div class="grid gap-6 mt-3">
@@ -69,7 +72,10 @@ const formatDateTime = (date: string): string => {
                   <div class="text-neutral-500  items-start grid grid-cols-1 md:grid-cols-3 h-entry">
                     <div>
                       <span class="hidden p-author">Marcus</span>
-                      <time datetime={formatDateTime(note.publishedDate)} class="text-neutral-400 dark:text-neutral-400 dt-published">
+                      <time
+                        datetime={formatDateTime(note.publishedDate)}
+                        class="text-neutral-400 dark:text-neutral-400 dt-published"
+                      >
                         {new Date(note.publishedDate).toLocaleDateString(
                           'en-US',
                           dateOptions
@@ -93,6 +99,7 @@ const formatDateTime = (date: string): string => {
             }
           </div>
         </div>
+
         <div class="text-sm font-light">
           <p class="text-black dark:text-white">Side Projects</p>
           <div class="grid gap-6 mt-3">
@@ -158,6 +165,7 @@ const formatDateTime = (date: string): string => {
             </div>
           </div>
         </div>
+
         <div class="text-sm font-light">
           <p class="text-black dark:text-white">Contact</p>
 
@@ -187,6 +195,7 @@ const formatDateTime = (date: string): string => {
               ))
             }
           </div>
+
         </div>
       </div>
     </div>

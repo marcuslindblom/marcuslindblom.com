@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Post from '../layouts/Post.astro';
+import PostLayout from '../layouts/PostLayout.astro';
 import store from '../store';
 
 const { slug } = Astro.params;
@@ -18,5 +18,5 @@ const { heading, text, publishedDate, ['@metadata']: { ['@collection']: collecti
 ---
 
 <BaseLayout>
-  <Post heading={heading} text={text} publishedDate={publishedDate} />
+  <PostLayout heading={heading} text={text} publishedDate={publishedDate} />
 </BaseLayout>

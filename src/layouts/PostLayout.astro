@@ -27,41 +27,49 @@ const formatDateTime = (date: string): string => {
 };
 ---
 
-<section>
+<main>
   <div class="mx-auto max-w-7xl px-8 py-12 lg:pt-24">
     <div class="mx-auto max-w-xl">
       <div>
         <div class="md:flex md:items-center md:justify-between md:space-x-5">
-          <div class="text-sm font-light h-entry">
-            <h1 class="text-black dark:text-white p-name">
-              <a href={currentPath} class="u-url">
-                {heading}
-              </a>
-            </h1>
-            <time
-              class="text-neutral-500 dark:text-neutral-400 dt-published"
-              datetime={formatDateTime(publishedDate)}
-              >{formatDate(publishedDate)}</time
-            >
-            <p class="p-summary"></p>
-            <div
-              class="text-neutral-500 dark:text-neutral-400 space-y-3 mt-3 prose prose-sm e-content"
-              set:html={text}
-            />
-            <span class="hidden">
+          <article class="text-sm font-light h-entry flex">
+            <div class="flex-auto w-12">
+              <img
+                class="h-8 w-8 rounded-full border border-white/10 u-photo"
+                src="/images/avatar.jpg"
+                alt="image"
+              />
+            </div>
+
+            <div class="flex-auto">
               <a
                 rel="author"
-                class="h-card p-author"
+                class="text-black dark:text-white h-card p-author"
                 href="https://marcuslindblom.com/">Marcus Lindblom</a
-              ><img class="u-photo" src="/images/avatar.jpg" /><p
-                class="p-note"
               >
-                <a href="https://strife.app">Strife</a>
-              </p></span
-            >
-          </div>
+              <span class="text-neutral-500 dark:text-neutral-400"> · </span>
+
+              <time
+                class="text-neutral-500 dark:text-neutral-400 dt-published"
+                datetime={formatDateTime(publishedDate)}
+                >{formatDate(publishedDate)}</time
+              >
+
+              <h1 class="text-black dark:text-white p-name">
+                <a href={currentPath} class="u-url">
+                  {heading}
+                </a>
+              </h1>
+
+              <div
+                class="text-neutral-500 dark:text-neutral-400 space-y-3 mt-3 prose prose-sm e-content"
+                set:html={text}
+              />
+
+            </div>
+          </article>
         </div>
       </div>
     </div>
   </div>
-</section>
+</main>
