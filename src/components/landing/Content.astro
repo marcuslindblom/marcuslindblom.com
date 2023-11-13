@@ -1,6 +1,24 @@
 ---
-import { writing } from "../../data/writing.json";
-import { contact } from "../../data/contact.json";
+import { contact } from '../../data/contact.json';
+
+import store from '../../store';
+
+const session = store.openSession();
+
+const notes = await session
+  .query({ indexName: 'Content/ByUrl' })
+  .whereStartsWith('url', '/journal/')
+  .whereEquals("published", true)
+  .orderBy("publishedDate")
+  .selectFields(['heading', 'summary', 'publishedDate', 'url'])
+  .take(3)
+  .all();
+
+const dateOptions: object = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+};
 ---
 
 <section>
@@ -10,7 +28,9 @@ import { contact } from "../../data/contact.json";
         <div class="text-sm font-light">
           <p class="text-black dark:text-white">Building</p>
           <div class="grid gap-6 mt-3">
-            <div class="text-neutral-500  items-start grid grid-cols-1 md:grid-cols-3">
+            <div
+              class="text-neutral-500 items-start grid grid-cols-1 md:grid-cols-3"
+            >
               <div>
                 <p class="text-neutral-400 dark:text-neutral-400">Ongoing</p>
               </div>
@@ -18,7 +38,8 @@ import { contact } from "../../data/contact.json";
                 <p class="text-black dark:text-white">
                   <a
                     href="https://strife.app"
-                    class="underline hover:no-underline duration-200 after:content-['_↗']">
+                    class="underline hover:no-underline duration-200 after:content-['_↗']"
+                  >
                     Strife
                   </a>
                 </p>
@@ -31,21 +52,28 @@ import { contact } from "../../data/contact.json";
           <p class="text-black dark:text-white">Writing</p>
           <div class="grid gap-6 mt-3">
             {
-              writing.map((template) => (
+              notes.map((note) => (
                 <>
-                  <div class="text-neutral-500  items-start grid grid-cols-1 md:grid-cols-3">
+                  <div class="text-neutral-500  items-start grid grid-cols-1 md:grid-cols-3 h-entry">
                     <div>
-                      <p class="text-neutral-400 dark:text-neutral-400">{template.date}</p>
+                      <span class="hidden p-author">Marcus</span>
+                      <time class="text-neutral-400 dark:text-neutral-400 dt-published">
+                        {new Date(note.publishedDate).toLocaleDateString(
+                          'en-US',
+                          dateOptions
+                        )}
+                      </time>
                     </div>
                     <div class="md:col-span-2 w-full">
                       <p class="text-black dark:text-white">
                         <a
-                          href={template.link}
-                          class="underline hover:no-underline duration-200 after:content-['_↗']">
-                          {template.title}
+                          href={note.url}
+                          class="underline hover:no-underline duration-200 after:content-['_↗'] u-url"
+                        >
+                          {note.heading}
                         </a>
                       </p>
-                      <p class="">{template.description}</p>
+                      <div class="e-content" set:html={note.summary} />
                     </div>
                   </div>
                 </>
@@ -56,7 +84,9 @@ import { contact } from "../../data/contact.json";
         <div class="text-sm font-light">
           <p class="text-black dark:text-white">Side Projects</p>
           <div class="grid gap-6 mt-3">
-            <div class="text-neutral-500  items-start grid grid-cols-1 md:grid-cols-3">
+            <div
+              class="text-neutral-500 items-start grid grid-cols-1 md:grid-cols-3"
+            >
               <div>
                 <p class="text-neutral-400 dark:text-neutral-400">2020</p>
               </div>
@@ -64,14 +94,20 @@ import { contact } from "../../data/contact.json";
                 <p class="text-black dark:text-white">
                   <a
                     href="https://github.com/marcuslindblom/w3cvalidator"
-                    class="underline hover:no-underline duration-200 after:content-['_↗']">
-                    w3cvalidator﻿
+                    class="underline hover:no-underline duration-200 after:content-['_↗']"
+                  >
+                    w3cvalidator
                   </a>
                 </p>
-                <p class="">Quickly and easily check document-conformance to catch unintended mistakes</p>
+                <p class="">
+                  Quickly and easily check document-conformance to catch
+                  unintended mistakes
+                </p>
               </div>
             </div>
-            <div class="text-neutral-500  items-start grid grid-cols-1 md:grid-cols-3">
+            <div
+              class="text-neutral-500 items-start grid grid-cols-1 md:grid-cols-3"
+            >
               <div>
                 <p class="text-neutral-400 dark:text-neutral-400">2020</p>
               </div>
@@ -79,14 +115,20 @@ import { contact } from "../../data/contact.json";
                 <p class="text-black dark:text-white">
                   <a
                     href="https://github.com/marcuslindblom/yellow-lab-tools"
-                    class="underline hover:no-underline duration-200 after:content-['_↗']">
+                    class="underline hover:no-underline duration-200 after:content-['_↗']"
+                  >
                     Yellow lab tools
                   </a>
                 </p>
-                <p class="">Analyzes a webpage and detects performance or front-end code quality issues</p>
+                <p class="">
+                  Analyzes a webpage and detects performance or front-end code
+                  quality issues
+                </p>
               </div>
             </div>
-            <div class="text-neutral-500  items-start grid grid-cols-1 md:grid-cols-3">
+            <div
+              class="text-neutral-500 items-start grid grid-cols-1 md:grid-cols-3"
+            >
               <div>
                 <p class="text-neutral-400 dark:text-neutral-400">2020</p>
               </div>
@@ -94,7 +136,8 @@ import { contact } from "../../data/contact.json";
                 <p class="text-black dark:text-white">
                   <a
                     href="https://github.com/marcuslindblom/security-headers"
-                    class="underline hover:no-underline duration-200 after:content-['_↗']">
+                    class="underline hover:no-underline duration-200 after:content-['_↗']"
+                  >
                     Security headers
                   </a>
                 </p>
@@ -112,14 +155,17 @@ import { contact } from "../../data/contact.json";
                 <>
                   <div class="text-neutral-500  items-start grid grid-cols-1 md:grid-cols-3">
                     <div>
-                      <p class="text-neutral-400 dark:text-neutral-400">{template.type}</p>
+                      <p class="text-neutral-400 dark:text-neutral-400">
+                        {template.type}
+                      </p>
                     </div>
                     <div class="md:col-span-2 w-full">
                       <p class="text-black dark:text-white">
                         <a
                           href={template.link}
                           title={template.type}
-                          class="underline hover:no-underline duration-200 after:content-['_↗']">
+                          class="underline hover:no-underline duration-200 after:content-['_↗']"
+                        >
                           {template.title}
                         </a>
                       </p>
