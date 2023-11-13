@@ -1,5 +1,28 @@
 ---
-const { heading, text } = Astro.props;
+const { heading, text, publishedDate } = Astro.props;
+
+const dateOptions: object = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+};
+
+const formatDate = (date: string): string => {
+  const d = new Date(date);
+  return d.toLocaleDateString('en-US', dateOptions);
+};
+
+const formatDateTime = (date: string): string => {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  const hours = String(d.getHours()).padStart(2, '0');
+  const minutes = String(d.getMinutes()).padStart(2, '0');
+  const seconds = String(d.getSeconds()).padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
 ---
 
 <section>
@@ -8,13 +31,28 @@ const { heading, text } = Astro.props;
       <div>
         <div class="md:flex md:items-center md:justify-between md:space-x-5">
           <div class="text-sm font-light h-entry">
-            <p class="text-black dark:text-white p-name">
-              { heading }
-            </p><div
-              class="text-neutral-500 dark:text-neutral-400 space-y-3 mt-3 prose prose-sm e-content"
-              set:html={ text }
+            <h1 class="text-black dark:text-white p-name">
+              {heading}
+            </h1>
+            <time
+              class="text-neutral-500 dark:text-neutral-400 dt-published"
+              datetime={formatDateTime(publishedDate)}
+              >{formatDate(publishedDate)}</time
             >
-            </div>
+            <div
+              class="text-neutral-500 dark:text-neutral-400 space-y-3 mt-3 prose prose-sm e-content"
+              set:html={text}
+            />
+            <div></div>
+            <span class="h-card" style="display:none;">
+              <a class="p-name u-url" href="https://marcuslindblom.com"
+                >Marcus Lindblom</a
+              ><img class="u-photo" src="/images/avatar.jpg" /><p
+                class="p-note"
+              >
+                <a href="https://strife.app">Strife</a>
+              </p></span
+            >
           </div>
         </div>
       </div>

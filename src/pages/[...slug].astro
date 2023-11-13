@@ -13,10 +13,10 @@ const page = await session
 
 if (!page) return Astro.redirect("/404");
 
-const { heading, text, ['@metadata']: { ['@collection']: collection } } = page;
+const { heading, text, publishedDate, ['@metadata']: { ['@collection']: collection } } = page;
 
 ---
 
 <BaseLayout>
-  <Post heading={heading} text={text} />
+  <Post heading={heading} text={text} publishedDate={publishedDate} />
 </BaseLayout>
