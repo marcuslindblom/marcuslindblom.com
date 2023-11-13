@@ -1,6 +1,8 @@
 ---
 const { heading, text, publishedDate } = Astro.props;
 
+const currentPath = Astro.url.pathname;
+
 const dateOptions: object = {
   year: 'numeric',
   month: 'long',
@@ -32,7 +34,9 @@ const formatDateTime = (date: string): string => {
         <div class="md:flex md:items-center md:justify-between md:space-x-5">
           <div class="text-sm font-light h-entry">
             <h1 class="text-black dark:text-white p-name">
-              {heading}
+              <a href={currentPath} class="u-url">
+                {heading}
+              </a>
             </h1>
             <time
               class="text-neutral-500 dark:text-neutral-400 dt-published"
@@ -45,7 +49,7 @@ const formatDateTime = (date: string): string => {
             />
             <div></div>
             <span class="h-card" style="display:none;">
-              <a class="p-name u-url" href="https://marcuslindblom.com"
+              <a rel="author" class="p-author h-card" href="https://marcuslindblom.com/"
                 >Marcus Lindblom</a
               ><img class="u-photo" src="/images/avatar.jpg" /><p
                 class="p-note"
