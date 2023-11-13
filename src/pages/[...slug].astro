@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Post from '../layouts/Post.astro';
+import store from '../store';
+
+const { slug } = Astro.params;
+
+const session = store.openSession();
+const page = await session
+  .query({ indexName: 'Content/ByUrl' })
+  .whereEquals('url', '/' + slug)
+  .firstOrNull();
+
+if (!page) return Astro.redirect("/404");
+
+const { heading, text, ['@metadata']: { ['@collection']: collection } } = page;
+
+---
+
+<BaseLayout>
+  <Post heading={heading} text={text} />
+</BaseLayout>

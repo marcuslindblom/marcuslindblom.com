@@ -1,28 +1,12 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { DocumentStore } from 'ravendb';
-
-const certificate = import.meta.env.STRIFE_CERTIFICATE;
-
-let authOptions = {
-  certificate: Buffer.from(certificate, 'base64'),
-  type: 'pfx',
-  password: import.meta.env.STRIFE_CERTIFICATE_PASSWORD,
-};
-
-const store = new DocumentStore(
-  import.meta.env.STRIFE_DATABASE_URLS.split(','),
-  import.meta.env.STRIFE_DATABASE,
-  authOptions
-);
-
-store.initialize();
+import store from '../../store';
 
 const session = store.openSession();
 
 const results = await session.advanced
   .rawQuery(
-    `from index 'Content/ByUrl' as post  load post.labels as labels[] select {
+    `from index 'Content/ByUrl' as post where post.origin == '6bd777f8-9aef-4480-a2ac-0780a4c26b8c' load post.labels as labels[] select {
           name: post.displayName,
           publishedDate: post.publishedDate,
           labels: labels,

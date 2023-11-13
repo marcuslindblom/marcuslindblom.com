@@ -1,0 +1,23 @@
+---
+const { heading, text } = Astro.props;
+---
+
+<section>
+  <div class="mx-auto max-w-7xl px-8 py-12 lg:pt-24">
+    <div class="mx-auto max-w-xl">
+      <div>
+        <div class="md:flex md:items-center md:justify-between md:space-x-5">
+          <div class="text-sm font-light">
+            <p class="text-black dark:text-white">
+              { heading }
+            </p><div
+              class="text-neutral-500 dark:text-neutral-400 space-y-3 mt-3 prose prose-sm"
+              set:html={ text }
+            >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
