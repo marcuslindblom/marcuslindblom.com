@@ -7,11 +7,11 @@ const { heading, text } = Astro.props;
     <div class="mx-auto max-w-xl">
       <div>
         <div class="md:flex md:items-center md:justify-between md:space-x-5">
-          <div class="text-sm font-light">
-            <p class="text-black dark:text-white">
+          <div class="text-sm font-light h-entry">
+            <p class="text-black dark:text-white p-name">
               { heading }
             </p><div
-              class="text-neutral-500 dark:text-neutral-400 space-y-3 mt-3 prose prose-sm"
+              class="text-neutral-500 dark:text-neutral-400 space-y-3 mt-3 prose prose-sm e-content"
               set:html={ text }
             >
             </div>
