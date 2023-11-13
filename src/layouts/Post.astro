@@ -43,6 +43,7 @@ const formatDateTime = (date: string): string => {
               datetime={formatDateTime(publishedDate)}
               >{formatDate(publishedDate)}</time
             >
+            <p class="p-summary"></p>
             <div
               class="text-neutral-500 dark:text-neutral-400 space-y-3 mt-3 prose prose-sm e-content"
               set:html={text}

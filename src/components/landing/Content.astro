@@ -16,8 +16,20 @@ const notes = await session
 
 const dateOptions: object = {
   year: 'numeric',
-  month: 'long',
+  month: 'short',
   day: 'numeric',
+};
+
+const formatDateTime = (date: string): string => {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  const hours = String(d.getHours()).padStart(2, '0');
+  const minutes = String(d.getMinutes()).padStart(2, '0');
+  const seconds = String(d.getSeconds()).padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
 ---
 
@@ -57,7 +69,7 @@ const dateOptions: object = {
                   <div class="text-neutral-500  items-start grid grid-cols-1 md:grid-cols-3 h-entry">
                     <div>
                       <span class="hidden p-author">Marcus</span>
-                      <time class="text-neutral-400 dark:text-neutral-400 dt-published">
+                      <time datetime={formatDateTime(note.publishedDate)} class="text-neutral-400 dark:text-neutral-400 dt-published">
                         {new Date(note.publishedDate).toLocaleDateString(
                           'en-US',
                           dateOptions
