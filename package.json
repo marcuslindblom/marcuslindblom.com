@@ -18,6 +18,8 @@
     "ravendb": "^5.4.1"
   },
   "dependencies": {
-    "@astrojs/vercel": "^5.2.0"
+    "@astrojs/rss": "^3.0.0",
+    "@astrojs/vercel": "^5.2.0",
+    "sanitize-html": "^2.11.0"
   }
 }
