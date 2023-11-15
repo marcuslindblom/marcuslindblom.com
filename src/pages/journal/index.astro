@@ -15,6 +15,12 @@ const results = await session.advanced
   )
   .all();
 
+  const labels = await session.query({ indexName: 'Labels/ByCount' }).all();
+
+  const posts = await session.query({ indexName: 'Posts/ByLabel' }).whereIn('labels', ['Performance']).all();
+
+console.log(posts.length);
+
 const dateOptions: object = {
   year: 'numeric',
   month: 'long',
@@ -29,7 +35,15 @@ const dateOptions: object = {
         <div>
           <div class="md:flex md:items-center md:justify-between md:space-x-5">
             <div class="text-sm font-light">
-              <p class="text-black dark:text-white">Writing</p><div
+              <p class="text-black dark:text-white">Writing</p>
+              {
+                labels.filter(x => x.name).map((label) => (
+                  <a href={`/journal?label=${label.name}`} class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 duration-200">
+                    {label.name} ({label.count}),&nbsp;
+                  </a>
+                ))
+              }
+              <div
                 class="text-neutral-500 dark:text-neutral-400 space-y-3 mt-3"
               >
                 {
