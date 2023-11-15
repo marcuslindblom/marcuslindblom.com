@@ -38,8 +38,8 @@ const dateOptions: object = {
               <p class="text-black dark:text-white">Writing</p>
               {
                 labels.filter(x => x.name).map((label) => (
-                  <a href={`/journal?label=${label.name}`} class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 duration-200">
-                    {label.name} ({label.count}),&nbsp;
+                  <a href={`/journal?label=${label.name}`} class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 text-xs duration-200 ring-1 ring-neutral-500 rounded-full me-2 px-3 py-1">
+                    {label.name} ({label.count})
                   </a>
                 ))
               }
