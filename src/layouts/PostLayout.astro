@@ -28,10 +28,8 @@ const formatDateTime = (date: string): string => {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
 
-const path = isProd ? Astro.url.href : `${Astro.site.origin}${Astro.url.pathname}`;
-
 const mentions = async () => {
-  return await fetch(`https://webmention.io/api/mentions.jf2?target=${path}`)
+  return await fetch(`https://webmention.io/api/mentions.jf2?target=${Astro.site.origin}${Astro.url.pathname}`)
     .then(response => response.json())
     .then(data => {
       return data.children.reduce((acc, entry) => {
