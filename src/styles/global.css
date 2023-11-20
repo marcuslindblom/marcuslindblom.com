@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+q::before {
+  background-color: var(--surface-document);
+  border-radius: var(--radius-round);
+  content: url(https://api.iconify.design/mingcute:quote-right-fill.svg?color=%23828282);
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  line-height: 0;
+  padding: var(--size-3);
+  position: absolute;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+q.mastodon::before {
+  content: url(https://api.iconify.design/mdi:mastodon.svg?color=%23828282)
+}
+
+q.bsky::before {
+  content: url(https://api.iconify.design/tabler:square-filled.svg?color=%23828282)
+}

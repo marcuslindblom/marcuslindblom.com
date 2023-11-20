@@ -6,7 +6,10 @@ const session = store.openSession();
 
 const results = await session.advanced
   .rawQuery(
-    `from index 'Content/ByUrl' as post where post.origin == '6bd777f8-9aef-4480-a2ac-0780a4c26b8c' load post.labels as labels[] select {
+    `from index 'Content/ByUrl' as post
+      where post.origin == '6bd777f8-9aef-4480-a2ac-0780a4c26b8c'
+      and post.published == true
+      load post.labels as labels[] select {
           name: post.displayName,
           publishedDate: post.publishedDate,
           labels: labels,
@@ -15,11 +18,20 @@ const results = await session.advanced
   )
   .all();
 
-  const labels = await session.query({ indexName: 'Labels/ByCount' }).all();
+// const results = await session.query({ indexName: 'Content/ByUrl' })
+// .whereEquals('origin', '6bd777f8-9aef-4480-a2ac-0780a4c26b8c')
+// .andAlso().whereEquals('published', true)
+// .include((x) => x.includeDocuments('labels'))
+// .all();
 
-  const posts = await session.query({ indexName: 'Posts/ByLabel' }).whereIn('labels', ['Performance']).all();
+// console.log(results);
 
-console.log(posts.length);
+const labels = await session.query({ indexName: 'Labels/ByCount' }).all();
+
+const posts = await session
+  .query({ indexName: 'Posts/ByLabel' })
+  .whereIn('labels', ['Performance'])
+  .all();
 
 const dateOptions: object = {
   year: 'numeric',
@@ -37,11 +49,16 @@ const dateOptions: object = {
             <div class="text-sm font-light">
               <p class="text-black dark:text-white">Writing</p>
               {
-                labels.filter(x => x.name).map((label) => (
-                  <a href={`/journal?label=${label.name}`} class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 text-xs duration-200 ring-1 ring-neutral-500 rounded-full me-2 px-3 py-1">
-                    {label.name} ({label.count})
-                  </a>
-                ))
+                labels
+                  .filter((x) => x.name)
+                  .map((label) => (
+                    <a
+                      href={`/journal?label=${label.name}`}
+                      class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 text-xs duration-200 ring-1 ring-neutral-500 rounded-full me-2 px-3 py-1"
+                    >
+                      {label.name} ({label.count})
+                    </a>
+                  ))
               }
               <div
                 class="text-neutral-500 dark:text-neutral-400 space-y-3 mt-3"
@@ -68,7 +85,11 @@ const dateOptions: object = {
                             </a>
                           </p>
                           <p class="">
-                            {Object.values(post.labels).map(function(label){return label.name}).join(", ")}
+                            {Object.values(post.labels)
+                              .map(function (label) {
+                                return label.name;
+                              })
+                              .join(', ')}
                           </p>
                         </div>
                       </div>

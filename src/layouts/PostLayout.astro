@@ -139,19 +139,28 @@ const mentions = async () => {
               {
                 comments?.length > 0 &&
                   <h3 class="text-xs mb-1">{comments?.length} Comments</h3>
-                  <ul class="flex flex-wrap list-none pe-24 gap-3 mb-4">
+                  <div>
                     {
                       comments?.map(comment => {
+                        const channel = comment.url.includes('bsky') ? 'bsky' : comment.url.includes('github') ? 'github' : comment.url.includes('mastodon') ? 'mastodon' : 'webmention'
                         return (
-                          <li class="p-0 ease-in-out duration-200 hover:-translate-y-1.5 -me-6">
-                            <a href={comment.author.url} class="m-0 p-0">
-                              <img src={comment.author.photo} alt={comment.author.name} loading="lazy" decoding="async" width="24" height="24" class="rounded-full border border-white/10 u-photo aspect-square" />
-                            </a>
-                          </li>
+                          <div class="relative p-4 my-5 border border-[#ffffff1a] rounded-xl w-full">
+                            <q class:list={[channel, 'text-sm', 'grid']}>
+                              <div>
+                                {comment.content.text}
+                              </div>
+                              <cite class="flex items-center self-end inset-y-1 relative gap-1">
+                                <a href={comment.author.url}>
+                                  <img src={comment.author.photo} alt={comment.author.name} loading="lazy" decoding="async" width="24" height="24" class="rounded-full border border-white/10 u-photo aspect-square" />
+                                </a>
+                                <a href={comment.url} class="text-xs not-italic">{comment.author.name}</a>
+                              </cite>
+                            </q>
+                          </div>
                         )
                       })
                     }
-                  </ul>
+                  </div>
               }
 
             </section>
