@@ -21,3 +21,14 @@ q.mastodon::before {
 q.bsky::before {
   content: url(https://api.iconify.design/tabler:square-filled.svg?color=%23828282)
 }
+
+:where(video),
+:where(iframe) {
+  max-inline-size: 100%;
+  block-size: auto;
+  aspect-ratio: 16/9;
+  object-fit:contain;
+  object-position: top center;
+  margin-block: 3rem;
+  border: none;
+}
