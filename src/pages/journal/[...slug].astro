@@ -3,17 +3,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostLayout from '../../layouts/PostLayout.astro';
 import store from '../../store';
 
-// const { slug } = Astro.params;
-
-// console.log('slug', );
-
 const session = store.openSession();
 const page = await session
   .query({ indexName: 'Content/ByUrl' })
   .whereEquals('url', Astro.url.pathname)
   .firstOrNull();
 
-// if (!page) return Astro.redirect("/404");
+if (!page) return Astro.redirect("/404");
 
 const { heading, text, publishedDate, ['@metadata']: { ['@collection']: collection } } = page;
 
