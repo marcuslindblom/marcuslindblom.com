@@ -1,15 +1,20 @@
 ---
 import { Facet } from 'ravendb';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import store from '../../store';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import store from '../../../store';
 
 const session = store.openSession();
+
+const { label } = Astro.params;
+
+const lastSegment = label.split('/').pop();
 
 const facet = new Facet();
 facet.fieldName = 'labels';
 
 const facets = await session
   .query({ indexName: 'Posts/ByLabel'})
+  // .whereIn('labels', [lastSegment])
   .aggregateBy(facet)
   .execute();
 
@@ -18,20 +23,10 @@ const labels = facets['labels'].values.map((x) => ({
   count: x.count,
 }));
 
-const results = await session.advanced
-  .rawQuery(
-    `from index 'Content/ByUrl' as post
-      where post.origin == '6bd777f8-9aef-4480-a2ac-0780a4c26b8c'
-      and post.published == true
-      order by post.publishedDate desc
-      load post.labels as labels[]
-      select {
-          name: post.displayName,
-          publishedDate: post.publishedDate,
-          labels: labels,
-          url: post.url
-        }`
-  )
+const results = await session
+  .query({ indexName: 'Posts/ByLabel' })
+  .whereIn('labels', [lastSegment])
+  .selectFields(['displayName', 'publishedDate', 'labels', 'url'])
   .all();
 
 const dateOptions: object = {
@@ -39,6 +34,7 @@ const dateOptions: object = {
   month: 'long',
   day: 'numeric',
 };
+
 ---
 
 <BaseLayout>
@@ -57,7 +53,7 @@ const dateOptions: object = {
                   .filter((x) => x.name)
                   .map((label) => (
                     <a
-                      href={`/journal/label/${label.name.toLowerCase()}`}
+                      href={`/journal/label/${label.name}`}
                       class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 text-xs duration-200 ring-1 ring-neutral-500 rounded-full me-2 px-3 py-1"
                     >
                       {label.name} ({label.count})
@@ -85,15 +81,8 @@ const dateOptions: object = {
                               href={post.url}
                               class="underline hover:no-underline duration-200 after:content-['_↗']"
                             >
-                              {post.name}
+                              {post.displayName}
                             </a>
-                          </p>
-                          <p class="">
-                            {Object.values(post.labels)
-                              .map(function (label) {
-                                return label.name;
-                              })
-                              .join(', ')}
                           </p>
                         </div>
                       </div>
