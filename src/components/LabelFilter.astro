@@ -8,6 +8,8 @@ facet.fieldName = 'labels';
 const session = store.openSession();
 const facets = await session
   .query({ indexName: 'Posts/ByLabel'})
+  .whereEquals('published', true)
+  .orderByDescending('publishedDate')
   .aggregateBy(facet)
   .execute();
 
@@ -18,7 +20,7 @@ const labels = facets['labels'].values.map((x) => ({
 
 ---
 
-<a href="/journal" class="dark:bg-yellow-600 text-neutral-500 dark:text-yellow-300 hover:text-neutral-400 dark:hover:text-neutral-200 text-xs duration-200 rounded-full me-2 px-5 py-1 inline-flex h-8 place-items-center">
+<a href="/journal" class="dark:bg-yellow-800 text-neutral-500 dark:text-yellow-300 hover:text-neutral-400 dark:hover:text-neutral-200 text-xs font-semibold duration-200 rounded-full me-2 px-5 py-1 inline-flex h-8 place-items-center">
   All
 </a>
 {

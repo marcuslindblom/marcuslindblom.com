@@ -1,28 +1,16 @@
 ---
-import { Facet } from 'ravendb';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import LabelFilter from '../../components/LabelFilter.astro';
 import store from '../../store';
 
+console.log(Astro.url);
+
 const session = store.openSession();
-
-const facet = new Facet();
-facet.fieldName = 'labels';
-
-const facets = await session
-  .query({ indexName: 'Posts/ByLabel'})
-  .aggregateBy(facet)
-  .execute();
-
-const labels = facets['labels'].values.map((x) => ({
-  name: x.range,
-  count: x.count,
-}));
 
 const results = await session.advanced
   .rawQuery(
     `from index 'Content/ByUrl' as post
-      where post.origin == '6bd777f8-9aef-4480-a2ac-0780a4c26b8c'
+      where post.collection == 'posts'
       and post.published == true
       order by post.publishedDate desc
       load post.labels as labels[]

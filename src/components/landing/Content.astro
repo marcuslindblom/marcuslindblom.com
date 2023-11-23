@@ -7,7 +7,7 @@ const session = store.openSession();
 
 const notes = await session
   .query({ indexName: 'Content/ByUrl' })
-  .whereStartsWith('url', '/journal/')
+  .whereEquals('collection', 'posts')
   .whereEquals('published', true)
   .orderByDescending('publishedDate')
   .selectFields(['heading', 'summary', 'publishedDate', 'url'])

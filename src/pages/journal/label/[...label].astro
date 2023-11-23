@@ -1,5 +1,4 @@
 ---
-import { Facet } from 'ravendb';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import LabelFilter from '../../../components/LabelFilter.astro';
 import store from '../../../store';
@@ -12,6 +11,8 @@ const lastSegment = label.split('/').pop();
 
 const results = await session
   .query({ indexName: 'Posts/ByLabel' })
+  .whereEquals('published', true)
+  .orderByDescending('publishedDate')
   .whereIn('labels', [lastSegment])
   .all();
 
