@@ -1,6 +1,7 @@
 ---
 import { Facet } from 'ravendb';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import LabelFilter from '../../components/LabelFilter.astro';
 import store from '../../store';
 
 const session = store.openSession();
@@ -49,21 +50,9 @@ const dateOptions: object = {
           <div class="md:flex md:items-center md:justify-between md:space-x-5">
             <div class="text-sm font-light flex-grow">
               <p class="text-black dark:text-white">Writing</p>
-              <a href="/journal" class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 text-xs duration-200 ring-1 ring-neutral-500 rounded-full me-2 px-3 py-1">
-                All ({labels.reduce((a, b) => a + b.count, 0)})
-              </a>
-              {
-                labels
-                  .filter((x) => x.name)
-                  .map((label) => (
-                    <a
-                      href={`/journal/label/${label.name.toLowerCase()}`}
-                      class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 text-xs duration-200 ring-1 ring-neutral-500 rounded-full me-2 px-3 py-1"
-                    >
-                      {label.name} ({label.count})
-                    </a>
-                  ))
-              }
+              <div class="my-5">
+                <LabelFilter />
+              </div>
               <div
                 class="text-neutral-500 dark:text-neutral-400 space-y-3 mt-3"
               >
