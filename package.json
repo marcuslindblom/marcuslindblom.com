@@ -14,7 +14,7 @@
     "@astrojs/tailwind": "^5.0.0",
     "@strifeapp/strife": "^0.2.11-alpha",
     "@tailwindcss/typography": "^0.5.10",
-    "astro": "^3.0.7",
+    "astro": "^3.6.0",
     "ravendb": "^5.4.1"
   },
   "dependencies": {
