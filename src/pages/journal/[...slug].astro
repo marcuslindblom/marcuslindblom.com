@@ -6,7 +6,7 @@ import store from '../../store';
 const session = store.openSession();
 const page = await session
   .query({ indexName: 'Content/ByUrl' })
-  .whereEquals('url', Astro.url.pathname)
+  .whereEquals('url', Astro.url.pathname.replace(/\/$/, '')) // remove trailing slash
   .firstOrNull();
 
 if (!page) return Astro.redirect("/404");
