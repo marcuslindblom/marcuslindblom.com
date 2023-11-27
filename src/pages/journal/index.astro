@@ -3,8 +3,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import LabelFilter from '../../components/LabelFilter.astro';
 import store from '../../store';
 
-console.log(Astro.url);
-
 const session = store.openSession();
 
 const results = await session.advanced
