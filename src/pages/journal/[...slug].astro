@@ -26,7 +26,7 @@ fetch('https://in.logs.betterstack.com', {
   },
   method: 'POST',
   body: JSON.stringify({
-    lastQueryTime: lastQueryTime,
+    dt: lastQueryTime,
     queryDuration: queryDuration,
     message: 'Query duration for ' + Astro.url.pathname.replace(/\/$/, '' ) + ' is ' + queryDuration + 'ms'
   })
