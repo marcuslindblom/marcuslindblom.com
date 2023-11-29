@@ -17,11 +17,12 @@ const notes = await session
   .statistics(s => stats = s)
   .all();
 
-// Get the query duration from the stats
-const queryDuration = stats.durationInMs;
-const lastQueryTime = stats.lastQueryTime;
+try {
+  // Get the query duration from the stats
+  const queryDuration = stats.durationInMs;
+  const lastQueryTime = stats.lastQueryTime;
 
-fetch('https://in.logs.betterstack.com', {
+  fetch('https://in.logs.betterstack.com', {
   headers: {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer A7KB9aGyb4mzyWohkx7dbJkP'
@@ -33,6 +34,10 @@ fetch('https://in.logs.betterstack.com', {
     message: 'Query duration for ' + Astro.url.pathname.replace(/\/$/, '' ) + ' is ' + queryDuration + ' ms'
   })
 });
+} catch (error) {
+  console.log('Error logging query duration: ' + error);
+}
+
 
 const dateOptions: object = {
   year: 'numeric',
