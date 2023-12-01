@@ -37,6 +37,8 @@ export class HeroCard extends LitElement {
               is="str-img"
               data-field="avatar"
               alt="image"
+              width="96"
+              height="96"
             />
             <span
               class="absolute inset-0 rounded-full shadow-inner"
