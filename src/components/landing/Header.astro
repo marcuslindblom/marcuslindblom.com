@@ -1,7 +1,7 @@
 ---
 import { HeroCard } from './hero-card';
 
-const { heading, introduction } = Astro.props;
+const { heading, introduction, avatar } = Astro.props;
 
 ---
 
@@ -10,7 +10,7 @@ const { heading, introduction } = Astro.props;
     <div class="mx-auto max-w-xl">
       <div>
         <div class="md:flex md:items-center md:justify-between md:space-x-5">
-            <HeroCard heading={heading}  client:visible />
+            <HeroCard heading={heading} avatar={avatar}  client:visible />
         </div>
         <div class="mt-24 text-sm font-light">
           <p class="text-black dark:text-white">About</p>
