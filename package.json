@@ -14,12 +14,15 @@
     "@astrojs/tailwind": "^5.0.0",
     "@strifeapp/strife": "^0.2.11-alpha",
     "@tailwindcss/typography": "^0.5.10",
-    "astro": "^3.6.0",
+    "astro": "^3.6.4",
     "ravendb": "^5.4.1"
   },
   "dependencies": {
+    "@astrojs/lit": "^3.0.3",
     "@astrojs/rss": "^3.0.0",
     "@astrojs/vercel": "^5.2.0",
+    "@webcomponents/template-shadowroot": "^0.2.1",
+    "lit": "^2.8.0",
     "sanitize-html": "^2.11.0"
   }
 }
