@@ -1,11 +1,7 @@
 ---
-import { contact } from '../../data/contact.json';
-
 import store from '../../store';
-
+import { contact } from '../../data/contact.json';
 const session = store.openSession();
-
-// let stats;
 
 const notes = await session
   .query({ indexName: 'Content/ByUrl' })
@@ -14,29 +10,7 @@ const notes = await session
   .orderByDescending('publishedDate')
   .selectFields(['heading', 'summary', 'publishedDate', 'url'])
   .take(3)
-  // .statistics(s => stats = s)
   .all();
-
-// try {
-//   const queryDuration = stats.durationInMs;
-//   const lastQueryTime = stats.lastQueryTime;
-
-//   fetch('https://in.logs.betterstack.com', {
-//   headers: {
-//     'Content-Type': 'application/json',
-//     'Authorization': 'Bearer A7KB9aGyb4mzyWohkx7dbJkP'
-//   },
-//   method: 'POST',
-//   body: JSON.stringify({
-//     dt: lastQueryTime,
-//     queryDuration: queryDuration,
-//     message: 'Query duration for ' + Astro.url.pathname.replace(/\/$/, '' ) + ' is ' + queryDuration + ' ms'
-//   })
-// });
-// } catch (error) {
-//   console.log('Error logging query duration: ' + error);
-// }
-
 
 const dateOptions: object = {
   year: 'numeric',
@@ -55,6 +29,7 @@ const formatDateTime = (date: string): string => {
 
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
+
 ---
 
 <section>
@@ -91,7 +66,7 @@ const formatDateTime = (date: string): string => {
           <p class="text-black dark:text-white">Writing</p>
           <div class="grid gap-6 mt-3">
             {
-              notes.map((note) => (
+              notes?.map((note) => (
                 <>
                   <div class="text-neutral-500 items-start grid grid-cols-1 md:grid-cols-3 h-entry">
                     <div>

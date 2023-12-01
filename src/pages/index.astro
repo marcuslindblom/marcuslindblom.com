@@ -1,11 +1,19 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Header from "../components/landing/Header.astro";
-import Content from "../components/landing/Content.astro";
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/landing/Header.astro';
+import Content from '../components/landing/Content.astro';
+import store from '../store';
+
+const session = store.openSession();
+
+const home = await session
+  .query({ indexName: 'Content/ByUrl' })
+  .whereEquals('url', '/')
+  .firstOrNull();
 
 ---
 
 <BaseLayout>
-  <Header />
+  <Header heading={home.heading} introduction={home.introduction} />
   <Content />
 </BaseLayout>
