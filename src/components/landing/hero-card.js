@@ -14,6 +14,7 @@ export class HeroCard extends LitElement {
     super();
     this.heading = '';
     this.introduction = '';
+    this.avatar = '/images/avatar.jpg';
   }
   firstUpdated() {
     this.unsubscribe = subscribe(
@@ -31,7 +32,9 @@ export class HeroCard extends LitElement {
           <div class="relative">
             <img
               class="h-16 w-16 lg:h-24 lg:w-24 rounded-full border border-white/10 u-photo"
-              src="/images/avatar.jpg"
+              src="${this.avatar}"
+              is="str-img"
+              data-field="avatar"
               alt="image"
             />
             <span
