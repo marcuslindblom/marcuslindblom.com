@@ -20,7 +20,7 @@ export class HeroCard extends LitElement {
   firstUpdated() {
     this.unsubscribe = subscribe(
       (data) =>
-        ({ heading: this.heading, introduction: this.introduction } = data)
+        ({ heading: this.heading, introduction: this.introduction, avatar: this.avatar } = data)
     );
   }
   disconnectedCallback() {
