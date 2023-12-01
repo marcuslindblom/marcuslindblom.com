@@ -9,13 +9,13 @@ export class HeroCard extends LitElement {
   static properties = {
     heading: { type: String },
     introduction: { type: String },
-    avatar: { type: String },
+    avatar: { type: Object },
   };
   constructor() {
     super();
     this.heading = '';
     this.introduction = '';
-    this.avatar = '/images/avatar.jpg';
+    this.avatar = {};
   }
   firstUpdated() {
     this.unsubscribe = subscribe(
@@ -33,7 +33,7 @@ export class HeroCard extends LitElement {
           <div class="relative">
             <img
               class="h-16 w-16 lg:h-24 lg:w-24 rounded-full border border-white/10 u-photo"
-              src="${this.avatar}"
+              src="${this.avatar?.source?.url}"
               is="str-img"
               data-field="avatar"
               alt="image"
