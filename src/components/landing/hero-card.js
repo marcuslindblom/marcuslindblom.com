@@ -9,6 +9,7 @@ export class HeroCard extends LitElement {
   static properties = {
     heading: { type: String },
     introduction: { type: String },
+    avatar: { type: String },
   };
   constructor() {
     super();
