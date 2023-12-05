@@ -402,3 +402,5 @@ wwwroot/bundle.js
 DOCS.md
 .DS_Store
 .env
+.env.development
+.env.production
