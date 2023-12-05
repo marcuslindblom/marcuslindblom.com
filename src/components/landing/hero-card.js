@@ -1,11 +1,48 @@
 import { LitElement, html, css, unsafeCSS } from 'lit';
 import { subscribe } from '@strifeapp/strife';
+import { render as renderImage } from '@strifeapp/image';
 import sheet from '../../styles/global.css?inline' assert { type: 'css' };
 
 export class HeroCard extends LitElement {
-  static styles = css`
-    ${unsafeCSS(sheet)}
-  `;
+  static styles = [
+    css`
+      ${unsafeCSS(sheet)}
+    `,
+    css`
+      :host {
+        --str-placeholder-text-opacity: 0.3;
+        --str-placeholder-background-color: #0099ff;
+        --str-placeholder-background-opacity: 0.8;
+      }
+      img.previewing {
+        --img-previewing-url: '';
+        --img-previewing-size: 100%;
+        --img-previewing-position: 0px 0px;
+        background-image: var(--img-previewing-url);
+        background-repeat: no-repeat;
+        background-position: var(--img-previewing-position);
+        background-size: var(--img-previewing-size);
+      }
+      img.previewing.previewing--empty {
+        background-image: repeating-linear-gradient(
+          45deg,
+          var(--str-placeholder-background-color) 0,
+          transparent 1px,
+          transparent 0,
+          transparent 50%
+        );
+        background-repeat: repeat;
+        background-position: 0 0;
+        background-size: 15px 15px;
+        outline: solid 1px var(--str-placeholder-background-color);
+        opacity: var(--str-placeholder-background-opacity);
+      }
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        animation-duration: 0.5s;
+      }
+    `,
+  ];
   static properties = {
     heading: { type: String },
     introduction: { type: String },
@@ -18,12 +55,14 @@ export class HeroCard extends LitElement {
     this.avatar = {};
   }
   firstUpdated() {
-    this.unsubscribe = subscribe(
-      (data) =>
-        ({ heading: this.heading, introduction: this.introduction, avatar: this.avatar } = data)
-    );
+    this.image = this.renderRoot.querySelector('img');
+    this.unsubscribe = subscribe((data) => {
+      ({ heading: this.heading, introduction: this.introduction } = data);
+      renderImage(this.image, data.avatar);
+    });
   }
   disconnectedCallback() {
+    super.disconnectedCallback();
     this.unsubscribe();
   }
   render() {
@@ -34,11 +73,9 @@ export class HeroCard extends LitElement {
             <img
               class="h-16 w-16 lg:h-24 lg:w-24 rounded-full border border-white/10 u-photo"
               src="${this.avatar?.source?.url}"
-              is="str-img"
-              data-field="avatar"
               alt="image"
-              width="96"
-              height="96"
+              width="94"
+              height="94"
             />
             <span
               class="absolute inset-0 rounded-full shadow-inner"
