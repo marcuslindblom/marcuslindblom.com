@@ -24,6 +24,7 @@
     "@strifeapp/image": "^0.0.1-alpha.1",
     "@strifeapp/style": "^0.0.1-alpha.2",
     "@webcomponents/template-shadowroot": "^0.2.1",
+    "inter-ui": "^3.19.3",
     "lit": "^2.8.0",
     "sanitize-html": "^2.11.0"
   }
