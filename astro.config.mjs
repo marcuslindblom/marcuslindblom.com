@@ -11,7 +11,7 @@ export default defineConfig({
   output: 'server',
   vite: {
     ssr: {
-      noExternal: ['@strifeapp/strife']
+      noExternal: ['@strifeapp/strife', '@strifeapp/image']
     }
   },
   adapter: vercel({
