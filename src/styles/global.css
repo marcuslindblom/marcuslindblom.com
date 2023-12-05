@@ -33,3 +33,14 @@ q.bsky::before {
   margin-block: 3rem;
   border: none;
 }
+
+:root {
+  --str-placeholder-text-opacity: 0.3;
+  --str-placeholder-background-color: #0099ff;
+  --str-placeholder-background-opacity: 0.8;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.5s;
+}
