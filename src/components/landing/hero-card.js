@@ -9,11 +9,6 @@ export class HeroCard extends LitElement {
       ${unsafeCSS(sheet)}
     `,
     css`
-      :host {
-        --str-placeholder-text-opacity: 0.3;
-        --str-placeholder-background-color: #0099ff;
-        --str-placeholder-background-opacity: 0.8;
-      }
       img.previewing {
         --img-previewing-url: '';
         --img-previewing-size: 100%;
@@ -36,10 +31,6 @@ export class HeroCard extends LitElement {
         background-size: 15px 15px;
         outline: solid 1px var(--str-placeholder-background-color);
         opacity: var(--str-placeholder-background-opacity);
-      }
-      ::view-transition-old(root),
-      ::view-transition-new(root) {
-        animation-duration: 0.5s;
       }
     `,
   ];
@@ -73,9 +64,10 @@ export class HeroCard extends LitElement {
             <img
               class="h-16 w-16 lg:h-24 lg:w-24 rounded-full border border-white/10 u-photo"
               src="${this.avatar?.source?.url}"
-              alt="image"
+              alt="Marcus Lindblom"
               width="94"
               height="94"
+              loading="lazy"
             />
             <span
               class="absolute inset-0 rounded-full shadow-inner"
