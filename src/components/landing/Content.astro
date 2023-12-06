@@ -1,16 +1,7 @@
 ---
-import store from '../../store';
 import { contact } from '../../data/contact.json';
-const session = store.openSession();
 
-const notes = await session
-  .query({ indexName: 'Content/ByUrl' })
-  .whereEquals('collection', 'posts')
-  .whereEquals('published', true)
-  .orderByDescending('publishedDate')
-  .selectFields(['heading', 'summary', 'publishedDate', 'url'])
-  .take(3)
-  .all();
+const { notes } = Astro.props;
 
 const dateOptions: object = {
   year: 'numeric',

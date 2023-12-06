@@ -6,14 +6,26 @@ import store from '../store';
 
 const session = store.openSession();
 
-const home = await session
+const homeLazy = session
   .query({ indexName: 'Content/ByUrl' })
   .whereEquals('url', '/')
-  .firstOrNull();
+  .lazily();
+
+const notesLazy = session
+  .query({ indexName: 'Content/ByUrl' })
+  .whereEquals('collection', 'posts')
+  .whereEquals('published', true)
+  .orderByDescending('publishedDate')
+  .selectFields(['heading', 'summary', 'publishedDate', 'url'])
+  .take(3)
+  .lazily();
+
+const home = (await homeLazy.getValue())[0] ?? null;
+const notes = (await notesLazy.getValue());
 
 ---
 
 <BaseLayout>
   <Header heading={home.heading} introduction={home.introduction} avatar={home.avatar} />
-  <Content />
+  <Content notes={notes} />
 </BaseLayout>
