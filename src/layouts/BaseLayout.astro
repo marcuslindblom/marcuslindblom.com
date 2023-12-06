@@ -9,8 +9,8 @@ import BaseHead from "../components/BaseHead.astro";
 
   <body class="bg-white dark:bg-black">
     <slot />
-    <script type="module">
-      import { ready } from 'https://unpkg.com/@strifeapp/strife';
+    <script>
+      import { ready } from '@strifeapp/strife';
       ready();
     </script>
     <script src="https://cdn.usefathom.com/script.js" data-site="YUGAMIMD" defer></script>
