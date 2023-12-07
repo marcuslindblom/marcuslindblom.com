@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/landing/Header.astro';
 import Content from '../components/landing/Content.astro';
 import store from '../store';
-import '../array-polyfills'
+import '../array-polyfills';
 
 const session = store.openSession();
 
@@ -21,15 +21,22 @@ const notesLazy = session
   .take(3)
   .lazily();
 
-const { home, notes } = await Promise.all([homeLazy.getValue(), notesLazy.getValue()]).then(([home, notes]) => {
-    return {
-      home: home.firstOrDefault(),
-      notes: notes
-    }
-  });
+const { home, notes } = await Promise.all([
+  homeLazy.getValue(),
+  notesLazy.getValue(),
+]).then(([home, notes]) => {
+  return {
+    home: home.firstOrDefault(),
+    notes: notes,
+  };
+});
 ---
 
-<BaseLayout>
+<BaseLayout
+  title={home.page_settings.title}
+  description={home.page_settings.description}
+  card={home.page_images.og_image.source.url}
+>
   <Header
     heading={home.heading}
     introduction={home.introduction}

@@ -49,6 +49,10 @@ const {
 } = page;
 ---
 
-<BaseLayout>
+<BaseLayout
+  title={page.page_settings?.title}
+  description={page.page_settings?.description}
+  card={page.page_images?.og_image.source.url}
+>
   <PostLayout heading={heading} text={text} publishedDate={publishedDate} />
 </BaseLayout>
