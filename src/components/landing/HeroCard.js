@@ -64,7 +64,7 @@ export class HeroCard extends LitElement {
             <img
               class="h-16 w-16 lg:h-24 lg:w-24 rounded-full border border-white/10 u-photo"
               src="${this.avatar?.source?.url}"
-              alt="Marcus Lindblom"
+              alt="${this.avatar?.alt}"
               width="94"
               height="94"
               loading="lazy"
