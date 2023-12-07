@@ -33,9 +33,9 @@ const { home, notes } = await Promise.all([
 ---
 
 <BaseLayout
-  title={home.page_settings.title}
-  description={home.page_settings.description}
-  card={home.page_images.og_image.source.url}
+  title={home.page_settings?.title}
+  description={home.page_settings?.description}
+  card={home.page_images?.og_image.source.url}
 >
   <Header
     heading={home.heading}
