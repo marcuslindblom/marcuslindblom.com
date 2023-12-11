@@ -20,10 +20,10 @@
   "dependencies": {
     "@astrojs/lit": "^3.0.3",
     "@astrojs/rss": "^4.0.1",
-    "@astrojs/vercel": "^6.0.1",
+    "@astrojs/vercel": "^6.0.2",
     "@strifeapp/image": "^0.0.1-alpha.1",
     "@strifeapp/style": "^0.0.1-alpha.2",
-    "@vercel/speed-insights": "^1.0.0",
+    "@vercel/speed-insights": "^1.0.1",
     "@webcomponents/template-shadowroot": "^0.2.1",
     "inter-ui": "^3.19.3",
     "lit": "^2.8.0",
