@@ -1,7 +1,10 @@
 ---
+import { injectSpeedInsights } from '@vercel/speed-insights';
 import BaseHead from "../components/BaseHead.astro";
 
 const { title, description, card } = Astro.props
+
+injectSpeedInsights();
 
 ---
 
