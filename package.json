@@ -11,10 +11,10 @@
   },
   "devDependencies": {
     "@astrojs/sitemap": "^3.0.0",
-    "@astrojs/tailwind": "^5.0.3",
+    "@astrojs/tailwind": "^5.0.4",
     "@strifeapp/strife": "^0.2.11-alpha",
     "@tailwindcss/typography": "^0.5.10",
-    "astro": "^4.0.6",
+    "astro": "^4.0.7",
     "ravendb": "^5.4.2"
   },
   "dependencies": {
