@@ -23,3 +23,11 @@ export default defineConfig({
     }
   })
 });
+
+console.log(
+  process.env.VERCEL_ANALYTICS_ID,
+  process.env.PUBLIC_VERCEL_ANALYTICS_ID,
+);
+if (!process.env.VERCEL_ANALYTICS_ID) {
+  process.env.VERCEL_ANALYTICS_ID = process.env.PUBLIC_VERCEL_ANALYTICS_ID;
+}
