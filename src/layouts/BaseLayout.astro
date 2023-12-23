@@ -3,6 +3,7 @@ import { injectSpeedInsights } from '@vercel/speed-insights';
 import BaseHead from "../components/BaseHead.astro";
 
 const { title, description, card } = Astro.props;
+
 injectSpeedInsights();
 
 ---
@@ -19,5 +20,9 @@ injectSpeedInsights();
       ready();
     </script>
     <script src="https://cdn.usefathom.com/script.js" data-site="YUGAMIMD" defer></script>
+    <script>
+      window.si = window.si || function () { (window.siq = window.siq || []).push(); };
+  </script>
+  <script defer src="/_vercel/speed-insights/script.js"></script>
   </body>
 </html>
