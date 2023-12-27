@@ -19,10 +19,19 @@ injectSpeedInsights();
       import { ready } from '@strifeapp/strife';
       ready();
     </script>
-    <script src="https://cdn.usefathom.com/script.js" data-site="YUGAMIMD" defer></script>
+    <script src="https://cdn.usefathom.com/script.js" data-site="YUGAMIMD" defer>
+      window.addEventListener('load', (event) => {
+        [...document.querySelectorAll('a[href$=".pdf"], a[href$=".wav"]')].forEach((item) => {
+          item.addEventListener('click', event => {
+            let fileName = item.getAttribute('href');
+            fathom.trackEvent(`file download: ${fileName}`);
+          });
+        });
+      });
+    </script>
     <script>
       window.si = window.si || function () { (window.siq = window.siq || []).push(); };
-  </script>
-  <script defer src="/_vercel/speed-insights/script.js"></script>
+    </script>
+    <script defer src="/_vercel/speed-insights/script.js"></script>
   </body>
 </html>
