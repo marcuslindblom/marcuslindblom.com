@@ -169,3 +169,12 @@ const mentions = async () => {
     </div>
   </div>
 </main>
+
+<script>
+  [...document.querySelectorAll('a[href$=".pdf"], a[href$=".wav"]')].forEach((item) => {
+    item.addEventListener('click', event => {
+      let fileName = item.getAttribute('href');
+      fathom.trackEvent(`file download: ${fileName}`);
+    });
+  });
+</script>
