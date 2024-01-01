@@ -21,15 +21,18 @@ const notesLazy = session
   .take(3)
   .lazily();
 
-const { home, notes } = await Promise.all([
-  homeLazy.getValue(),
-  notesLazy.getValue(),
-]).then(([home, notes]) => {
-  return {
-    home: home.firstOrDefault(),
-    notes: notes,
-  };
-});
+const home = (await homeLazy.getValue()).firstOrDefault();
+const notes = (await notesLazy.getValue());
+
+//const { home, notes } = await Promise.all([
+//homeLazy.getValue(),
+//notesLazy.getValue(),
+//]).then(([home, notes]) => {
+//return {
+//home: home.firstOrDefault(),
+//notes: notes,
+//};
+//});
 ---
 
 <BaseLayout
