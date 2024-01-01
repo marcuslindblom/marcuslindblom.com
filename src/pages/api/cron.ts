@@ -6,7 +6,7 @@ export async function GET({params, request}) {
   let home = await session.load('fcc2e4e2-b7ce-443f-8da6-faac59919f46');
   console.log(home);
 
-  const response = await fetch("https://vercel.com/api/web/insights/stats/path?projectId=prj_28rIVArb3nNoE9JewhDlUpF7wU2r&from=2023-11-10&to=2023-11-12", {
+  const response = await fetch("https://vercel.com/api/web/insights/stats/path?projectId=prj_28rIVArb3nNoE9JewhDlUpF7wU2r&from=2023-12-24&to=2024-01-01", {
     headers: {Authorization: 'Bearer Q76DWcgS8vTsiQq7VQGhy4Nk'}
   });
 
