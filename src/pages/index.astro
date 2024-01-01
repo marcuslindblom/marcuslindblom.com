@@ -21,7 +21,7 @@ const notesLazy = session
   .take(3)
   .lazily();
 
-const { home, notes } = await Promise.all([
+const { home, notes } = await Promise.allSettled([
   homeLazy.getValue(),
   notesLazy.getValue(),
 ]).then(([home, notes]) => {
