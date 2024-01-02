@@ -42,11 +42,11 @@ const mentions = async () => {
 <main>
   <div class="mx-auto max-w-7xl px-8 py-12 lg:pt-24">
     <div class="mx-auto max-w-xl">
-      <article class="text-sm font-light flex h-entry">
+      <article class="text-sm font-light flex flex-col h-entry">
 
-        <div class="flex-shrink-0 w-12">
+        <div class="mb-4">
           <img
-            class="h-8 w-8 rounded-full border border-white/10"
+            class="h-12 w-12 rounded-full border border-white/10"
             src="/images/avatar.jpg"
             alt="image"
           />
@@ -66,14 +66,14 @@ const mentions = async () => {
             >{formatDate(publishedDate)}</time
           >
 
-          <h1 class="text-black dark:text-white p-name">
+          <h1 class="text-black dark:text-white text-xl mb-6 p-name">
             <a href={currentPath} class="u-url">
               {heading}
             </a>
           </h1>
 
           <div
-            class="text-neutral-500 dark:text-neutral-400 space-y-3 mt-3 prose prose-neutral prose-sm dark:prose-headings:text-white dark:prose-strong:text-white dark:prose-a:text-white e-content"
+            class="text-neutral-500 dark:text-neutral-400 space-y-3 mt-8 mb-4 prose prose-neutral prose-sm dark:prose-headings:text-white dark:prose-strong:text-white dark:prose-a:text-white prose-h2:text-xl prose-h2:font-light e-content"
             set:html={text}
           />
 
