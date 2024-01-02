@@ -21,15 +21,31 @@ const notesLazy = session
   .take(3)
   .lazily();
 
-const { home, notes } = await Promise.all([
+const results = await Promise.allSettled([
   homeLazy.getValue(),
   notesLazy.getValue(),
-]).then(([home, notes]) => {
-  return {
-    home: home.firstOrDefault(),
-    notes: notes,
-  };
-});
+]);
+
+const handleRejection = (reason) => {
+  // Handle the error gracefully
+  console.error('Error fetching values:', reason);
+  // You might want to throw the error again if you need it to propagate further
+  throw reason;
+};
+
+const [homeResult, notesResult] = results;
+
+const home = homeResult.status === 'fulfilled' ? homeResult.value.firstOrDefault() : null;
+const notes = notesResult.status === 'fulfilled' ? notesResult.value : null;
+
+if (homeResult.status === 'rejected') {
+  handleRejection(homeResult.reason);
+}
+
+if (notesResult.status === 'rejected') {
+  handleRejection(notesResult.reason);
+}
+
 ---
 
 <BaseLayout
@@ -42,5 +58,5 @@ const { home, notes } = await Promise.all([
     introduction={home.introduction}
     avatar={home.avatar}
   />
-  <Content notes={notes} />
+  <Content featured={home.featured} notes={notes} />
 </BaseLayout>
