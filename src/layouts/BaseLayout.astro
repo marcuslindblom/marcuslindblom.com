@@ -1,10 +1,10 @@
 ---
-import { injectSpeedInsights } from '@vercel/speed-insights';
+import SpeedInsights from '@vercel/speed-insights/astro';
 import BaseHead from "../components/BaseHead.astro";
 
 const { title, description, card } = Astro.props;
 
-injectSpeedInsights();
+
 
 ---
 
@@ -15,14 +15,12 @@ injectSpeedInsights();
 
   <body class="bg-white dark:bg-black">
     <slot />
+    <!-- <script src="../scripts/main.js"></script> -->
     <script>
       import { ready } from '@strifeapp/strife';
       ready();
     </script>
     <script src="https://cdn.usefathom.com/script.js" data-site="YUGAMIMD" defer is:inline></script>
-    <script>
-      window.si = window.si || function () { (window.siq = window.siq || []).push(); };
-    </script>
-    <script defer src="/_vercel/speed-insights/script.js"></script>
+    <SpeedInsights />
   </body>
 </html>
