@@ -97,7 +97,7 @@ export class HeroCard extends LitElement {
                 stroke-width="1.5"
               ></path>
             </svg>
-            <h1 class="lg:text-xl text-black dark:text-white p-name">
+            <h1 class="lg:text-xl text-black dark:text-white p-name text-balance">
               ${this.heading}
             </h1>
           </div>
