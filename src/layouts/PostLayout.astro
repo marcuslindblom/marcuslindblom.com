@@ -170,7 +170,7 @@ const mentions = async () => {
   </div>
 </main>
 
-<script>
+<script is:inline>
   [...document.querySelectorAll('a[href$=".pdf"], a[href$=".wav"]')].forEach((item) => {
     item.addEventListener('click', event => {
       let fileName = item.getAttribute('href');
