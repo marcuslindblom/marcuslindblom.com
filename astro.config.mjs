@@ -3,11 +3,15 @@ import vercel from '@astrojs/vercel/serverless';
 import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
 import lit from "@astrojs/lit";
+import webfinger from 'astro-webfinger'
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://marcuslindblom.com',
-  integrations: [tailwind(), sitemap(), lit()],
+  integrations: [tailwind(), sitemap(), lit(), webfinger({
+    instance: 'mastodon.social',
+    username: 'marcuslindblom'
+  })],
   output: 'server',
   vite: {
     ssr: {
