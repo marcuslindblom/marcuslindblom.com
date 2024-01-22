@@ -1,6 +1,7 @@
 ---
 import SpeedInsights from '@vercel/speed-insights/astro';
 import BaseHead from "../components/BaseHead.astro";
+const { PROD } = import.meta.env
 
 const { title, description, card } = Astro.props;
 
@@ -13,11 +14,14 @@ const { title, description, card } = Astro.props;
 
   <body class="bg-white dark:bg-black">
     <slot />
-    <!-- <script src="../scripts/main.js"></script> -->
     <script>
       import '../scripts/main.js'
     </script>
-    <script src="https://cdn.usefathom.com/script.js" data-site="YUGAMIMD" defer is:inline></script>
+    {
+      PROD && (
+      <script src="https://cdn.usefathom.com/script.js" data-site="YUGAMIMD" defer is:inline></script>
+      )
+    }
     <SpeedInsights />
   </body>
 </html>
