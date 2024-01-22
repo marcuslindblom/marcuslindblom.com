@@ -4,11 +4,16 @@ import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
 import lit from "@astrojs/lit";
 
+const { PROD } = import.meta.env;
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://marcuslindblom.com',
   integrations: [tailwind(), sitemap(), lit()],
   output: 'server',
+  server: {
+    port: 4323
+  },
   vite: {
     ssr: {
       noExternal: ['@strifeapp/strife', '@strifeapp/image']
@@ -16,7 +21,7 @@ export default defineConfig({
   },
   adapter: vercel({
     webAnalytics: {
-      enabled: true
+      enabled: PROD
     },
     speedInsights: {
       enabled: false
