@@ -34,6 +34,10 @@ q.bsky::before {
   border: none;
 }
 
+:where(iframe[src*="apple.com"]) {
+  aspect-ratio: 562 / 175;
+}
+
 :root {
   --str-placeholder-text-opacity: 0.3;
   --str-placeholder-background-color: #0099ff;
