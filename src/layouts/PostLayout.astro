@@ -62,7 +62,7 @@ const mentions = async () => {
 
           <time
             class="text-neutral-500 dark:text-neutral-400 dt-published"
-            datetime={formatDateTime(publishedDate)}
+            datetime={new Date(publishedDate).toISOString()}
             >{formatDate(publishedDate)}</time
           >
 
