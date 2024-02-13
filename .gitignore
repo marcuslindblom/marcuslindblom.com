@@ -404,3 +404,4 @@ DOCS.md
 .env
 .env.development
 .env.production
+.vercel
