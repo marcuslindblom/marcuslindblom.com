@@ -1,4 +1,4 @@
-# Astro & Tailwind CSS Starter Kit
+# Astro & Tailwind CSS Starter Kit.
 
 ## Template Integrations
 - @astrojs/tailwind - https://docs.astro.build/en/guides/integrations-guide/tailwind/
