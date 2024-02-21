@@ -21,7 +21,7 @@ export default defineConfig({
   },
   adapter: vercel({
     webAnalytics: {
-      enabled: PROD
+      enabled: PROD,
     },
     speedInsights: {
       enabled: false
