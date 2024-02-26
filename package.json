@@ -28,6 +28,6 @@
     "@webcomponents/template-shadowroot": "^0.2.1",
     "inter-ui": "^4.0.0",
     "lit": "^3.1.1",
-    "sanitize-html": "^2.11.0"
+    "sanitize-html": "^2.12.1"
   }
 }
