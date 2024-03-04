@@ -1,0 +1,17 @@
+name: Check Outdated
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 12 * * 1"
+
+jobs:
+  check_updates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install npm
+        run: npm install
+      - name: Check outdated
+        run: npm outdated
