@@ -1,61 +1,73 @@
 import { LitElement, html, css, unsafeCSS } from 'lit';
+import styles from './Styles';
 import { subscribe } from '@strifeapp/strife';
-import { render as renderImage } from '@strifeapp/image';
 import sheet from '../../styles/global.css?inline' assert { type: 'css' };
 
+
+const stylesheet = new CSSStyleSheet();
+
 export class HeroCard extends LitElement {
+
   static styles = [
     css`
       ${unsafeCSS(sheet)}
-    `,
-    css`
-      img.previewing {
-        --img-previewing-url: '';
-        --img-previewing-size: 100%;
-        --img-previewing-position: 0px 0px;
-        background-image: var(--img-previewing-url);
-        background-repeat: no-repeat;
-        background-position: var(--img-previewing-position);
-        background-size: var(--img-previewing-size);
-      }
-      img.previewing.previewing--empty {
-        background-image: repeating-linear-gradient(
-          45deg,
-          var(--str-placeholder-background-color) 0,
-          transparent 1px,
-          transparent 0,
-          transparent 50%
-        );
-        background-repeat: repeat;
-        background-position: 0 0;
-        background-size: 15px 15px;
-        outline: solid 1px var(--str-placeholder-background-color);
-        opacity: var(--str-placeholder-background-opacity);
-      }
-    `,
+    `, stylesheet
   ];
+
   static properties = {
     heading: { type: String },
     introduction: { type: String },
     avatar: { type: Object },
   };
+
   constructor() {
     super();
     this.heading = '';
     this.introduction = '';
     this.avatar = {};
   }
+
   firstUpdated() {
     this.image = this.renderRoot.querySelector('img');
+
     this.unsubscribe = subscribe((data) => {
       ({ heading: this.heading, introduction: this.introduction } = data);
-      renderImage(this.image, data.avatar);
+
+      const state = data.avatar;
+
+      const renderedSize = this.image.clientWidth / state.width;
+
+      const translateX =
+      this.image.clientWidth / 2 -
+        state.source.originalWidth * (state.source.crop.zoom * renderedSize) * state.source.crop.focusX;
+
+      const translateY =
+      this.image.clientHeight / 2 -
+        state.source.originalHeight * (state.source.crop.zoom * renderedSize) * state.source.crop.focusY;
+
+      const size = (state.source.originalWidth / this.image.clientWidth) * (state.source.crop.zoom * renderedSize);
+
+      stylesheet.replaceSync(`
+        img {
+          --img-previewing-url: url(${state.source.originalPreview});
+          --img-previewing-size: ${size * 100}%;
+          --img-previewing-position: ${translateX}px ${translateY}px;
+          background-image: var(--img-previewing-url);
+          background-repeat: no-repeat;
+          background-position: var(--img-previewing-position);
+          background-size: var(--img-previewing-size);
+        }`);
+
+      this.image.style = stylesheet.cssRules[0].style.cssText;
     });
+
   }
+
   disconnectedCallback() {
     super.disconnectedCallback();
     this.unsubscribe();
   }
+
   render() {
     return html`
       <div class="flex items-center space-x-5 h-card">
@@ -63,7 +75,7 @@ export class HeroCard extends LitElement {
           <div class="relative">
             <img
               class="h-16 w-16 lg:h-24 lg:w-24 rounded-full border border-white/10 u-photo"
-              src="${this.avatar?.source?.url}"
+              src="https://cdn.strife.app/AS3SX_-B59mU1hdDS7B_YfI5Lu9Ut-kLpdaAhraKgy4/w:1/h:1/aHR0cHM6Ly9zdHJpZmUuYi1jZG4ubmV0L3RyYW5zcGFyZW50MXgxLnBuZw.png"
               alt="${this.avatar?.alt}"
               width="94"
               height="94"

@@ -6,7 +6,7 @@ import store from '../../store';
 const session = store.openSession();
 
 let stats;
-const results = await session.advanced
+let results = await session.advanced
   .rawQuery(
     `from index 'Content/ByUrl' as post
       where post.collection == 'posts'
@@ -54,6 +54,33 @@ const dateOptions: object = {
   month: 'long',
   day: 'numeric',
 };
+
+if (Astro.request.method === 'POST') {
+  try {
+    const data = await Astro.request.formData();
+    const query = data.get('q');
+    // Do something with the data
+    results = await session.advanced
+      .rawQuery(
+        `from index 'Content/ByUrl' as post
+        where search('displayName', '${query}')
+        order by post.publishedDate desc
+        load post.labels as labels[]
+        select {
+          name: post.displayName,
+          publishedDate: post.publishedDate,
+          labels: labels,
+          url: post.url
+        }`
+      )
+      .statistics((s) => (stats = s))
+      .all();
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
+  }
+}
 ---
 
 <BaseLayout>
@@ -64,6 +91,12 @@ const dateOptions: object = {
           <div class="md:flex md:items-center md:justify-between md:space-x-5">
             <div class="text-sm font-light flex-grow">
               <p class="text-black dark:text-white">Writing</p>
+              <div class="my-5">
+                <form method="post">
+                  <input type="search" name="q" class="w-full" />
+                  <button type="submit">Search</button>
+                </form>
+              </div>
               <div class="my-5">
                 <LabelFilter />
               </div>

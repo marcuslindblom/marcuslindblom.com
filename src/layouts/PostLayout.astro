@@ -1,5 +1,7 @@
 ---
-const { heading, text, publishedDate } = Astro.props;
+const { heading, text, publishedDate, related, form } = Astro.props;
+
+import Form from '../components/global/ContactForm.astro';
 
 const currentPath = Astro.url.pathname;
 
@@ -83,6 +85,26 @@ const mentions = async () => {
         <a rel="syndication noreferrer" class="u-syndication" href="https://brid.gy/publish/bluesky"></a>
       </article>
 
+      <div class="mt-12">
+        <h2 class="text-sm mb-3">Comments</h2>
+        <div class="mt-4">
+          {form && <Form />}
+        </div>
+      </div>
+      <div class="mt-12">
+        <h2 class="text-sm mb-3">Related</h2>
+        <ul class="list-none">
+          {
+            related.map((item) => {
+              return (
+                <li class="mb-2">
+                  <a href={item.url} class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300">{item.displayName}</a>
+                </li>
+              )
+            })
+          }
+        </ul>
+      </div>
         {
           mentions().then(result => {
             const likes = result.get('like-of') || [];

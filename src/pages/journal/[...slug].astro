@@ -7,13 +7,60 @@ import store from '../../store';
 let stats;
 
 const session = store.openSession();
+
 const page = await session
   .query({ indexName: 'Content/ByUrl' })
   .whereEquals('url', Astro.url.pathname.replace(/\/$/, '')) // remove trailing slash
+  .include('related')
   .statistics((s) => (stats = s))
   .firstOrNull();
 
+const form = await session.load(page.related[0]?.id);
+
+// const page = await session.advanced
+//   .rawQuery(
+//     `declare function getUrl(c) {
+//       const displayName = c.displayName;
+//       const visited = {};
+//       const slugs = [];
+//       do {
+//         if (c.slug) {
+//           slugs.unshift(c.slug);
+//         }
+//         if (visited[c.origin.id]) {
+//           break;
+//         }
+//         visited[c.origin.id] = true;
+//         c = load(c.origin.id);
+//       } while (c);
+//       return {
+//         displayName: displayName,
+//         url: slugs.shift() + slugs.join("/"),
+//       }
+//     }
+//     from index 'Content/ByUrl' as post
+//       where post.url == '${Astro.url.pathname.replace(/\/$/, '')}'
+//       and post.published == true
+//       order by post.publishedDate desc
+//       load post.related[].id as related[]
+//       select {
+//           name: post.displayName,
+//           heading: post.heading,
+//           text: post.text,
+//           publishedDate: post.publishedDate,
+//           page_settings: post.page_settings,
+//           page_images: post.page_images,
+//           related: related.map(getUrl),
+//           url: post.url
+//         }`
+//   )
+//   .statistics((s) => (stats = s))
+//   .singleOrNull();
+
 if (!page) return Astro.redirect('/404');
+
+// Log the query duration
+console.log('Query duration: ' + stats.durationInMs);
 
 try {
   // Get the query duration from the stats
@@ -40,13 +87,6 @@ try {
 } catch (error) {
   console.log('Error logging query duration: ' + error);
 }
-
-const {
-  heading,
-  text,
-  publishedDate,
-  ['@metadata']: { ['@collection']: collection },
-} = page;
 ---
 
 <BaseLayout
@@ -54,5 +94,11 @@ const {
   description={page.page_settings?.description}
   card={page.page_images?.og_image.source.url}
 >
-  <PostLayout heading={heading} text={text} publishedDate={publishedDate} />
+  <PostLayout
+    heading={page.heading}
+    text={page.text}
+    publishedDate={page.publishedDate}
+    related={page.related}
+    form={form}
+  />
 </BaseLayout>
