@@ -95,7 +95,7 @@ const mentions = async () => {
         <h2 class="text-sm mb-3">Related</h2>
         <ul class="list-none">
           {
-            related.map((item) => {
+            related?.map((item) => {
               return (
                 <li class="mb-2">
                   <a href={item.url} class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300">{item.displayName}</a>

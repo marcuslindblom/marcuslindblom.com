@@ -15,7 +15,7 @@ const page = await session
   .statistics((s) => (stats = s))
   .firstOrNull();
 
-const form = await session.load(page.related[0]?.id);
+const form = await session.load(page.related?.[0]?.id);
 
 // const page = await session.advanced
 //   .rawQuery(
