@@ -4,7 +4,7 @@ import {
 } from 'ravendb';
 import { templates } from '../../data/templates.json';
 
-export class Posts_ByName extends AbstractJavaScriptMultiMapIndexCreationTask {
+export class Content_ByUrl extends AbstractJavaScriptMultiMapIndexCreationTask {
   constructor() {
     super();
 
