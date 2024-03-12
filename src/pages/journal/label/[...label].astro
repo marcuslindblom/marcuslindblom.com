@@ -12,7 +12,7 @@ const lastSegment = label.split('/').pop();
 let stats;
 
 const results = await session
-  .query({ indexName: 'Posts/ByLabel' })
+  .query({ indexName: 'Content/ByUrl' })
   .whereEquals('published', true)
   .orderByDescending('publishedDate')
   .whereIn('labels', [lastSegment])

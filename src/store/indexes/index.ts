@@ -3,7 +3,6 @@ import {
   AbstractJavaScriptMultiMapIndexCreationTask,
 } from 'ravendb';
 import { templates } from '../../data/templates.json';
-
 export class Content_ByUrl extends AbstractJavaScriptMultiMapIndexCreationTask {
   constructor() {
     super();
@@ -29,6 +28,12 @@ export class Content_ByUrl extends AbstractJavaScriptMultiMapIndexCreationTask {
           visited[c.origin.id] = true;
           c = load(c.origin.id, c.origin.collection);
         } while (c);
+        const labels = [];
+        if (doc.labels) {
+          doc.labels.forEach((label) => {
+            labels.push(load(label, 'Labels').name);
+          });
+        }
         return {
           name: doc.displayName,
           url: slugs.shift() + slugs.join('/'),
@@ -36,6 +41,7 @@ export class Content_ByUrl extends AbstractJavaScriptMultiMapIndexCreationTask {
           collection: collection,
           publishedDate: publishedDate,
           published: publishedDate !== null,
+          labels: labels,
         };
       });
     }

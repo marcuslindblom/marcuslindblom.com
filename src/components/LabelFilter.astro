@@ -9,7 +9,7 @@ let stats;
 
 const session = store.openSession();
 const facets = await session
-  .query({ indexName: 'Posts/ByLabel'})
+  .query({ indexName: 'Content/ByUrl'})
   .whereEquals('published', true)
   .orderByDescending('publishedDate')
   .statistics((s) => (stats = s))
