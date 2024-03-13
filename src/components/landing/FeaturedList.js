@@ -17,7 +17,6 @@ export class FeaturedList extends LitElement {
   }
   firstUpdated() {
     this.unsubscribe = subscribe((data) => this.items = data.featured);
-    console.log(this.items);
   }
   disconnectedCallback() {
     super.disconnectedCallback();

@@ -112,13 +112,25 @@ const home: Template = {
       },
       searchable: true,
     },
+    {
+      label: 'Navigation',
+      description: '',
+      editor: {
+        name: 'str-related',
+        type: 'related',
+        propertyName: 'navigation',
+        options: {
+          allowedCollections: ['Navigations'],
+        },
+      },
+    }
   ],
   templateType: 'dt',
   normalizedName: 'home',
   disableURL: false,
   archived: false,
   icon: 'home',
-  hint: 'The home page of the site..',
+  hint: 'The home page of the site',
 };
 
 const article: Template = {
@@ -571,6 +583,32 @@ const form: Template = {
   hint: 'A single form',
 };
 
+const navigation: Template = {
+  name: 'navigation',
+  displayName: 'Navigation',
+  collection: 'Navigations',
+  editors: [
+    {
+      label: 'Navigation Name',
+      editor: {
+        name: 'str-input',
+        type: 'text',
+        propertyName: 'navigationName',
+        attributes: {
+          required: true,
+          validationText: 'Navigation name cannot be empty',
+        },
+      },
+    }
+  ],
+  templateType: 'dt',
+  normalizedName: 'navigation',
+  disableURL: true,
+  archived: false,
+  icon: 'navigation',
+  hint: 'A single navigation',
+};
+
 export const templates = [
   home,
   article,
@@ -583,5 +621,6 @@ export const templates = [
   page_images,
   search_settings,
   page_settings,
-  form
+  form,
+  navigation,
 ];
