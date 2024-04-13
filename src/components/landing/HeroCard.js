@@ -1,5 +1,4 @@
 import { LitElement, html, css, unsafeCSS } from 'lit';
-import { subscribe } from '@strifeapp/strife';
 import { render as renderImage } from '@strifeapp/image';
 import sheet from '../../styles/global.css?inline' assert { type: 'css' };
 
@@ -46,10 +45,12 @@ export class HeroCard extends LitElement {
     this.avatar = {};
   }
   firstUpdated() {
-    this.image = this.renderRoot.querySelector('img');
-    this.unsubscribe = subscribe((data) => {
-      ({ heading: this.heading, introduction: this.introduction } = data);
-      renderImage(this.image, data.avatar);
+    import('@strifeapp/strife').then(({ subscribe }) => {
+      this.image = this.shadowRoot.querySelector('.u-photo');
+      this.unsubscribe = subscribe((data) => {
+        ({ heading: this.heading, introduction: this.introduction } = data);
+        renderImage(this.image, data.avatar);
+      });
     });
   }
   disconnectedCallback() {

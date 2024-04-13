@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import basicSsl from '@vitejs/plugin-basic-ssl'
 import vercel from '@astrojs/vercel/serverless';
 import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
@@ -15,6 +16,10 @@ export default defineConfig({
     port: 4323
   },
   vite: {
+    plugins: !PROD ? [basicSsl()] : [],
+    server: {
+      https: true
+    },
     ssr: {
       noExternal: ['@strifeapp/strife', '@strifeapp/image']
     }
