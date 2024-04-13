@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import avatar from '../assets/avatar.jpg';
+
 const { heading, text, publishedDate } = Astro.props;
 
 const currentPath = Astro.url.pathname;
@@ -45,11 +48,7 @@ const mentions = async () => {
       <article class="text-sm font-light flex flex-col h-entry">
 
         <div class="mb-4">
-          <img
-            class="h-12 w-12 rounded-full border border-white/10"
-            src="/images/avatar.jpg"
-            alt="image"
-          />
+          <Image src={avatar} alt="Marcus Lindblom" class="h-12 w-12 rounded-full border border-white/10" />
         </div>
 
         <div class="flex-auto">
