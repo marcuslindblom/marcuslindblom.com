@@ -42,7 +42,7 @@ export async function GET(context) {
     title: 'Marcus Lindblom',
     description: 'RSS Feed for Marcus Lindblom',
     site: context.site,
-    items: notes.map((post) => ({
+    items: notes.filter(post => post.publishedDate).map((post) => ({
       title: post.heading,
       pubDate: post.publishedDate,
       description: sanitizeHtml(post.summary),
