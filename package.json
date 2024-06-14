@@ -24,7 +24,7 @@
     "@strifeapp/strife": "^0.2.19-alpha",
     "@strifeapp/style": "^0.0.1-alpha.2",
     "@vercel/analytics": "^1.2.2",
-    "@vercel/speed-insights": "^1.0.10",
+    "@vercel/speed-insights": "^1.0.11",
     "@vitejs/plugin-basic-ssl": "^1.1.0",
     "@webcomponents/template-shadowroot": "^0.2.1",
     "inter-ui": "^4.0.0",
