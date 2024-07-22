@@ -6,7 +6,6 @@ import store from '../../store';
 
 const client_id = '130399';
 const client_secret = 'c507f93e679ee890d99467574e22e1beb49ae97d';
-// const refresh_token_file = 'src/scripts/refresh_token.json';
 const refresh_token_file = new URL('../../scripts/refresh_token.json', import.meta.url);
 let access_token = '';
 let refresh_token = '';
@@ -127,7 +126,7 @@ const fetchActivities = async () => {
 // }
 
 // Initial fetch
-export async function GET({params, request}) {
+export async function GET() {
   await getAccessToken();
   await fetchActivities();
   return new Response('Activities fetched and saved.');
