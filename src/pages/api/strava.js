@@ -6,15 +6,30 @@ import store from '../../store';
 
 const client_id = '130399';
 const client_secret = 'c507f93e679ee890d99467574e22e1beb49ae97d';
-const refresh_token_file = 'src/scripts/refresh_token.json';
+// const refresh_token_file = 'src/scripts/refresh_token.json';
+const refresh_token_file = new URL('../../scripts/refresh_token.json', import.meta.url);
 let access_token = '';
 let refresh_token = '';
 
 // Load refresh token from file if it exists
-const url = new URL('../../scripts/refresh_token.json', import.meta.url);
-const json = await fs.readFile(url, 'utf-8');
-const tokenData = JSON.parse(json);
-refresh_token = tokenData.refresh_token;
+// const url = new URL('../../scripts/refresh_token.json', import.meta.url);
+// const json = await fs.readFile(url, 'utf-8');
+// const tokenData = JSON.parse(json);
+// refresh_token = tokenData.refresh_token;
+
+try {
+
+  await fs.access(refresh_token_file);
+  const tokenData = JSON.parse(await fs.readFile(refresh_token_file, 'utf8'));
+  refresh_token = tokenData.refresh_token;
+} catch (err) {
+  if (err.code === 'ENOENT') {
+    console.error('No refresh token found. Obtain a refresh token first.');
+    process.exit(1);
+  } else {
+    throw err;
+  }
+}
 
 // console.log(data.refresh_token);
 // if (fs.existsSync(refresh_token_file)) {
