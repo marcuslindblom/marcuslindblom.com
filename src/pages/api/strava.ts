@@ -11,14 +11,7 @@ const refresh_token_file = new URL('../../scripts/refresh_token.json', import.me
 let access_token = '';
 let refresh_token = '';
 
-// Load refresh token from file if it exists
-// const url = new URL('../../scripts/refresh_token.json', import.meta.url);
-// const json = await fs.readFile(url, 'utf-8');
-// const tokenData = JSON.parse(json);
-// refresh_token = tokenData.refresh_token;
-
 try {
-
   await fs.access(refresh_token_file);
   const tokenData = JSON.parse(await fs.readFile(refresh_token_file, 'utf8'));
   refresh_token = tokenData.refresh_token;
@@ -127,14 +120,16 @@ const fetchActivities = async () => {
   });
 };
 
-export default async function handler(request, response) {
-  await getAccessToken();
-  await fetchActivities();
-  response.status(200).json({ message: 'Activities fetched and saved.' });
-}
-// Initial fetch
-// (async () => {
+// export default async function handler(request, response) {
 //   await getAccessToken();
 //   await fetchActivities();
-// })();
+//   response.status(200).json({ message: 'Activities fetched and saved.' });
+// }
+
+// Initial fetch
+export async function GET({params, request}) {
+  await getAccessToken();
+  await fetchActivities();
+  return new Response('Activities fetched and saved.');
+}
 
