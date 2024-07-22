@@ -1,6 +1,7 @@
 ---
 import SpeedInsights from '@vercel/speed-insights/astro';
 import BaseHead from "../components/BaseHead.astro";
+import { ViewTransitions } from "astro:transitions";
 const { PROD } = import.meta.env
 
 const { title, description, card } = Astro.props;
@@ -10,6 +11,7 @@ const { title, description, card } = Astro.props;
 <html lang="en">
   <head>
     <BaseHead title={title} description={description} card={card} />
+    <ViewTransitions />
   </head>
 
   <body class="bg-white dark:bg-black">
