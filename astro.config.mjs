@@ -31,6 +31,6 @@ export default defineConfig({
     speedInsights: {
       enabled: false
     },
-    includeFiles: ['./scripts/refresh_token.json'],
+    includeFiles: ['./src/scripts/refresh_token.json'],
   })
 });
