@@ -22,9 +22,19 @@ const notesLazy = session
   .take(3)
   .lazily();
 
+const activitesLazy = session
+  .query({ collection: 'activities' })
+  // .whereEquals('collection', 'activities')
+  // .whereEquals('published', true)
+  // .orderByDescending('start_date_local')
+  .selectFields(['id', 'name', 'start_date_local'])
+  .take(3)
+  .lazily();
+
 const results = await Promise.allSettled([
   homeLazy.getValue(),
   notesLazy.getValue(),
+  activitesLazy.getValue(),
 ]);
 
 const handleRejection = (reason) => {
@@ -34,10 +44,11 @@ const handleRejection = (reason) => {
   throw reason;
 };
 
-const [homeResult, notesResult] = results;
+const [homeResult, notesResult, activitesResult] = results;
 
 const home = homeResult.status === 'fulfilled' ? homeResult.value.firstOrDefault() : null;
 const notes = notesResult.status === 'fulfilled' ? notesResult.value : null;
+const activites = activitesResult.status === 'fulfilled' ? activitesResult.value : null;
 
 if (homeResult.status === 'rejected') {
   handleRejection(homeResult.reason);
@@ -45,6 +56,10 @@ if (homeResult.status === 'rejected') {
 
 if (notesResult.status === 'rejected') {
   handleRejection(notesResult.reason);
+}
+
+if (activitesResult.status === 'rejected') {
+  handleRejection(activitesResult.reason);
 }
 
 ---
@@ -76,5 +91,5 @@ if (notesResult.status === 'rejected') {
   </div>
 </section>
 
-  <Content featured={home.featured} notes={notes} />
+  <Content activites={activites} featured={home.featured} notes={notes} />
 </BaseLayout>
