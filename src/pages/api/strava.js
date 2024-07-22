@@ -105,9 +105,14 @@ const fetchActivities = async () => {
   });
 };
 
-// Initial fetch
-(async () => {
+export default async function handler(request, response) {
   await getAccessToken();
   await fetchActivities();
-})();
+  response.status(200).json({ message: 'Activities fetched and saved.' });
+}
+// Initial fetch
+// (async () => {
+//   await getAccessToken();
+//   await fetchActivities();
+// })();
 
