@@ -48,3 +48,14 @@ q.bsky::before {
 ::view-transition-new(root) {
   animation-duration: 0.5s;
 }
+
+.effect {
+  border-image:
+    linear-gradient(
+      transparent,
+      var(--indigo-6),
+      transparent
+    )
+    1 / 4px /* slice n' size */
+  ;
+}

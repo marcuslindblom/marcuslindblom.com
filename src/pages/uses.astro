@@ -1,5 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { HeroCard } from '../components/landing/HeroCard';
+import Navigation from '../components/global/Navigation.astro';
+import store from '../store';
+
+const session = store.openSession();
+
+const home = await session
+  .query({ indexName: 'Content/ByUrl' })
+  .whereEquals('url', '/')
+  .firstOrNull();
+
 ---
 
 <BaseLayout>
@@ -8,7 +19,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="mx-auto max-w-xl">
         <div>
           <div class="md:flex md:items-center md:justify-between md:space-x-5">
-            <div class="text-sm font-light">
+              <HeroCard heading={home.heading} avatar={home.avatar}  client:load />
+          </div>
+          <Navigation />
+        </div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="mx-auto max-w-7xl">
+      <div class="mx-auto max-w-xl">
+        <div>
+          <div>
+            <div class="">
               <p class="text-black dark:text-white">The Tools I'm Using</p>
               <div
                 class="text-neutral-500 dark:text-neutral-400 space-y-3 mt-3 prose prose-neutral prose-sm dark:prose-headings:text-white dark:prose-strong:text-white dark:prose-a:text-white"

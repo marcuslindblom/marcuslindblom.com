@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/landing/Header.astro';
+import { HeroCard } from '../components/landing/HeroCard';
+import Navigation from '../components/global/Navigation.astro';
 import Content from '../components/landing/Content.astro';
 import store from '../store';
 import '../array-polyfills';
@@ -53,10 +54,27 @@ if (notesResult.status === 'rejected') {
   description={home.page_settings?.description}
   card={home.page_images?.og_image.source.url}
 >
-  <Header
-    heading={home.heading}
-    introduction={home.introduction}
-    avatar={home.avatar}
-  />
+<section>
+  <div class="mx-auto max-w-7xl px-8 py-12 lg:pt-24">
+    <div class="mx-auto max-w-xl">
+      <div>
+        <div class="md:flex md:items-center md:justify-between md:space-x-5">
+            <HeroCard heading={home.heading} avatar={home.avatar}  client:load />
+        </div>
+        <Navigation />
+        <div class="mt-12 text-sm font-light">
+          <p class="text-black dark:text-white">About</p>
+          <div
+            class="text-neutral-500 dark:text-neutral-400 space-y-3 mt-3"
+            set:html={home.introduction}
+            is="str-div"
+            data-field="introduction"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
   <Content featured={home.featured} notes={notes} />
 </BaseLayout>

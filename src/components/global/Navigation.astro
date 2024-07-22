@@ -1,0 +1,19 @@
+---
+const links = [
+  { href: '/', text: 'About', active: Astro.url.pathname === '/' },
+  { href: '/journal', text: 'Writing', active: Astro.url.pathname.startsWith('/journal') },
+  { href: '/uses', text: 'Uses', active: Astro.url.pathname === '/uses' },
+];
+---
+<nav class="flex items-center gap-6 mt-8">
+  {
+    links.map(({ href, text, active }) => (
+      <a
+        href={href}
+        class={`text-neutral-500 dark:text-neutral-400 font-normal text-sm ${active ? 'text-black dark:text-white underline underline-offset-[12px]' : ''}`}
+      >
+        {text}
+      </a>
+    ))
+  }
+</nav>
