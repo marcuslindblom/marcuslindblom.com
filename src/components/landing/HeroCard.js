@@ -1,5 +1,5 @@
 import { LitElement, html, css, unsafeCSS } from 'lit';
-import { render as renderImage } from '@strifeapp/image';
+import { preview as renderImage } from '@strifeapp/image';
 import sheet from '../../styles/global.css?inline' assert { type: 'css' };
 
 export class HeroCard extends LitElement {
