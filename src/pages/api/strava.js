@@ -1,6 +1,7 @@
 import https from 'https';
 import { stringify as querystringStringify } from 'querystring';
-import fs from 'fs';
+// import fs from 'fs';
+import fs from 'node:fs/promises';
 import store from '../../store';
 
 const client_id = '130399';
@@ -10,13 +11,19 @@ let access_token = '';
 let refresh_token = '';
 
 // Load refresh token from file if it exists
-if (fs.existsSync(refresh_token_file)) {
-  const tokenData = JSON.parse(fs.readFileSync(refresh_token_file, 'utf8'));
-  refresh_token = tokenData.refresh_token;
-} else {
-  console.error('No refresh token found. Obtain a refresh token first.');
-  process.exit(1);
-}
+const url = new URL('../../scripts/refresh_token.json', import.meta.url);
+const json = await fs.readFile(url, 'utf-8');
+const tokenData = JSON.parse(json);
+refresh_token = tokenData.refresh_token;
+
+// console.log(data.refresh_token);
+// if (fs.existsSync(refresh_token_file)) {
+//   const tokenData = JSON.parse(fs.readFileSync(refresh_token_file, 'utf8'));
+//   refresh_token = tokenData.refresh_token;
+// } else {
+//   console.error('No refresh token found. Obtain a refresh token first.');
+//   process.exit(1);
+// }
 
 // Function to exchange refresh token for access token
 const getAccessToken = async () => {
@@ -49,7 +56,7 @@ const getAccessToken = async () => {
         refresh_token = parsedData.refresh_token;
 
         // Save the new refresh token to file
-        fs.writeFileSync(refresh_token_file, JSON.stringify({ refresh_token }));
+        fs.writeFile(refresh_token_file, JSON.stringify({ refresh_token }));
         console.log('Access token obtained and saved.');
         resolve();
       });
