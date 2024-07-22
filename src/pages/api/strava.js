@@ -1,12 +1,11 @@
 import https from 'https';
 import { stringify as querystringStringify } from 'querystring';
-// import fs from 'fs';
 import fs from 'node:fs/promises';
 import store from '../../store';
 
 const client_id = '130399';
 const client_secret = 'c507f93e679ee890d99467574e22e1beb49ae97d';
-const refresh_token_file = new URL('../../scripts/refresh_token.json', import.meta.url);
+const refresh_token_file = new URL('../../../refresh_token.json', import.meta.url);
 let access_token = '';
 let refresh_token = '';
 
@@ -22,15 +21,6 @@ try {
     throw err;
   }
 }
-
-// console.log(data.refresh_token);
-// if (fs.existsSync(refresh_token_file)) {
-//   const tokenData = JSON.parse(fs.readFileSync(refresh_token_file, 'utf8'));
-//   refresh_token = tokenData.refresh_token;
-// } else {
-//   console.error('No refresh token found. Obtain a refresh token first.');
-//   process.exit(1);
-// }
 
 // Function to exchange refresh token for access token
 const getAccessToken = async () => {
@@ -118,12 +108,6 @@ const fetchActivities = async () => {
     req.end();
   });
 };
-
-// export default async function handler(request, response) {
-//   await getAccessToken();
-//   await fetchActivities();
-//   response.status(200).json({ message: 'Activities fetched and saved.' });
-// }
 
 // Initial fetch
 export async function GET() {
