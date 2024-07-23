@@ -1,118 +1,79 @@
-import https from 'https';
-import { stringify as querystringStringify } from 'querystring';
-import fs from 'node:fs/promises';
 import store from '../../store';
 
-const client_id = '130399';
-const client_secret = 'c507f93e679ee890d99467574e22e1beb49ae97d';
-const refresh_token_file = new URL('../../../refresh_token.json', import.meta.url);
-let access_token = '';
-let refresh_token = '';
+const client_id = import.meta.env.STRAVA_CLIENT_ID;
+const client_secret = import.meta.env.STRAVA_CLIENT_SECRET;
 
-try {
-  await fs.access(refresh_token_file);
-  const tokenData = JSON.parse(await fs.readFile(refresh_token_file, 'utf8'));
-  refresh_token = tokenData.refresh_token;
-} catch (err) {
-  if (err.code === 'ENOENT') {
-    console.error('No refresh token found. Obtain a refresh token first.');
-    process.exit(1);
-  } else {
-    throw err;
-  }
+async function getConfig(session) {
+    const config = await session.load('Global/Config');
+    if (!config || !config.refresh_token) {
+        throw new Error('No refresh token found. Obtain a refresh token first.');
+    }
+    return config;
 }
 
-// Function to exchange refresh token for access token
-const getAccessToken = async () => {
-  const postData = querystringStringify({
-    client_id,
-    client_secret,
-    refresh_token,
-    grant_type: 'refresh_token',
-  });
+async function refreshStravaToken(client_id, client_secret, refresh_token) {
+    const url = new URL('https://www.strava.com/oauth/token');
+    const params = {
+        client_id,
+        client_secret,
+        refresh_token,
+        grant_type: 'refresh_token'
+    };
 
-  const options = {
-    hostname: 'www.strava.com',
-    path: '/oauth/token',
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Content-Length': postData.length,
-    },
-  };
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
 
-  return new Promise((resolve, reject) => {
-    const req = https.request(options, (res) => {
-      let data = '';
-      res.on('data', (chunk) => {
-        data += chunk;
-      });
-      res.on('end', () => {
-        const parsedData = JSON.parse(data);
-        access_token = parsedData.access_token;
-        refresh_token = parsedData.refresh_token;
-
-        // Save the new refresh token to file
-        fs.writeFile(refresh_token_file, JSON.stringify({ refresh_token }));
-        console.log('Access token obtained and saved.');
-        resolve();
-      });
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
     });
 
-    req.on('error', (e) => {
-      console.error(`Error obtaining access token: ${e.message}`);
-      reject(e);
+    if (!response.ok) {
+        throw new Error('Failed to refresh token');
+    }
+
+    const data = await response.json();
+    return { access_token: data.access_token, refresh_token: data.refresh_token };
+}
+
+async function fetchStravaActivities(access_token) {
+    const url = 'https://www.strava.com/api/v3/athlete/activities';
+
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${access_token}`,
+            'Content-Type': 'application/json'
+        }
     });
 
-    req.write(postData);
-    req.end();
-  });
-};
+    if (!response.ok) {
+        throw new Error('Failed to fetch activities');
+    }
 
-// Function to fetch athlete activities
-const fetchActivities = async () => {
-  const options = {
-    hostname: 'www.strava.com',
-    path: '/api/v3/athlete/activities',
-    method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${access_token}`,
-    },
-  };
+    return await response.json();
+}
 
-  return new Promise((resolve, reject) => {
-    const req = https.request(options, (res) => {
-      let data = '';
-      res.on('data', (chunk) => {
-        data += chunk;
-      });
-      res.on('end', async () => {
-        //console.log('Athlete Activities:', JSON.parse(data));
-        const activities = JSON.parse(data);
-        const session = store.openSession();
+export async function GET() {
+    const session = store.openSession();
+    try {
+        const config = await getConfig(session);
+        const { access_token, refresh_token: new_refresh_token } = await refreshStravaToken(client_id, client_secret, config.refresh_token);
+        // Save the new refresh token
+        config.refresh_token = new_refresh_token;
+        await session.store(config, 'Global/Config');
+
+        const activities = await fetchStravaActivities(access_token);
         activities.forEach(async (activity) => {
-          console.log(`Saving activity: ${activity.name}`);
-          activity['@metadata'] = { '@collection': 'Activities' };
-          await session.store(activity, `Activities/${activity.id}`);
+            activity['@metadata'] = { '@collection': 'Activities' };
+            await session.store(activity, `Activities/${activity.id}`);
         });
         await session.saveChanges();
-        resolve();
-      });
-    });
 
-    req.on('error', (e) => {
-      console.error(`Error fetching activities: ${e.message}`);
-      reject(e);
-    });
-
-    req.end();
-  });
-};
-
-// Initial fetch
-export async function GET() {
-  await getAccessToken();
-  await fetchActivities();
-  return new Response('Activities fetched and saved.');
+        return new Response('Activities fetched and saved.');
+    } catch (error) {
+        console.error('Error:', error);
+        return new Response(`Error: ${error.message}`, { status: 500 });
+    }
 }
-
