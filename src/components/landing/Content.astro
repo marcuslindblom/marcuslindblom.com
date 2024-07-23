@@ -21,6 +21,35 @@ const formatDateTime = (date: string): string => {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
 
+function formatTime(seconds) {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return { hrs, mins, secs };
+}
+
+function getRunDetails(activity) {
+    const distanceInKm = Math.floor(activity.distance / 10) / 100;
+    const movingTimeInSeconds = activity.moving_time;
+
+    const pacePerKm = movingTimeInSeconds / distanceInKm;
+
+    const time = formatTime(movingTimeInSeconds);
+    const timeString = time.hrs > 0 ? `${time.hrs}h ${time.mins}m ${time.secs}s` : `${time.mins}m ${time.secs}s`;
+
+
+    return {
+        distanceInKm: distanceInKm.toFixed(2),
+        pacePerKm: `${Math.floor(pacePerKm / 60)}:${Math.floor(pacePerKm % 60).toString().padStart(2, '0')}`,
+        time: timeString
+    };
+}
+
+const activitiesWithDetails = activites?.map(activity => ({
+    ...activity,
+    runDetails: getRunDetails(activity)
+}));
+
 ---
 
 <section>
@@ -159,7 +188,7 @@ const formatDateTime = (date: string): string => {
           <p class="text-black dark:text-white">Activites</p>
           <div class="grid gap-6 mt-3">
             {
-              activites?.map((activity) => (
+              activitiesWithDetails?.map((activity) => (
               <>
                 <div class="text-neutral-500 items-start grid grid-cols-1 md:grid-cols-3 h-entry">
                   <div>
@@ -190,7 +219,10 @@ const formatDateTime = (date: string): string => {
                         {activity.name}
                       </span>
                     </p>
-                    {/* <div>Foo </div> */}
+                    <div>
+                      {activity.runDetails.distanceInKm} km in {activity.runDetails.time} at{' '}
+                      {activity.runDetails.pacePerKm} /km
+                    </div>
                   </div>
                 </div>
               </>
