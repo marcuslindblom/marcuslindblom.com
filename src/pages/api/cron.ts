@@ -1,17 +1,44 @@
 import store from '../../store';
 
-export async function GET({params, request}) {
+const formatDate = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+  const day = String(date.getDate()).padStart(2, '0');
 
-  const session = store.openSession();
-  let home = await session.load('fcc2e4e2-b7ce-443f-8da6-faac59919f46');
-  console.log(home);
+  return `${year}-${month}-${day}`;
+};
 
-  const response = await fetch("https://vercel.com/api/web/insights/stats/path?projectId=prj_28rIVArb3nNoE9JewhDlUpF7wU2r&from=2023-12-24&to=2024-01-01", {
-    headers: {Authorization: 'Bearer Q76DWcgS8vTsiQq7VQGhy4Nk'}
-  });
+export async function GET({ params, request }) {
+  // Get today's date
+  const today = new Date();
 
-  const data = await response.json();
-  console.log(data);
+  const date1DaysAgo = new Date(today);
+  date1DaysAgo.setDate(today.getDate() - 1);
 
-  return new Response('Hello Cron!');
+  fetch(
+    `https://vercel.com/api/web/insights/stats/path?projectId=prj_28rIVArb3nNoE9JewhDlUpF7wU2r&from=${formatDate(
+      date1DaysAgo
+    )}&to=${formatDate(today)}`,
+    {
+      headers: { Authorization: 'Bearer Q76DWcgS8vTsiQq7VQGhy4Nk' },
+    }
+  )
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .then((stats) => {
+      const session = store.openSession();
+      stats.data.forEach(async (stat) => {
+        const page = await session.query({ indexName: 'Content/ByUrl'}).whereEquals('url', stat.key).firstOrNull();
+        if (page) {
+          const tsf = session.timeSeriesFor(page.id, "Stats");
+          tsf.append(today, [stat.total, stat.devices]);
+          await session.saveChanges();
+        }
+      });
+    });
+
+  return new Response('OK');
 }
