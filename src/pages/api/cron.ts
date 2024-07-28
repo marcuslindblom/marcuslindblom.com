@@ -35,6 +35,13 @@ export async function GET({ params, request }) {
         if (page) {
           const tsf = session.timeSeriesFor(page.id, "Stats");
           tsf.append(today, [stat.total, stat.devices]);
+          // page.analytics = {
+          //   views: stat.total,
+          //   visitors: stat.devices,
+          //   date: `${formatDate(today)}T00:00:00.0000000`,
+          //   pathName: stat.key
+          // };
+          console.log('Page updated:', [stat.total, stat.devices]);
           await session.saveChanges();
         }
       });
