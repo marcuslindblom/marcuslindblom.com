@@ -29,22 +29,24 @@ export async function GET({ params, request }) {
       }
     })
     .then((stats) => {
+      console.log('Got stats:', stats);
       const session = store.openSession();
       stats.data.forEach(async (stat) => {
-        const page = await session.query({ indexName: 'Content/ByUrl'}).whereEquals('url', stat.key).firstOrNull();
+        const page = await session
+          .query({ indexName: 'Content/ByUrl' })
+          .whereEquals('url', stat.key)
+          .firstOrNull();
         if (page) {
-          const tsf = session.timeSeriesFor(page.id, "Stats");
+          const tsf = session.timeSeriesFor(page.id, 'Stats');
           tsf.append(today, [stat.total, stat.devices]);
-          // page.analytics = {
-          //   views: stat.total,
-          //   visitors: stat.devices,
-          //   date: `${formatDate(today)}T00:00:00.0000000`,
-          //   pathName: stat.key
-          // };
+
           console.log('Page updated:', [stat.total, stat.devices]);
           await session.saveChanges();
         }
       });
+    })
+    .catch((err) => {
+      console.error('Error:', err);
     });
 
   return new Response('OK');
