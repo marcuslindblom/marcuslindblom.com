@@ -26,6 +26,8 @@ export async function GET({ params, request }) {
     .then((response) => {
       if (response.ok) {
         return response.json();
+      } else {
+        throw new Error('Failed to fetch stats');
       }
     })
     .then((stats) => {
