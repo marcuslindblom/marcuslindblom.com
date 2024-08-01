@@ -15,7 +15,7 @@ export async function GET({ params, request }) {
   const date1DaysAgo = new Date(today);
   date1DaysAgo.setDate(today.getDate() - 1);
 
-  fetch(
+  await fetch(
     `https://vercel.com/api/web/insights/stats/path?projectId=prj_28rIVArb3nNoE9JewhDlUpF7wU2r&from=${formatDate(
       date1DaysAgo
     )}&to=${formatDate(today)}`,
