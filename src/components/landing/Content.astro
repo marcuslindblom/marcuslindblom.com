@@ -227,7 +227,9 @@ const activitiesWithDetails = activites?.map(activity => ({
                       {activity.runDetails.pacePerKm} /km </p>
                       {
                         activity.description && (
-                          <p>{activity.description}</p>
+                          <p class="text-neutral-500 dark:text-neutral-400">
+                            {activity.description}
+                          </p>
                         )
                       }
                     </div>

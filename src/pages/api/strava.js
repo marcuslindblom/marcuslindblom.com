@@ -46,6 +46,8 @@ async function fetchStravaActivities(access_token) {
             'Authorization': `Bearer ${access_token}`,
             'Content-Type': 'application/json'
         }
+    }).catch(error => {
+        console.error('Error:', error);
     });
 
     if (!response.ok) {
@@ -64,6 +66,8 @@ async function fetchStravaDetailedActivity(access_token, activity_id) {
             'Authorization': `Bearer ${access_token}`,
             'Content-Type': 'application/json'
         }
+    }).catch(error => {
+        console.error('Error:', error);
     });
 
     if (!response.ok) {
@@ -83,11 +87,10 @@ export async function GET() {
         await session.store(config, 'Global/Config');
 
         const activities = await fetchStravaActivities(access_token);
-        activities.forEach(async (activity) => {
-            const detailedActivity = await fetchStravaDetailedActivity(access_token, activity.id);
-            console.log('Activity:', detailedActivity.description);
+        const detailedActivities = await Promise.all(activities.map(activity => fetchStravaDetailedActivity(access_token, activity.id)));
+        detailedActivities.forEach(async (activity) => {
             activity['@metadata'] = { '@collection': 'Activities' };
-            await session.store(detailedActivity, `Activities/${activity.id}`);
+            await session.store(activity, `Activities/${activity.id}`);
         });
         await session.saveChanges();
 
