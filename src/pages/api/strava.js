@@ -55,6 +55,24 @@ async function fetchStravaActivities(access_token) {
     return await response.json();
 }
 
+async function fetchStravaDetailedActivity(access_token, activity_id) {
+    const url = `https://www.strava.com/api/v3/activities/${activity_id}`;
+
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${access_token}`,
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch detailed activity');
+    }
+
+    return await response.json();
+}
+
 export async function GET() {
     const session = store.openSession();
     try {
@@ -66,8 +84,10 @@ export async function GET() {
 
         const activities = await fetchStravaActivities(access_token);
         activities.forEach(async (activity) => {
+            const detailedActivity = await fetchStravaDetailedActivity(access_token, activity.id);
+            console.log('Activity:', detailedActivity.description);
             activity['@metadata'] = { '@collection': 'Activities' };
-            await session.store(activity, `Activities/${activity.id}`);
+            await session.store(detailedActivity, `Activities/${activity.id}`);
         });
         await session.saveChanges();
 

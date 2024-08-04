@@ -222,8 +222,14 @@ const activitiesWithDetails = activites?.map(activity => ({
                       </span>
                     </p>
                     <div>
+                      <p>
                       {activity.runDetails.distanceInKm} km in {activity.runDetails.time} at{' '}
-                      {activity.runDetails.pacePerKm} /km
+                      {activity.runDetails.pacePerKm} /km </p>
+                      {
+                        activity.description && (
+                          <p>{activity.description}</p>
+                        )
+                      }
                     </div>
                   </div>
                 </div>
