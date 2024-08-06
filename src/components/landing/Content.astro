@@ -22,41 +22,75 @@ const formatDateTime = (date: string): string => {
 };
 
 function formatTime(seconds) {
-    const hrs = Math.floor(seconds / 3600);
-    const mins = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-    return { hrs, mins, secs };
+  const hrs = Math.floor(seconds / 3600);
+  const mins = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+  return { hrs, mins, secs };
 }
 
-function getRunDetails(activity) {
-    const distanceInKm = Math.floor(activity.distance / 10) / 100;
-    const movingTimeInSeconds = activity.moving_time;
+function getActivityDetails(activity) {
+  const distanceInKm = Math.floor(activity.distance / 10) / 100;
+  const movingTimeInSeconds = activity.moving_time;
 
+  if (activity.type === 'Ride') {
+    const calculateAverageSpeed = (distanceMeters, movingTimeSeconds) => {
+      // Convert distance from meters to kilometers
+      const distanceKm = distanceMeters / 1000;
+
+      // Convert time from seconds to hours
+      const timeHours = movingTimeSeconds / 3600;
+
+      // Calculate average speed
+      const averageSpeedKmh = distanceKm / timeHours;
+
+      return averageSpeedKmh;
+    };
+
+    const averageSpeedKmh = calculateAverageSpeed(
+      activity.distance,
+      activity.moving_time
+    );
+
+    const time = formatTime(movingTimeInSeconds);
+    const timeString =
+      time.hrs > 0
+        ? `${time.hrs}h ${time.mins}m ${time.secs}s`
+        : `${time.mins}m ${time.secs}s`;
+
+    return {
+      distanceInKm: distanceInKm.toFixed(2),
+      pacePerKm: `${averageSpeedKmh.toFixed(2)} km/h`,
+      time: timeString,
+    };
+  } else {
     const pacePerKm = movingTimeInSeconds / distanceInKm;
 
     const time = formatTime(movingTimeInSeconds);
-    const timeString = time.hrs > 0 ? `${time.hrs}h ${time.mins}m ${time.secs}s` : `${time.mins}m ${time.secs}s`;
-
+    const timeString =
+      time.hrs > 0
+        ? `${time.hrs}h ${time.mins}m ${time.secs}s`
+        : `${time.mins}m ${time.secs}s`;
 
     return {
-        distanceInKm: distanceInKm.toFixed(2),
-        pacePerKm: `${Math.floor(pacePerKm / 60)}:${Math.floor(pacePerKm % 60).toString().padStart(2, '0')}`,
-        time: timeString
+      distanceInKm: distanceInKm.toFixed(2),
+      pacePerKm: `${Math.floor(pacePerKm / 60)}:${Math.floor(pacePerKm % 60)
+        .toString()
+        .padStart(2, '0')}  /km`,
+      time: timeString,
     };
+  }
 }
 
-const activitiesWithDetails = activites?.map(activity => ({
-    ...activity,
-    runDetails: getRunDetails(activity)
+const activitiesWithDetails = activites?.map((activity) => ({
+  ...activity,
+  details: getActivityDetails(activity),
 }));
-
 ---
 
 <section>
   <div class="mx-auto max-w-7xl px-8 py-12">
     <div class="mx-auto max-w-xl">
       <div class="grid gap-12 md:gap-24">
-
         <div class="text-sm font-light">
           <p class="text-black dark:text-white">Building</p>
           <div class="grid gap-6 mt-3">
@@ -189,54 +223,77 @@ const activitiesWithDetails = activites?.map(activity => ({
           <div class="grid gap-6 mt-3">
             {
               activitiesWithDetails?.map((activity) => (
-              <>
-                <div class="text-neutral-500 items-start grid grid-cols-1 md:grid-cols-3 h-entry">
-                  <div>
-                    <time
-                      datetime={formatDateTime(activity.start_date_local)}
-                      class="text-neutral-500 dark:text-neutral-400 dt-published"
-                    >
-                      {new Date(activity.start_date_local).toLocaleDateString(
-                        'en-US',
-                        dateOptions
-                      )},
-                      {new Date(activity.start_date_local).toLocaleTimeString(
-                        'en-US',
-                        {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                          hour12: false
-                        }
-                      )}
-                    </time>
-                  </div>
-                  <div class="md:col-span-2 w-full">
-                    <p class="text-black dark:text-white">
-                      <span
-                        class="flex gap-2"
-                      >
-
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="text-neutral-500" viewBox="0 0 24 24" width="18" height="18"><path d="M21.3 18.12 14.98 6.28a2.6 2.6 0 0 0-4.63.07l-.46.93a.585.585 0 0 1-.21-.45V3.17A2.452 2.452 0 0 0 7.24.72a2.172 2.172 0 0 0-2.01 1.4L2.91 6.84 1.39 7.96a2.768 2.768 0 0 0-1.06 2.06 2.96 2.96 0 0 0 .9 2.32l7.76 7.9a11.62 11.62 0 0 0 8.22 3.43h3.65a2.757 2.757 0 0 0 2.41-1.4l.05-.09a2.7 2.7 0 0 0-.01-2.73 2.665 2.665 0 0 0-2.01-1.33zm.85 3.39-.05.09a1.425 1.425 0 0 1-1.24.73h-3.65a10.257 10.257 0 0 1-7.26-3.04l-7.78-7.92a1.566 1.566 0 0 1-.49-1.27 1.426 1.426 0 0 1 .5-1.05l.71-.53 8.6 8.48h1.64v-.28L3.98 7.7l2.48-5.02a.848.848 0 0 1 .78-.61 1.1 1.1 0 0 1 1.09 1.1v3.66a1.92 1.92 0 0 0 1.92 1.92h.43l.88-1.8a1.24 1.24 0 0 1 1.12-.7 1.257 1.257 0 0 1 1.11.67l1.04 1.94L12.69 10v1.52l2.77-1.47.77 1.42v.01l-2.63 1.39v1.53l3.26-1.73.74 1.37-3.02 1.6v1.53l3.65-1.94 2.06 3.85.25.36h.4a1.376 1.376 0 0 1 1.2.69 1.34 1.34 0 0 1 .01 1.38z"/></svg>
-
-                        {activity.name}
-                      </span>
-                    </p>
+                <>
+                  <div class="text-neutral-500 items-start grid grid-cols-1 md:grid-cols-3 h-entry">
                     <div>
-                      <p>
-                      {activity.runDetails.distanceInKm} km in {activity.runDetails.time} at{' '}
-                      {activity.runDetails.pacePerKm} /km </p>
-                      {
-                        activity.description && (
+                      <time
+                        datetime={formatDateTime(activity.start_date_local)}
+                        class="text-neutral-500 dark:text-neutral-400 dt-published"
+                      >
+                        {new Date(activity.start_date_local).toLocaleDateString(
+                          'en-US',
+                          dateOptions
+                        )}
+                        ,
+                        {new Date(activity.start_date_local).toLocaleTimeString(
+                          'en-US',
+                          {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: false,
+                          }
+                        )}
+                      </time>
+                    </div>
+                    <div class="md:col-span-2 w-full">
+                      <p class="text-black dark:text-white">
+                        <span class="flex items-center gap-2">
+                          {activity.type === 'Ride' ? (
+                            <svg
+                              fill="currentColor"
+                              class="text-neutral-500"
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              width="18"
+                              height="18"
+                            >
+                              <title>Ride</title>
+                              <path
+                                d="M5.5 19.675a5.166 5.166 0 005.105-4.485h1.105l3.28-6.52.76 1.46a5.044 5.044 0 101.22-.57l-2.03-3.89H17a.333.333 0 01.33.33v.57h1.34V6A1.674 1.674 0 0017 4.32h-4.29l1.57 3.01H8.542L7.66 5.67h1.45l-.72-1.35H4.17l.72 1.35h1.241l1.26 2.37v.01l-.76 1.41a5.2 5.2 0 00-1.13-.135 5.175 5.175 0 100 10.35zm12.79-4.695h1.52l-2.2-4.2c.291-.073.59-.11.89-.11a3.83 3.83 0 11-3.83 3.83 3.877 3.877 0 011.7-3.19l1.92 3.67zm-4.82-6.31l-2.046 4.082-2.17-4.082h4.216zm-5.32.8l2.323 4.371H5.8l2.35-4.37zM5.5 10.675c.151.005.302.019.451.041l-1.58 2.944.79 1.53h4.1a3.822 3.822 0 11-3.76-4.515z"
+                                fill=""
+                              />
+                            </svg>
+                          ) : (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="currentColor"
+                              class="text-neutral-500"
+                              viewBox="0 0 24 24"
+                              width="18"
+                              height="18"
+                            >
+                              <path d="M21.3 18.12 14.98 6.28a2.6 2.6 0 0 0-4.63.07l-.46.93a.585.585 0 0 1-.21-.45V3.17A2.452 2.452 0 0 0 7.24.72a2.172 2.172 0 0 0-2.01 1.4L2.91 6.84 1.39 7.96a2.768 2.768 0 0 0-1.06 2.06 2.96 2.96 0 0 0 .9 2.32l7.76 7.9a11.62 11.62 0 0 0 8.22 3.43h3.65a2.757 2.757 0 0 0 2.41-1.4l.05-.09a2.7 2.7 0 0 0-.01-2.73 2.665 2.665 0 0 0-2.01-1.33zm.85 3.39-.05.09a1.425 1.425 0 0 1-1.24.73h-3.65a10.257 10.257 0 0 1-7.26-3.04l-7.78-7.92a1.566 1.566 0 0 1-.49-1.27 1.426 1.426 0 0 1 .5-1.05l.71-.53 8.6 8.48h1.64v-.28L3.98 7.7l2.48-5.02a.848.848 0 0 1 .78-.61 1.1 1.1 0 0 1 1.09 1.1v3.66a1.92 1.92 0 0 0 1.92 1.92h.43l.88-1.8a1.24 1.24 0 0 1 1.12-.7 1.257 1.257 0 0 1 1.11.67l1.04 1.94L12.69 10v1.52l2.77-1.47.77 1.42v.01l-2.63 1.39v1.53l3.26-1.73.74 1.37-3.02 1.6v1.53l3.65-1.94 2.06 3.85.25.36h.4a1.376 1.376 0 0 1 1.2.69 1.34 1.34 0 0 1 .01 1.38z" />
+                            </svg>
+                          )}
+                          {activity.name}
+                        </span>
+                      </p>
+                      <div>
+                        <p>
+                          {activity.details.distanceInKm} km in{' '}
+                          {activity.details.time} at{' '}
+                          {activity.details.pacePerKm}
+                        </p>
+                        {activity.description && (
                           <p class="text-neutral-500 dark:text-neutral-400">
                             {activity.description}
                           </p>
-                        )
-                      }
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </>
-            ))
+                </>
+              ))
             }
           </div>
         </div>
@@ -270,7 +327,6 @@ const activitiesWithDetails = activites?.map(activity => ({
               ))
             }
           </div>
-
         </div>
       </div>
     </div>

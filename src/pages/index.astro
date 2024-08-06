@@ -27,8 +27,8 @@ const activitesLazy = session
   // .whereEquals('collection', 'activities')
   // .whereEquals('published', true)
   // .orderByDescending('start_date_local')
-  .selectFields(['id', 'name', 'start_date_local', 'distance', 'moving_time', 'description'])
-  .take(3)
+  .selectFields(['id', 'name', 'start_date_local', 'distance', 'moving_time', 'description', 'type'])
+  .take(5)
   .lazily();
 
 const results = await Promise.allSettled([
