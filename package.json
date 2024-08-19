@@ -23,7 +23,7 @@
     "@strifeapp/image": "^0.0.3-alpha",
     "@strifeapp/strife": "^0.2.21-alpha",
     "@strifeapp/style": "^0.0.1-alpha.2",
-    "@vercel/analytics": "^1.2.2",
+    "@vercel/analytics": "^1.3.1",
     "@vercel/speed-insights": "^1.0.11",
     "@vitejs/plugin-basic-ssl": "^1.1.0",
     "@webcomponents/template-shadowroot": "^0.2.1",
