@@ -26,7 +26,7 @@ const activitesLazy = session
   .query({ collection: 'activities' })
   // .whereEquals('collection', 'activities')
   // .whereEquals('published', true)
-  // .orderByDescending('start_date_local')
+  .orderByDescending('start_date_local')
   .selectFields(['id', 'name', 'start_date_local', 'distance', 'moving_time', 'description', 'type'])
   .take(5)
   .lazily();
