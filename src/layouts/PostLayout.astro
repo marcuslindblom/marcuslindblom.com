@@ -178,7 +178,7 @@ const mentions = async () => {
     item.addEventListener('click', event => {
       let url = new URL(item.getAttribute('href'));
       fathom.trackEvent(`file download: ${url.href}`);
-      window.op.track('file_download', { name: url.pathname.split('/').pop() });
+      window.op('track', 'file_download', { name: url.pathname.split('/').pop() });
     });
   });
 </script>
