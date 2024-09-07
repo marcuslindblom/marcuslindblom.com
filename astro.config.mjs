@@ -10,7 +10,7 @@ const { PROD } = import.meta.env;
 // https://astro.build/config
 export default defineConfig({
   site: 'https://marcuslindblom.com',
-  railingSlash: 'never',
+  trailingSlash: 'never',
   integrations: [tailwind(), sitemap(), lit()],
   output: 'server',
   server: {
