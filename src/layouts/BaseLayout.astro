@@ -16,6 +16,7 @@ const { title, description, card } = Astro.props;
 
   <body class="bg-white dark:bg-black">
     <slot />
+    <script src="@strifeapp/strife"></script>
     {
       PROD && (
       <script src="https://cdn.usefathom.com/script.js" data-site="YUGAMIMD" defer is:inline></script>
