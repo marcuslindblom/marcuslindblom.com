@@ -1,37 +1,12 @@
 import { LitElement, html, css, unsafeCSS } from 'lit';
-import { preview as renderImage } from '@strifeapp/image';
+import { subscribe } from '@strifeapp/strife';
 import sheet from '../../styles/global.css?inline' assert { type: 'css' };
 
 export class HeroCard extends LitElement {
   static styles = [
     css`
       ${unsafeCSS(sheet)}
-    `,
-    css`
-      img.previewing {
-        --img-previewing-url: '';
-        --img-previewing-size: 100%;
-        --img-previewing-position: 0px 0px;
-        background-image: var(--img-previewing-url);
-        background-repeat: no-repeat;
-        background-position: var(--img-previewing-position);
-        background-size: var(--img-previewing-size);
-      }
-      img.previewing.previewing--empty {
-        background-image: repeating-linear-gradient(
-          45deg,
-          var(--str-placeholder-background-color) 0,
-          transparent 1px,
-          transparent 0,
-          transparent 50%
-        );
-        background-repeat: repeat;
-        background-position: 0 0;
-        background-size: 15px 15px;
-        outline: solid 1px var(--str-placeholder-background-color);
-        opacity: var(--str-placeholder-background-opacity);
-      }
-    `,
+    `
   ];
   static properties = {
     heading: { type: String },
@@ -45,12 +20,12 @@ export class HeroCard extends LitElement {
     this.avatar = {};
   }
   firstUpdated() {
-    import('@strifeapp/strife').then(({ subscribe }) => {
-      this.image = this.shadowRoot.querySelector('.u-photo');
-      this.unsubscribe = subscribe((data) => {
-        ({ heading: this.heading, introduction: this.introduction } = data);
-        renderImage(this.image, data.avatar);
-      });
+    this.unsubscribe = subscribe((data) => {
+      ({
+          heading: this.heading,
+          introduction: this.introduction,
+          avatar: this.avatar
+        } = data);
     });
   }
   disconnectedCallback() {
