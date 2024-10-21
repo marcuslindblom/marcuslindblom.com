@@ -32,5 +32,12 @@ export default defineConfig({
     speedInsights: {
       enabled: false
     }
-  })
+  }),
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'viewport',
+  },
+  experimental: {
+    clientPrerender: true,
+  },
 });
