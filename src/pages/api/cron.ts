@@ -1,6 +1,9 @@
 import store from '../../store';
 
-const formatDate = (date: Date) => {
+const VERCEL_PROJECT_ID = import.meta.env.VERCEL_PROJECT_ID;
+const VERCEL_AUTH_TOKEN = import.meta.env.VERCEL_AUTH_TOKEN;
+
+const formatDate = (date) => {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
   const day = String(date.getDate()).padStart(2, '0');
@@ -12,15 +15,15 @@ export async function GET({ params, request }) {
   // Get today's date
   const today = new Date();
 
-  const date1DaysAgo = new Date(today);
-  date1DaysAgo.setDate(today.getDate() - 1);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
 
   await fetch(
-    `https://vercel.com/api/web/insights/stats/path?projectId=prj_28rIVArb3nNoE9JewhDlUpF7wU2r&from=${formatDate(
-      date1DaysAgo
-    )}&to=${formatDate(today)}`,
+    `https://vercel.com/api/web/insights/stats/path?projectId=${VERCEL_PROJECT_ID}&from=${formatDate(
+      today
+    )}&to=${formatDate(tomorrow)}`,
     {
-      headers: { Authorization: 'Bearer Q76DWcgS8vTsiQq7VQGhy4Nk' },
+      headers: { Authorization: `Bearer ${VERCEL_AUTH_TOKEN}` },
     }
   )
     .then((response) => {
@@ -31,7 +34,6 @@ export async function GET({ params, request }) {
       }
     })
     .then((stats) => {
-      console.log('Got stats:', stats);
       const session = store.openSession();
       stats.data.forEach(async (stat) => {
         const page = await session
