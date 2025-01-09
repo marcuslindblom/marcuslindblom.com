@@ -7,12 +7,12 @@ import store from '../../store';
 
 const session = store.openSession();
 
-let stats;
+//and post.published == true
 const results = await session.advanced
   .rawQuery(
     `from index 'Content/ByUrl' as post
       where post.collection == 'posts'
-      and post.published == true
+
       order by post.publishedDate desc
       load post.labels as labels[]
       select {
@@ -22,39 +22,12 @@ const results = await session.advanced
           url: post.url
         }`
   )
-  .statistics((s) => (stats = s))
   .all();
 
   const home = await session
   .query({ indexName: 'Content/ByUrl' })
   .whereEquals('url', '/')
   .firstOrNull();
-
-try {
-  // Get the query duration from the stats
-  const queryDuration = stats.durationInMs;
-  const lastQueryTime = stats.lastQueryTime;
-
-  fetch('https://in.logs.betterstack.com', {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer A7KB9aGyb4mzyWohkx7dbJkP',
-    },
-    method: 'POST',
-    body: JSON.stringify({
-      dt: lastQueryTime,
-      queryDuration: queryDuration,
-      message:
-        'Query duration for ' +
-        Astro.url.pathname.replace(/\/$/, '') +
-        ' is ' +
-        queryDuration +
-        ' ms',
-    }),
-  });
-} catch (error) {
-  console.log('Error logging query duration: ' + error);
-}
 
 const dateOptions: object = {
   year: 'numeric',
