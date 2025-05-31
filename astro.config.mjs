@@ -3,6 +3,7 @@ import basicSsl from '@vitejs/plugin-basic-ssl'
 import vercel from '@astrojs/vercel';
 import sitemap from "@astrojs/sitemap";
 import lit from "@astrojs/lit";
+import tailwindcss from '@tailwindcss/vite';
 
 const { PROD } = import.meta.env;
 
@@ -16,7 +17,7 @@ export default defineConfig({
     port: 4323
   },
   vite: {
-    plugins: !PROD ? [basicSsl()] : [],
+    plugins: !PROD ? [basicSsl(), tailwindcss()] : [tailwindcss()],
     server: {
       https: true
     },
