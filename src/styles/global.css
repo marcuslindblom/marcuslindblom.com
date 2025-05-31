@@ -1,6 +1,10 @@
 @import "inter-ui/inter.css";
 @import "tailwindcss";
 
+@plugin "@tailwindcss/typography";
+
+@source "./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}";
+
 @theme {
   --font-family-sans: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   
@@ -45,7 +49,6 @@
   --font-size-9xl: 8rem;
   --font-size-9xl--line-height: 1;
 }
-
 
 q::before {
   background-color: var(--surface-document);
