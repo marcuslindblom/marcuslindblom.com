@@ -10,16 +10,15 @@
     "astro": "astro"
   },
   "devDependencies": {
-    "@astrojs/sitemap": "^3.2.1",
-    "@astrojs/tailwind": "^5.1.2",
-    "@tailwindcss/typography": "^0.5.14",
-    "astro": "^4.16.7",
+    "@astrojs/sitemap": "^3.4.0",
+    "@tailwindcss/typography": "^0.5.16",
+    "astro": "^5.8.1",
     "ravendb": "^5.4.3"
   },
   "dependencies": {
     "@astrojs/lit": "^4.3.0",
-    "@astrojs/rss": "^4.0.9",
-    "@astrojs/vercel": "^7.8.2",
+    "@astrojs/rss": "^4.0.11",
+    "@astrojs/vercel": "^8.1.4",
     "@strifeapp/strife": "^0.4.0-alpha",
     "@strifeapp/style": "^0.1.0-alpha",
     "@vercel/analytics": "^1.3.1",
@@ -29,6 +28,7 @@
     "inter-ui": "^4.0.0",
     "lit": "^3.1.3",
     "sanitize-html": "^2.13.0",
+    "tailwindcss": "^4.1.8",
     "web-vitals": "^4.2.4"
   }
 }
